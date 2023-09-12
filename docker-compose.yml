@@ -37,7 +37,7 @@ services:
     ports:
       - 4444:4444
     networks:
-            - rede_livros
+            - rede_gpd
     volumes:
         - ./gpd-plannig-tool-backend/log:/app/log
     restart: always
@@ -51,7 +51,7 @@ services:
     ports:
       - 8001:80
     networks:
-      - rede_livros
+      - rede_gpd
 
 networks:
   rede_livros:
