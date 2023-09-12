@@ -37,7 +37,7 @@ services:
     ports:
       - 4444:4444
     networks:
-            - rede_gpd_planning_tool
+            - rede_livros
     volumes:
         - ./gpd-plannig-tool-backend/log:/app/log
     restart: always
@@ -49,9 +49,9 @@ services:
       context: gpd-plannig-tool-frontend
       dockerfile: Dockerfile
     ports:
-      - 8000:80
+      - 8001:80
     networks:
-      - rede_gpd_planning_tool
+      - rede_livros
 
 networks:
   rede_livros:
