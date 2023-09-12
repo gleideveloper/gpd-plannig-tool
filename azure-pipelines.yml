@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  TAG: $(Build.BuildId)
+
+steps:
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'service-webapp'
+    azureContainerRegistry: '{"loginServer":"acrgleidev.azurecr.io", "id" : "/subscriptions/b535b073-98f7-4c06-99fd-68bf84e59f15/resourceGroups/rg-gleidev/providers/Microsoft.ContainerRegistry/registries/acrgleidev"}'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Build services'
+    pushServices: true
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'ACR-Gleidev'
+    command: 'login'
+
+- script: |
+    docker-compose push
+
+  displayName: 'Push latest tag to ACR'
+

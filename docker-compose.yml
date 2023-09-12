@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+#  bdmysql:
+#    image: acrgleidev.azurecr.io/mysql:latest
+#    container_name: bdmysql
+#    ports:
+#      - 3306:3306
+#    environment:
+#      - MYSQL_DATABASE=loja-livros
+#      - MYSQL_ROOT_PASSWORD=R@12345
+#    networks:
+#      - rede_livros
+#    volumes:
+#      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+#      - dbMyApp:/var/lib/mysql
+#
+#  phpmyadmin:
+#    image: acrgleidev.azurecr.io/phpmyadmin:latest
+#    container_name: phpmyadmin
+#    ports:
+#      - 8080:80
+#    environment:
+#      - PMA_HOST=bdmysql
+#      - PMA_PORT=3306
+#      - PMA_USER=root
+#      - PMA_PASSWORD=R@12345
+#    networks:
+#      - rede_livros
+
+  backendlivros:
+    image: acrgleidev.azurecr.io/backend-gpd-plannig-tool:${TAG}
+    container_name: backend-gpd-plannig-tool
+    build:
+      context: gpd-plannig-tool-backend
+      dockerfile: Dockerfile
+    ports:
+      - 4444:4444
+    networks:
+            - rede_gpd_planning_tool
+    volumes:
+        - ./gpd-plannig-tool-backend/log:/app/log
+    restart: always
+
+  frontendlivros:
+    image: acrgleidev.azurecr.io/frontend-gpd-plannig-tool:${TAG}
+    container_name: frontend-gpd-plannig-tool
+    build:
+      context: gpd-plannig-tool-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    networks:
+      - rede_gpd_planning_tool
+
+networks:
+  rede_livros:
+    driver: bridge
+volumes:
+  dbMyApp:
