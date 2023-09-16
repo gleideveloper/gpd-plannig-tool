@@ -1,14 +1,14 @@
-import { ErroApiDTO } from "../../data/dto/ErroApiDTO";
-import { LivroDTO } from "../../data/dto/LivroDTO";
-import { ApiService } from "../../data/services/ApiService";
-import { adicionarMascaraIsbn } from "../../data/utils";
+import { ErroApiDTO } from '../../data/dto/ErroApiDTO';
+import { LivroDTO } from '../../data/dto/LivroDTO';
+import { ApiService } from '../../data/services/ApiService';
+import { adicionarMascaraIsbn } from '../../data/utils';
 import {
   ModalDeletarLivro,
   ModalDeletarLivroRefProps,
-} from "../components/ModalDeletarLivro";
-import { AlertasContext } from "./alertas";
+} from '../components/ModalDeletarLivro';
+import { AlertasContext } from './alertas';
 
-import { Delete, Edit, Visibility } from "@mui/icons-material";
+import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -20,8 +20,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
-import { AxiosError } from "axios";
+} from '@mui/material';
+import { AxiosError } from 'axios';
 import {
   createContext,
   FC,
@@ -30,8 +30,8 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { useNavigate } from "react-router-dom";
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ListagemLivrosContextData = {
   removerLivro: (isbn: string) => void;
@@ -67,7 +67,7 @@ const ListagemLivrosProvider: FC = (): JSX.Element => {
         textoAlerta: `Falha ao tentar buscar livros: ${
           (erro.response.data as ErroApiDTO).mensagem
         }`,
-        tipoAlerta: "warning",
+        tipoAlerta: 'warning',
       });
     }
   };
@@ -85,54 +85,62 @@ const ListagemLivrosProvider: FC = (): JSX.Element => {
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Capa</TableCell>
-                <TableCell align="center">Nome</TableCell>
-                <TableCell align="center">Código ISBN</TableCell>
-                <TableCell align="center">Ações</TableCell>
+                <TableCell align='center'>Name</TableCell>
+                <TableCell align='center'>Date SA</TableCell>
+                <TableCell align='center'>Lead NPI</TableCell>
+                <TableCell align='center'>Family</TableCell>
+                <TableCell align='center'>Chipset</TableCell>
+                <TableCell align='center'>Scope Simplified</TableCell>
+                <TableCell align='center'>Frequency Band</TableCell>
+                <TableCell align='center'>ODM</TableCell>
+                <TableCell align='center'>Carrier</TableCell>
+                <TableCell align='center'>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {livros.length > 0 ? (
-                livros.map((livro) => (
-                  <TableRow key={livro.isbn}>
-                    <TableCell align="center">
+                livros.map((produto) => (
+                  <TableRow key={produto.isbn}>
+                    <TableCell align='center'>
                       <Avatar
-                        variant="rounded"
-                        src={livro.urlImagem}
-                        alt={livro.nome}
+                        variant='rounded'
+                        src={produto.urlImagem}
+                        alt={produto.nome}
                       />
                     </TableCell>
-                    <TableCell align="center">{livro.nome}</TableCell>
-                    <TableCell align="center">
-                      {adicionarMascaraIsbn(livro.isbn)}
+                    <TableCell align='center'>{produto.nome}</TableCell>
+                    <TableCell align='center'>
+                      {adicionarMascaraIsbn(produto.isbn)}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align='center'>
                       <IconButton
-                        onClick={() => navigate(`/visualizar/${livro.isbn}`)}
+                        onClick={() => navigate(`/visualizar/${produto.isbn}`)}
                       >
-                        <Visibility color="secondary" />
+                        <Visibility color='secondary' />
                       </IconButton>
                       <IconButton
-                        onClick={() => navigate(`/editar-livro/${livro.isbn}`)}
+                        onClick={() =>
+                          navigate(`/editar-livro/${produto.isbn}`)
+                        }
                       >
-                        <Edit color="secondary" />
+                        <Edit color='secondary' />
                       </IconButton>
                       <IconButton
                         onClick={() => {
                           modalDeletarLivroRef.current.abrirModal(
-                            livro.nome,
-                            livro.isbn
+                            produto.nome,
+                            produto.isbn
                           );
                         }}
                       >
-                        <Delete color="secondary" />
+                        <Delete color='secondary' />
                       </IconButton>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">
+                  <TableCell colSpan={4} align='center'>
                     Nenhum livro cadastrado
                   </TableCell>
                 </TableRow>
