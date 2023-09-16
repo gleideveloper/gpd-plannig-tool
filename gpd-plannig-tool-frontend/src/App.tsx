@@ -10,14 +10,12 @@ import { FC } from 'react';
 
 const App: FC = (): JSX.Element => {
   return (
-    <ThemeProvider theme={theme}>
-      <AppContainer>
+      <ThemeProvider theme={theme}>
         <Cabecalho />
         <AlertasProvider>
           <Router />
         </AlertasProvider>
         <Rodape />
-      </AppContainer>
     </ThemeProvider>
   );
 };
