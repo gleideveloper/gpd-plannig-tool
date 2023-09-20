@@ -7,7 +7,7 @@ const livrosController = new ProdutosController();
 /************************ Ações executadas para a rota base /livros ************************/
 rotasProdutos.get("/", livrosController.buscarTodos.bind(livrosController));
 rotasProdutos.get(
-  "/:isbn",
+  "/:id",
   livrosController.buscarProdutoPorId.bind(livrosController)
 );
 rotasProdutos.post(
@@ -15,11 +15,11 @@ rotasProdutos.post(
   livrosController.cadastrarNovoProduto.bind(livrosController)
 );
 rotasProdutos.patch(
-  "/:isbn",
+  "/:id",
   livrosController.atualizarProduto.bind(livrosController)
 );
 rotasProdutos.delete(
-  "/:isbn",
+  "/:id",
   livrosController.deletarProduto.bind(livrosController)
 );
 /************************ Ações executadas para a rota base /livros ************************/
