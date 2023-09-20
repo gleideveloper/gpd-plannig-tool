@@ -4,9 +4,9 @@
  *
  * @author Andre Xavier <xavier.andre256@gmail.com>
  */
-type OperadoraDTO = {
+type OperadoraParaCriarDTO = {
   nome: string;
   regiao: string;
 };
 
-export { OperadoraDTO };
+export { OperadoraParaCriarDTO };
