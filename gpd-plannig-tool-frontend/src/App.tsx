@@ -10,7 +10,7 @@ import { FC } from 'react';
 
 const App: FC = (): JSX.Element => {
   return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} >
         <Cabecalho />
         <AlertasProvider>
           <Router />

@@ -1,11 +1,11 @@
-import { ListagemLivrosProvider } from '../ui/contexts/listagem-livros';
+import { ListagemProdutosProvider } from '../ui/contexts/listagem-produtos';
 
 import { Add } from '@mui/icons-material';
 import { Button, Container, Typography } from '@mui/material';
 import { FC, JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ListagemLivrosPage: FC = (): JSX.Element => {
+const ListagemProdutosPage: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const tituloPagina = 'Product Table';
 
@@ -49,9 +49,9 @@ const ListagemLivrosPage: FC = (): JSX.Element => {
           <Add color='secondary' sx={{ mr: 1 }} /> {' Register a New Product'}
         </Button>
       </div>
-      <ListagemLivrosProvider />
+      <ListagemProdutosProvider />
     </Container>
   );
 };
 
-export { ListagemLivrosPage };
+export { ListagemProdutosPage };
