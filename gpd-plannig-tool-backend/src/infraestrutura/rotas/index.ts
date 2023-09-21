@@ -1,5 +1,4 @@
 
-import { rotasLivros } from "./livros";
 import { rotasOperadoras } from "./operadoras";
 import {rotasProdutos} from "@/infraestrutura/rotas/produtos";
 import {rotasLivros} from "@/infraestrutura/rotas/livros";
