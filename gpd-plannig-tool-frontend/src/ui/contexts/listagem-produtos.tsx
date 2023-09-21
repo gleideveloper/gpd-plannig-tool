@@ -7,6 +7,7 @@ import {
 } from '../components/ModalDeletarLivro';
 import { AlertasContext } from './alertas';
 
+import { format } from 'date-fns';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
   Box,
@@ -55,7 +56,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
   const buscarProdutos = async () => {
     try {
       const resposta = await ApiService.get<ProdutoDTO[]>(
-        import.meta.env.VITE_ROTA_LIVROS
+        import.meta.env.VITE_ROTA_PRODUTOS  // busca os produtos cadastrados na rota /produtos
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
@@ -84,7 +85,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
             <TableHead>
               <TableRow>
                 <TableCell align='center'>Name</TableCell>
-                {/* <TableCell align='center'>Date SA</TableCell> */}
+                <TableCell align='center'>Date SA</TableCell>
                 <TableCell align='center'>Lead NPI</TableCell>
                 <TableCell align='center'>Family</TableCell>
                 <TableCell align='center'>Chipset</TableCell>
@@ -100,13 +101,17 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                 produtos.map((produto) => (
                   <TableRow key={produto.nome}>
                     <TableCell align='center'>{produto.nome}</TableCell>
-                    {/* <TableCell align='center'>{produto.dataSa.toString()}</TableCell> */}
+                    <TableCell align='center'>
+                      {format(new Date(produto.dataSa), 'dd/MM/yyyy HH:mm:ss')}
+                    </TableCell>
                     <TableCell align='center'>{produto.lider}</TableCell>
                     <TableCell align='center'>{produto.familia}</TableCell>
                     <TableCell align='center'>{produto.chipset}</TableCell>
                     <TableCell align='center'>{produto.escopo}</TableCell>
                     <TableCell align='center'>{produto.band}</TableCell>
-                    <TableCell align='center'>{produto.odm}</TableCell>
+                    <TableCell align='center'>
+                      {produto.odm ? 'Partner' : 'Motorola'}
+                    </TableCell>
                     <TableCell align='center'>{produto.operadora}</TableCell>
                     <TableCell align='center'>
                       <IconButton
