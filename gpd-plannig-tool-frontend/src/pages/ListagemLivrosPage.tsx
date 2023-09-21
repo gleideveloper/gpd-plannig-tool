@@ -2,20 +2,25 @@ import { ListagemLivrosProvider } from "../ui/contexts/listagem-livros";
 
 import { Add } from "@mui/icons-material";
 import { Button, Container } from "@mui/material";
-import { FC, JSX } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, JSX, useRef } from "react";
+
+import { ModalRegisterNewProduct, ModalRegisterNewProductProps } from "../ui/components/ModalRegisterNewProduct"; 
 
 const ListagemLivrosPage: FC = (): JSX.Element => {
-  const navigate = useNavigate();
+  const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
 
   return (
+    <>
+    <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
     <Container sx={{ marginY: 2 }}>
-      <Button variant="contained" onClick={() => navigate("/adicionar-livro")}>
-        <Add color="secondary" /> {" Adicionar Novo Livro"}
+      <Button variant="contained" onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}>
+      <Add color="secondary" /> {" Novo Produto"}
       </Button>
 
       <ListagemLivrosProvider />
     </Container>
+    </>
+    
   );
 };
 
