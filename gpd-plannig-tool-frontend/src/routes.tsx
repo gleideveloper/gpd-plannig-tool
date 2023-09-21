@@ -1,5 +1,5 @@
 import { FormularioLivroPage } from "./pages/FormularioLivroPage";
-import { ListagemLivrosPage } from "./pages/ListagemLivrosPage";
+import { ListagemProdutosPage } from "./pages/ListagemProdutosPage";
 import { VisualizacaoLivroPage } from "./pages/VisualizacaoLivroPage";
 
 import { FC } from "react";
@@ -9,7 +9,7 @@ const Router: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" index element={<ListagemLivrosPage />} />
+        <Route path="/" index element={<ListagemProdutosPage />} />
         <Route path="/adicionar-livro" element={<FormularioLivroPage />} />
         <Route
           path="/editar-livro/:isbnLivroSelecionado"
