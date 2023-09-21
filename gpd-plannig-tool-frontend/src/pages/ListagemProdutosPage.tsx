@@ -2,10 +2,13 @@ import { ListagemProdutosProvider } from '../ui/contexts/listagem-produtos';
 
 import { Add } from '@mui/icons-material';
 import { Button, Container, Typography } from '@mui/material';
-import { FC, JSX } from 'react';
+import { FC, JSX, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ModalRegisterNewProduct, ModalRegisterNewProductProps } from "../ui/components/ModalRegisterNewProduct"; 
+
 const ListagemProdutosPage: FC = (): JSX.Element => {
+  const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
   const navigate = useNavigate();
   const tituloPagina = 'Product Table';
 
@@ -25,6 +28,8 @@ const ListagemProdutosPage: FC = (): JSX.Element => {
   };
 
   return (
+    <>
+    <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
     <Container
       sx={{
         marginY: 7,
@@ -44,13 +49,14 @@ const ListagemProdutosPage: FC = (): JSX.Element => {
         <Button
           style={btnRegisterProductStyle}
           variant='contained'
-          onClick={() => navigate('/adicionar-livro')}
+          onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
         >
           <Add color='secondary' sx={{ mr: 1 }} /> {' Register a New Product'}
         </Button>
       </div>
       <ListagemProdutosProvider />
     </Container>
+    </>
   );
 };
 
