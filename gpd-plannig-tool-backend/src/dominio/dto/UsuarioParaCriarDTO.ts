@@ -1,5 +1,5 @@
 export interface UsuarioParaCriarDTO {
-    id: any;
+    id: string;
     nome: string;
     email: string;
     senha: string;

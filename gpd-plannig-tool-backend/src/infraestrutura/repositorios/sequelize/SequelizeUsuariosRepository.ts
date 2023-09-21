@@ -68,7 +68,10 @@ class SequelizeUsuariosRepository implements UsuariosRepository {
           nome: usuario.nome,
           email: usuario.email,
           senha: usuario.senha,
-          // Adicione outros campos conforme necessário
+          role: usuario.role,
+          department: usuario.department,
+          team: usuario.team
+          // Outros campos
         },
         {
           returning: true,
@@ -111,6 +114,9 @@ class SequelizeUsuariosRepository implements UsuariosRepository {
         nome: usuario.nome,
         email: usuario.email,
         senha: usuario.senha,
+        role: usuario.role,
+        department: usuario.department,
+        team: usuario.team
         // Atualize outros campos conforme necessário
       });
     } catch (erro: any) {

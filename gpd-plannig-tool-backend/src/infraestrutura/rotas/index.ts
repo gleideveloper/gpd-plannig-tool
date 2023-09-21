@@ -1,5 +1,6 @@
-import { rotasLivros } from "./livros";
 import { HomeController } from "../controllers/HomeController";
+import { rotasLivros } from "./livros";
+import { rotasUsuarios } from "./usuario";
 
 import { Router } from "express";
 
@@ -12,4 +13,8 @@ rotas.get("/", homeController.home.bind(homeController));
 rotas.use("/livros", rotasLivros);
 /************************ Ações executadas para a rota base /livros ************************/
 
+
+rotas.use("/usuarios", rotasUsuarios);
+
 export { rotas };
+

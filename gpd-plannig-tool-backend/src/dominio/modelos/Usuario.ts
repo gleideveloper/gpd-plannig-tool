@@ -60,7 +60,7 @@ class Usuario extends Model {
     allowNull: false,
     validate: {
       len: {
-        args: [3, 180],
+        args: [1, 180],
         msg: "A role do usuário deve ter entre 3 e 180 caracteres.",
       },
     },
@@ -73,7 +73,7 @@ class Usuario extends Model {
     allowNull: false,
     validate: {
       len: {
-        args: [3, 180],
+        args: [1, 180],
         msg: "O departamento do usuário deve ter entre 3 e 180 caracteres.",
       },
     },
@@ -86,7 +86,7 @@ class Usuario extends Model {
     allowNull: false,
     validate: {
       len: {
-        args: [3, 180],
+        args: [1, 180],
         msg: "O time do usuário deve ter entre 3 e 180 caracteres.",
       },
     },

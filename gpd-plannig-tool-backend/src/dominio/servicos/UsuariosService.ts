@@ -34,6 +34,9 @@ class UsuariosService {
       nome: novoUsuario.nome,
       email: novoUsuario.email,
       senha: novoUsuario.senha,
+      role: novoUsuario.role,
+      department: novoUsuario.department,
+      team: novoUsuario.team,
       // Adicione outros campos conforme necessário
     });
     const registro = await this.repository.salvar(usuario);
@@ -49,6 +52,9 @@ class UsuariosService {
     usuario.set({
       nome: dadosParaAtualizar.nome,
       email: dadosParaAtualizar.email,
+      role: dadosParaAtualizar.role,
+      department: dadosParaAtualizar.department,
+      team: dadosParaAtualizar.team,
       // Atualize outros campos conforme necessário
     });
     await this.repository.salvar(usuario);

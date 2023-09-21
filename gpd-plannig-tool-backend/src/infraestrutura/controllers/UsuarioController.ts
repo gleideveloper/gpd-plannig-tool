@@ -52,6 +52,7 @@ class UsuariosController {
   ): Promise<void> {
     try {
       const novoUsuario: UsuarioParaCriarDTO = req.body as UsuarioParaCriarDTO;
+      console.log(novoUsuario)
       const resultado = await this.service.cadastrarNovoUsuario(novoUsuario);
       if (!resultado)
         throw new RegistroNaoSalvoError(
