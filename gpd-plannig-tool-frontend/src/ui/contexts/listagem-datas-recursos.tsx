@@ -83,17 +83,8 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
                 <TableRow key={produto.nome}>
                   <TableCell align='center'>{produto.nome}</TableCell>
                   <TableCell align='center'>
-                    {format(new Date(produto.dataSa), 'dd/MM/yyyy HH:mm:ss')}
+                    {format(new Date(produto.dataSa), 'MM/yyyy')}
                   </TableCell>
-                  <TableCell align='center'>{produto.lider}</TableCell>
-                  <TableCell align='center'>{produto.familia}</TableCell>
-                  <TableCell align='center'>{produto.chipset}</TableCell>
-                  <TableCell align='center'>{produto.escopo}</TableCell>
-                  <TableCell align='center'>{produto.band}</TableCell>
-                  <TableCell align='center'>
-                    {produto.odm ? 'Partner' : 'Motorola'}
-                  </TableCell>
-                  <TableCell align='center'>{produto.operadora}</TableCell>
                 </TableRow>
               ))
             ) : (
