@@ -1,4 +1,5 @@
 import { FormularioLivroPage } from "./pages/FormularioLivroPage";
+import { ListagemDatasRecursosPage } from "./pages/ListagemDatasRecursosPage";
 import { ListagemProdutosPage } from "./pages/ListagemProdutosPage";
 import { VisualizacaoLivroPage } from "./pages/VisualizacaoLivroPage";
 
@@ -10,7 +11,7 @@ const Router: FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" index element={<ListagemProdutosPage />} />
-        <Route path="/adicionar-livro" element={<FormularioLivroPage />} />
+        <Route path="/dates-and-resources" element={<ListagemDatasRecursosPage />} />
         <Route
           path="/editar-livro/:isbnLivroSelecionado"
           element={<FormularioLivroPage />}

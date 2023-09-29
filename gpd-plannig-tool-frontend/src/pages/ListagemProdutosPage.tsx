@@ -3,14 +3,12 @@ import { ListagemProdutosProvider } from '../ui/contexts/listagem-produtos';
 import { Add } from '@mui/icons-material';
 import { Button, Container, Typography } from '@mui/material';
 import { FC, JSX, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { ModalRegisterNewProduct, ModalRegisterNewProductProps } from "../ui/components/ModalRegisterNewProduct"; 
 
 const ListagemProdutosPage: FC = (): JSX.Element => {
   const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
-  const navigate = useNavigate();
-  const tituloPagina = 'Product Table';
+  const tituloPagina = 'Products Table';
 
   const tituloPaginaStyle = {
     marginTop: 2,

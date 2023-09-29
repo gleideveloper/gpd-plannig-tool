@@ -102,7 +102,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                   <TableRow key={produto.nome}>
                     <TableCell align='center'>{produto.nome}</TableCell>
                     <TableCell align='center'>
-                      {format(new Date(produto.dataSa), 'dd/MM/yyyy HH:mm:ss')}
+                      {format(new Date(produto.dataSa), 'MM/yyyy')}
                     </TableCell>
                     <TableCell align='center'>{produto.lider}</TableCell>
                     <TableCell align='center'>{produto.familia}</TableCell>
