@@ -1,4 +1,4 @@
-import { ListagemDatasRecursosProvider } from '../ui/contexts/listagem-datas-recursos';
+import { ListagemDatasRecursosProvider } from '../ui/contexts/listagem-datas-recursosTESTE';
 
 import { Container, Typography } from '@mui/material';
 import { FC, JSX } from 'react';
@@ -18,25 +18,25 @@ const ListagemDatasRecursosPage: FC = (): JSX.Element => {
 
   return (
     <>
-    <Container
-      sx={{
-        marginY: 7,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 40,
+      <Container
+        sx={{
+          marginY: 7,
         }}
       >
-        <Typography component='h5' variant='h3' style={tituloPaginaStyle}>
-          {tituloPagina}
-        </Typography>
-      </div>
-      <ListagemDatasRecursosProvider />
-    </Container>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 40,
+          }}
+        >
+          <Typography component='h5' variant='h3' style={tituloPaginaStyle}>
+            {tituloPagina}
+          </Typography>
+        </div>
+        <ListagemDatasRecursosProvider />
+      </Container>
     </>
   );
 };
