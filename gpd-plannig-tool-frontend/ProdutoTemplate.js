@@ -2,12 +2,12 @@ const dadosProduto = {
     produto01: {
         id: "ce9d0b3b-9389-4fab-90a9-f79725ad9ac0",
         name: "Eclipse",
-        sa_date: "02/10/2023",
+        sa_date: "16/10/2023",
         npi_lead: "Name Lead",
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "High",
-            sa_idx: 6,
+            sa_idx: 10,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
@@ -21,7 +21,7 @@ const dadosProduto = {
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "Mid",
-            sa_idx: 6,
+            sa_idx: 11,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
@@ -35,7 +35,7 @@ const dadosProduto = {
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "Low",
-            sa_idx: 6,
+            sa_idx: 12,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
@@ -49,7 +49,7 @@ const dadosProduto = {
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "High",
-            sa_idx: 6,
+            sa_idx: 1,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
@@ -63,7 +63,7 @@ const dadosProduto = {
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "Mid",
-            sa_idx: 6,
+            sa_idx: 2,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
@@ -77,7 +77,7 @@ const dadosProduto = {
         template: {
             id: "4a960b5f-4207-466a-a2cd-65bbf91023cd",
             type: "Low",
-            sa_idx: 6,
+            sa_idx: 3,
             pm: [0, 0.5, 1, 3, 4.2, 4.2, 4.2, 4.2, 4.2],
             tl: [0, 0.5, 1, 4, 4.2, 4.2, 4.2, 4.2, 4.2],
             ut_lead: [0, 0, 0, 0, 1, 2, 2, 0, 0],
