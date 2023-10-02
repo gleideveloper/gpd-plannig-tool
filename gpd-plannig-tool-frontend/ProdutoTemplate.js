@@ -1,4 +1,4 @@
-const dadosProduto = {
+const produtoList = {
     produto01: {
         id: "ce9d0b3b-9389-4fab-90a9-f79725ad9ac0",
         name: "Eclipse",
@@ -85,4 +85,4 @@ const dadosProduto = {
     },
 };
 
-export default dadosProduto;
+export default produtoList;
