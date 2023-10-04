@@ -32,7 +32,7 @@ const produtoList: Record<string, Produto> = {
   produto02: {
     id: 'ce9d0b3b-9389-4fab-90a9-f79725ad9ac6',
     name: 'Beyond',
-    sa_date: '11/2023',
+    sa_date: '09/2023',
     npi_lead: 'Name Lead',
     template: {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cd',
@@ -44,7 +44,7 @@ const produtoList: Record<string, Produto> = {
   produto03: {
     id: 'ce9d0b3b-9389-4fab-90a9-f79725ad9ac5',
     name: 'Lumar',
-    sa_date: '12/2023',
+    sa_date: '04/2023',
     npi_lead: 'Name Lead',
     template: {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
@@ -53,6 +53,30 @@ const produtoList: Record<string, Produto> = {
       peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
     },
   },
+  produto04: {
+    id: 'ce9d0b3b-9389-4fab-90a9-f79725ad9ac5',
+    name: 'Venus',
+    sa_date: '04/2024',
+    npi_lead: 'Name Lead',
+    template: {
+      id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
+      type: 'Low',
+      sa_idx: 2,
+      peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
+    },
+  },
+  // produto05: {
+  //   id: 'ce9d0b3b-9389-4fab-90a9-f79725ad9ac5',
+  //   name: 'Marte',
+  //   sa_date: '02/2023',
+  //   npi_lead: 'Name Lead',
+  //   template: {
+  //     id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
+  //     type: 'High',
+  //     sa_idx: 6,
+  //     peak_amount: [0.5, 1, 3, 4.2, 5, 5, 5.2, 5.2, 5],
+  //   },
+  // },
 };
 
 export default produtoList;
