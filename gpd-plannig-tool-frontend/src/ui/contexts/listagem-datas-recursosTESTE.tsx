@@ -29,9 +29,6 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   produtosTeste.forEach((produto, index) => {
     const saIndex = produto.template.sa_idx;
 
-    console.log('SAindex = ' + saIndex);
-    console.log(columnNames);
-
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
     const formattedSaDate = format(datesSA[index], 'MMM yyyy');
 
@@ -41,21 +38,17 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
       columnNames[saIndex] = formattedSaDate;
 
       // Preenchendo as colunas antes do SA
-      console.log('Preenchendo colunas antes do SA');
       for (let i = saIndex - 1; i >= 0; i--) {
         const prevDate = new Date(datesSA[index]);
         prevDate.setMonth(datesSA[index].getMonth() - (saIndex - i));
         columnNames[i] = format(prevDate, 'MMM yyyy');
-        console.log('columnNames[' + i + '] = ' + columnNames[i]);
       }
 
       // Preenchendo as colunas após o SA
-      console.log('Preenchendo colunas depois do SA');
       for (let i = saIndex + 1; i < VECTOR_SIZE; i++) {
         const nextDate = new Date(datesSA[index]);
         nextDate.setMonth(datesSA[index].getMonth() + (i - saIndex));
         columnNames[i] = format(nextDate, 'MMM yyyy');
-        console.log('columnNames[' + i + '] = ' + columnNames[i]);
       }
       // Se não for o primeiro produto a ser inserido na tabela
     } else {
@@ -95,34 +88,96 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
           const nextDate = new Date(datesSA[index]);
           nextDate.setMonth(datesSA[index].getMonth() + (i - indexOfDateSa));
           columnNames[i] = format(nextDate, 'MMM yyyy');
-          console.log('columnNames[' + i + '] = ' + columnNames[i]);
         }
-
-        console.log(columnNames);
       }
       // Se a coluna com o dateSA não existir
       else {
+        const lastDateInTable = new Date(columnNames[columnNames.length - 1]);
+        const firstDateInTable = new Date(columnNames[0]);
+
         // Se o dateSA for maior do que a última data da tabela
-        if (formattedSaDate > columnNames[columnNames.length - 1]) {
-          console.log('DATESA MAIOR');
+        if (datesSA[index] > lastDateInTable) {
+          // Calculando a diferença em meses entre o dateSA e a última data da tabela
+          const differenceInMonths =
+            (datesSA[index].getFullYear() - lastDateInTable.getFullYear()) *
+              12 +
+            (datesSA[index].getMonth() - lastDateInTable.getMonth());
+
+          // Preenchendo o intervalo com os meses intermediários
+          for (let i = 1; i <= differenceInMonths; i++) {
+            const nextDate = new Date(lastDateInTable);
+            nextDate.setMonth(lastDateInTable.getMonth() + i);
+            columnNames.push(format(nextDate, 'MMM yyyy'));
+          }
+
+          const indexOfDateSa = columnNames.length - 1;
+          const biggestPosition = indexOfDateSa + (VECTOR_SIZE - saIndex - 1);
+
+          // Preenchendo as colunas após o SA
+          for (let i = indexOfDateSa + 1; i <= biggestPosition; i++) {
+            const nextDate = new Date(datesSA[index]);
+            nextDate.setMonth(datesSA[index].getMonth() + (i - indexOfDateSa));
+            columnNames[i] = format(nextDate, 'MMM yyyy');
+          }
         }
-        // Se o dateSA for menor do que a última data da tabela
+        // Se o dateSA for menor do que a primeira data da tabela
         else {
-          console.log('DATESA MENOR');
+          // Calculando a diferença em meses entre o dateSA e a primeira data da tabela
+          const differenceInMonths =
+            (firstDateInTable.getFullYear() - datesSA[index].getFullYear()) *
+              12 +
+            (firstDateInTable.getMonth() - datesSA[index].getMonth());
+
+          // Preenchendo o intervalo com os meses intermediários
+          for (let i = 1; i <= differenceInMonths; i++) {
+            const prevDate = new Date(firstDateInTable);
+            prevDate.setMonth(firstDateInTable.getMonth() - i);
+            columnNames.splice(0, 0, format(prevDate, 'MMM yyyy'));
+          }
+
+          const indexOfDateSa = 0; // DateSA nesse caso vai estar sempre na primeira posição do vetor
+          const lowestPosition = indexOfDateSa - saIndex;
+
+          // Preenchendo as colunas antes do SA
+          for (let i = indexOfDateSa - 1; i >= lowestPosition; i--) {
+            const prevDate = new Date(datesSA[index]);
+            prevDate.setMonth(datesSA[index].getMonth() - (indexOfDateSa - i));
+            columnNames.splice(0, 0, format(prevDate, 'MMM yyyy'));
+          }
         }
-        const lowestPosition = indexOfDateSa - saIndex;
-        const biggestPosition = indexOfDateSa + (VECTOR_SIZE - saIndex - 1);
       }
     }
   });
 
   // Populando as colunas de Peak Amount (Recursos)
-  const renderPeakAmountColumns = (produto: Produto) => {
-    return produto.template.peak_amount.map((value, index) => (
-      <TableCell align='center' key={`peak_amount_${index}`}>
-        {value}
-      </TableCell>
-    ));
+  const renderPeakAmountColumns = (produto: Produto, columnIndex: number) => {
+    // columnIndex -> indica a posição do dateSA do produto na tabela
+    // Obtém o valor do índice 'sa_idx' do produto
+    const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
+    const peakAmountVector = produto.template.peak_amount;
+    const peakAmountCells: JSX.Element[] = []; // Array para armazenar as células
+    let cont = 0;
+
+    for (let i = 0; i < columnNames.length; i++) {
+      if (i >= lowestPosition && i < lowestPosition + VECTOR_SIZE) {
+        // Mapeia os valores de 'peak_amount' e realoca-os nas colunas correspondentes, criando e adicionando as células ao array
+        peakAmountCells.push(
+          <TableCell align='center' key={`peak_amount_${cont}`}>
+            {peakAmountVector[cont]}
+          </TableCell>
+        );
+        cont++;
+      } else {
+        // Se não estiver na posição correta, adicione uma célula vazia
+        peakAmountCells.push(
+          <TableCell align='center' key={`empty_cell_${i}`}>
+            {''}
+          </TableCell>
+        );
+      }
+    }
+
+    return peakAmountCells; // Retorna o array de células
   };
 
   return (
@@ -167,7 +222,10 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
                     <TableCell align='center'>
                       {produto.template.type}
                     </TableCell>
-                    {renderPeakAmountColumns(produto)}
+                    {renderPeakAmountColumns(
+                      produto,
+                      columnNames.indexOf(formattedSaDate)
+                    )}
                   </TableRow>
                 );
               })
