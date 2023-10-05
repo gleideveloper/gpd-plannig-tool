@@ -1,4 +1,4 @@
-import { ListagemDatasRecursosProvider } from '../ui/contexts/listagem-datas-recursosTESTE';
+import { ListagemDatasRecursosProvider } from '../ui/contexts/listagem-datas-recursos';
 
 import { Container, Typography } from '@mui/material';
 import { FC, JSX } from 'react';
