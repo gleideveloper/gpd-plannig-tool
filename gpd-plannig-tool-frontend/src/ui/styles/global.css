@@ -9,3 +9,8 @@ body {
   font-family: Roboto, sans-serif;
   background-color: #f8f5ef;
 }
+
+.MuiTableContainer-root {
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+}
