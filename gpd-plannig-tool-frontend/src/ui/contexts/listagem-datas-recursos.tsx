@@ -184,7 +184,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     <Box sx={{ my: 2 }}>
       <TableContainer component={Paper} sx={{ mt: 1 }}>
         <Table sx={{ minWidth: 650 }}>
-          <TableHead>
+          <TableHead style={{ position: 'sticky', top: 0, background: 'white', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' }}>
             {produtosTeste.length > 0 ? (
               <TableRow>
                 <TableCell align='center'>Product Name</TableCell>
