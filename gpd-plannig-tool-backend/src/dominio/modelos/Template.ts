@@ -34,6 +34,12 @@ class Template extends Model {
   })
   sa_idx!: number;
 
+  @Column({
+    field: "peak_ammount",
+    type: DataType.ARRAY(DataType.FLOAT()),
+    allowNull: false,
+  })
+  peak_ammount!: number[];
 }
 
 export { Template };

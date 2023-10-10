@@ -7,6 +7,7 @@
 type TemplateParaAtualizarDTO = {
     tipo: string;
     sa_idx: number;
+    peak_ammount: number[];
   };
   
   export { TemplateParaAtualizarDTO };
