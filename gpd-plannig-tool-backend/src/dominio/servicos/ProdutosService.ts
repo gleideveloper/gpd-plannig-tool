@@ -83,11 +83,7 @@ class ProdutosService {
         nome: novoProduto.nome,
         dataSa: novoProduto.dataSa,
         lider: novoProduto.lider,
-        familia: novoProduto.familia,
-        escopo: novoProduto.escopo,
-        band: novoProduto.band,
-        odm: novoProduto.odm,
-        operadora: novoProduto.operadora,
+        template_type: novoProduto.template_type,
     });
     const registro = await this.repository.salvar(produto);
 
@@ -112,11 +108,7 @@ class ProdutosService {
             nome: dadosParaAtualizar.nome,
             dataSa: dadosParaAtualizar.dataSa,
             lider: dadosParaAtualizar.lider,
-            familia: dadosParaAtualizar.familia,
-            escopo: dadosParaAtualizar.escopo,
-            band: dadosParaAtualizar.band,
-            odm: dadosParaAtualizar.odm,
-            operadora: dadosParaAtualizar.operadora,
+            template_type: dadosParaAtualizar.template_type,
         });
         await this.repository.salvar(produto);
 

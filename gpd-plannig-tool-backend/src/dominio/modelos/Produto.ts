@@ -1,4 +1,6 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Template} from "@/dominio/modelos/Template";
+
 
 /**
  *
@@ -41,47 +43,16 @@ class Produto extends Model {
     })
     lider_npi!: string;
 
-    @Column({
-        field: "familia",
-        type: DataType.STRING(50),
-        allowNull: false,
-    })
-    familia!: string;
-
-    @Column({
-        field: "chipset",
+    @ForeignKey(()=> Template)
+    @Column ({
+        field:"tipo",
         type: DataType.STRING(20),
         allowNull: false,
     })
-    chipset!: string;
+    template_type!: string;
 
-    @Column({
-        field: "escopo",
-        type: DataType.STRING(50),
-        allowNull: false,
-    })
-    escopo!: string;
-
-    @Column({
-        field: "network_band",
-        type: DataType.STRING(5),
-        allowNull: false,
-    })
-    network_band!: string;
-
-    @Column({
-        field: "odm",
-        type: DataType.BOOLEAN,
-        allowNull: false,
-    })
-    odm!: boolean;
-
-    @Column({
-        field: "operadora",
-        type: DataType.STRING(5),
-        allowNull: false,
-    })
-    operadora!: string;
+    @BelongsTo (()=>Template, "tipo")
+    template?: Template;
 }
 
 export {Produto};

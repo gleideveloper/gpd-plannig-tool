@@ -98,8 +98,10 @@ class ProdutosController {
     ): Promise<void> {
         try {
             const novoProduto: ProdutoParaCriarDTO = req.body as ProdutoParaCriarDTO;
-
+            console.log(`novoProduto: ${novoProduto}`)
             const resultado = await this.service.cadastrarNovoProduto(novoProduto);
+            console.log(`resultado: ${resultado}`)
+
             if (!resultado)
                 throw new RegistroNaoSalvoError(
                     `O produto com nome ${novoProduto.nome} não foi salvo no banco de dados.`

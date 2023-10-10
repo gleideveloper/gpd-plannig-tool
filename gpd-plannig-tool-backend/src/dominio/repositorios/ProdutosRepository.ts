@@ -18,10 +18,10 @@ interface ProdutosRepository extends BaseRepository<Produto, string> {
      * produto na base de dados da aplicação a
      * partir do familia do produto.
      *
-     * @param familia Código ISBN do produto pesquisado.
-     * @returns Dados do produto encontrado.
-     */
-    buscarPorFamilia(familia: string): Promise<Produto>;
+    //  * @param familia Código ISBN do produto pesquisado.
+    //  * @returns Dados do produto encontrado.
+    //  */
+    // buscarPorFamilia(familia: string): Promise<Produto>;
 }
 
 export { ProdutosRepository };

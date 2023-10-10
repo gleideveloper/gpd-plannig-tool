@@ -124,20 +124,20 @@ class SequelizeProdutosRepository implements ProdutosRepository {
    * @see {@link ProdutosRepository.buscarPorIsbn}
    * @throws {RegistroNaoEncontradoError} O produto não foi encontrado.
    */
-  public async buscarPorFamilia(familia:string): Promise<Produto> {
-    const produto = await Produto.findOne({
-      where: {
-          familia: familia,
-      },
-    });
-
-    if (produto === null)
-      throw new RegistroNaoEncontradoError(
-        `O produto com a familia ISBN ${familia} não foi encontrado.`
-      );
-
-    return produto;
-  }
+  // public async buscarPorFamilia(familia:string): Promise<Produto> {
+  //   const produto = await Produto.findOne({
+  //     where: {
+  //         familia: familia,
+  //     },
+  //   });
+  //
+  //   if (produto === null)
+  //     throw new RegistroNaoEncontradoError(
+  //       `O produto com a familia ISBN ${familia} não foi encontrado.`
+  //     );
+  //
+  //   return produto;
+  // }
 
   /**
    *
@@ -155,11 +155,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
           nome: produto.nome,
           dataSa: produto.data_sa,
           lider: produto.lider_npi,
-          familia: produto.familia,
-          escopo: produto.escopo,
-          band: produto.network_band,
-          odm: produto.odm,
-          operadora: produto.operadora,
+          template_type: produto.template_type,
         },
         {
           returning: true,
@@ -205,11 +201,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
           nome: produto.nome,
           dataSa: produto.data_sa,
           lider: produto.lider_npi,
-          familia: produto.familia,
-          escopo: produto.escopo,
-          band: produto.network_band,
-          odm: produto.odm,
-          operadora: produto.operadora,
+          template: produto.template,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {
