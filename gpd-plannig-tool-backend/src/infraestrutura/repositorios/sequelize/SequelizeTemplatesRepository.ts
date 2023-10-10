@@ -75,7 +75,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
   public async existe(id: string): Promise<boolean> {
     const resultado = await Template.findOne({
       where: {
-        id: id,
+        template_type: id,
       },
     });
 
@@ -108,7 +108,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
    */
   public async salvar(template: Template): Promise<Template> {
     let templateSalva: Template | null = null;
-    const templateExiste = await this.existe(template.id as string);
+    const templateExiste = await this.existe(template.template_type as string);
 
     if (templateExiste) templateSalva = await this.atualizarTemplate(template);
     else templateSalva = await this.criarNovoTemplate(template);
@@ -128,7 +128,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
   public async buscarPorTipo(tipo: string): Promise<Template> {
     const template = await Template.findOne({
       where: {
-        tipo: tipo,
+        template_type: tipo,
       },
     });
 
@@ -153,8 +153,9 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
     try {
       return await Template.create(
         {
-          tipo: template.tipo,
+          template_type: template.template_type,
           sa_idx: template.sa_idx,
+          peak_amount: template.peak_ammount
         },
         {
           returning: true,
@@ -162,7 +163,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
       );
     } catch (erro: any) {
       if (erro instanceof UniqueConstraintError) {
-        const mensagem = `O tipo ${template.tipo} já está associado a um template.`;
+        const mensagem = `O tipo ${template.template_type} já está associado a um template.`;
 
         this.logger.error(mensagem);
 
@@ -181,7 +182,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
 
         throw new ValidacaoError(mensagem, errosValidacao);
       } else {
-        const mensagem = `Falha ao criar um novo template com tipo ${template.tipo}: ${erro.message}`;
+        const mensagem = `Falha ao criar um novo template com tipo ${template.template_type}: ${erro.message}`;
 
         this.logger.error(mensagem);
 
@@ -200,10 +201,10 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
    */
   private async atualizarTemplate(template: Template): Promise<Template> {
     try {
-      let templateBanco = await this.buscarPorId(template.id as string);
+      let templateBanco = await this.buscarPorId(template.template_type as string);
 
       return await templateBanco.update({
-        tipo: template.tipo,
+        template_type: template.template_type,
         sa_idx: template.sa_idx,
       });
     } catch (erro: any) {
@@ -221,7 +222,7 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
 
         throw new ValidacaoError(mensagem, errosValidacao);
       } else {
-        const mensagem = `Falha ao atualizar um template com tipo ${template.tipo}: ${erro.message}`;
+        const mensagem = `Falha ao atualizar um template com tipo ${template.template_type}: ${erro.message}`;
 
         this.logger.error(mensagem);
 

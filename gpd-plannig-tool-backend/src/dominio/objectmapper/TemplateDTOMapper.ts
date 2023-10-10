@@ -25,8 +25,9 @@ class TemplateDTOMapper extends ObjectMapper<Template, TemplateDTO> {
    */
   public async mapearOrigemParaDestino(modelo: Template): Promise<TemplateDTO> {
     return {
-      tipo: modelo.tipo,
+      template_type: modelo.template_type,
       sa_idx: modelo.sa_idx,
+      peak_ammount: modelo.peak_ammount,
     };
   }
 }

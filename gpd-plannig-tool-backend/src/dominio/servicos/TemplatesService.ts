@@ -80,8 +80,9 @@ class TemplatesService {
     novoTemplate: TemplateParaCriarDTO
   ): Promise<TemplateDTO> {
     const template = new Template({
-      tipo: novoTemplate.tipo,
+      template_type: novoTemplate.template_type,
       sa_idx: novoTemplate.sa_idx,
+      peak_amount: novoTemplate.peak_amount
     });
     const registro = await this.repository.salvar(template);
 
@@ -103,7 +104,7 @@ class TemplatesService {
     const template = await this.repository.buscarPorTipo(tipo);
 
     template.set({
-      tipo: dadosParaAtualizar.tipo,
+      template_type: dadosParaAtualizar.template_type,
       sa_idx: dadosParaAtualizar.sa_idx,
     });
     await this.repository.salvar(template);

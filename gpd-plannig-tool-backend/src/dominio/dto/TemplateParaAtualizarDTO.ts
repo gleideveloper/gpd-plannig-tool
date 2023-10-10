@@ -5,9 +5,9 @@
  * @author Andre Xavier <xavier.andre256@gmail.com>
  */
 type TemplateParaAtualizarDTO = {
-    tipo: string;
+    template_type: string;
     sa_idx: number;
-    peak_ammount: number[];
+    peak_ammount: string;
   };
   
   export { TemplateParaAtualizarDTO };

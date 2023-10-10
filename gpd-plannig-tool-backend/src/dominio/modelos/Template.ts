@@ -8,38 +8,31 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
  * @author Andre Xavier <xavier.andre256@gmail.com>
  */
 @Table({
-  tableName: "templates",
-  timestamps: false,
+    tableName: "templates",
+    timestamps: false,
 })
 class Template extends Model {
-  @Column({
-    field: "id",
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4(),
-    primaryKey: true,
-  })
-  id?: string;
+    @Column({
+        field: "template_type",
+        type: DataType.STRING(20),
+        allowNull: false,
+        primaryKey: true,
+    })
+    template_type!: string;
 
-  @Column({
-    field: "tipo",
-    type: DataType.STRING(80),
-    allowNull: false,
-  })
-  tipo!: string;
+    @Column({
+        field: "sa_idx",
+        type: DataType.BIGINT(),
+        allowNull: false,
+    })
+    sa_idx!: number;
 
-  @Column({
-    field: "sa_idx",
-    type: DataType.BIGINT(),
-    allowNull: false,
-  })
-  sa_idx!: number;
-
-  @Column({
-    field: "peak_ammount",
-    type: DataType.ARRAY(DataType.FLOAT()),
-    allowNull: false,
-  })
-  peak_ammount!: number[];
+    @Column({
+        field: "peak_ammount",
+        type: DataType.TEXT,
+        allowNull: false,
+    })
+    peak_ammount!: string;
 }
 
 export { Template };

@@ -102,7 +102,7 @@ class TemplatesController {
       const resultado = await this.service.cadastrarNovoTemplate(novoTemplate);
       if (!resultado)
         throw new RegistroNaoSalvoError(
-          `O template com tipo ${novoTemplate.tipo} não foi salvo no banco de dados.`
+          `O template com tipo ${novoTemplate.template_type} não foi salvo no banco de dados.`
         );
 
       res.status(201).json(resultado);
