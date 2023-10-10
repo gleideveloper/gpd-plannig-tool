@@ -37,7 +37,7 @@ const gerarConexaoBDSequelize = async (): Promise<Sequelize> => {
       host: BD_ENDERECO,
       port: BD_PORTA as string as unknown as number,
       dialect: BD_DIALETO as Dialect,
-      models: [Livro, Produto, Usuario, Operadora, Template],
+      models: [Produto, Template],
 
       logging: logger.info.bind(logger),
     }
