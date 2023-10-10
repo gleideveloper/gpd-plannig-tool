@@ -24,12 +24,6 @@ class Produto extends Model {
         field: "nome",
         type: DataType.STRING(180),
         allowNull: false,
-        validate: {
-            len: {
-                args: [1, 180],
-                msg: "O nome do produto deve ter entre 10 e 180 caracteres.",
-            },
-        },
     })
     nome!: string;
 
@@ -37,14 +31,6 @@ class Produto extends Model {
         field: "data_sa",
         type: DataType.DATE, // Atualize o tipo para DataType.DATE
         allowNull: false,
-        unique: true,
-        validate: {
-            isDate: true, // Adicione uma validação para garantir que seja uma data válida
-            len: {
-                args: [13, 13],
-                msg: "A data deve ter 13 caracteres.",
-            },
-        },
     })
     data_sa!: Date;
 
@@ -52,12 +38,6 @@ class Produto extends Model {
         field: "lider_npi",
         type: DataType.STRING(20),
         allowNull: false,
-        validate: {
-            len: {
-                args: [1, 20],
-                msg: "A família deve ser formado por no máximo 50 caracteres.",
-            },
-        },
     })
     lider_npi!: string;
 
@@ -65,13 +45,6 @@ class Produto extends Model {
         field: "familia",
         type: DataType.STRING(50),
         allowNull: false,
-        unique: true,
-        validate: {
-            len: {
-                args: [1, 50],
-                msg: "A família deve ser formado por no máximo 50 caracteres.",
-            },
-        },
     })
     familia!: string;
 
@@ -79,13 +52,6 @@ class Produto extends Model {
         field: "chipset",
         type: DataType.STRING(20),
         allowNull: false,
-        unique: true,
-        validate: {
-            len: {
-                args: [1, 20],
-                msg: "O chipset deve ser formado por no máximo 50 caracteres.",
-            },
-        },
     })
     chipset!: string;
 
@@ -93,12 +59,6 @@ class Produto extends Model {
         field: "escopo",
         type: DataType.STRING(50),
         allowNull: false,
-        validate: {
-            len: {
-                args: [1, 50],
-                msg: "A família deve ser formado por no máximo 50 caracteres.",
-            },
-        },
     })
     escopo!: string;
 
@@ -106,12 +66,6 @@ class Produto extends Model {
         field: "network_band",
         type: DataType.STRING(5),
         allowNull: false,
-        validate: {
-            len: {
-                args: [1, 5],
-                msg: "A família deve ser formado por no máximo 5 caracteres.",
-            },
-        },
     })
     network_band!: string;
 
@@ -119,9 +73,6 @@ class Produto extends Model {
         field: "odm",
         type: DataType.BOOLEAN,
         allowNull: false,
-        validate: {
-            isBoolean: true,
-        },
     })
     odm!: boolean;
 
@@ -129,12 +80,6 @@ class Produto extends Model {
         field: "operadora",
         type: DataType.STRING(5),
         allowNull: false,
-        validate: {
-            len: {
-                args: [1, 5],
-                msg: "A operadora deve ser formado por no máximo 5 caracteres.",
-            },
-        },
     })
     operadora!: string;
 }
