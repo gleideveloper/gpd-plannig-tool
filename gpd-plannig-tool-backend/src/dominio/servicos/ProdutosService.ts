@@ -85,6 +85,7 @@ class ProdutosService {
         lider: novoProduto.lider,
         template_type: novoProduto.template_type,
     });
+    console.log(`Service cadastrarNovoProduto: ${produto}`)
     const registro = await this.repository.salvar(produto);
 
     return await this.objectMapper.mapearOrigemParaDestino(registro);
@@ -110,6 +111,7 @@ class ProdutosService {
             lider: dadosParaAtualizar.lider,
             template_type: dadosParaAtualizar.template_type,
         });
+        console.log(`Service atualizarProduto: ${produto}`)
         await this.repository.salvar(produto);
 
         return await this.objectMapper.mapearOrigemParaDestino(produto);

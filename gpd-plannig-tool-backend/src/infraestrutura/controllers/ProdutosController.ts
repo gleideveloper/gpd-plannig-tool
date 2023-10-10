@@ -98,9 +98,9 @@ class ProdutosController {
     ): Promise<void> {
         try {
             const novoProduto: ProdutoParaCriarDTO = req.body as ProdutoParaCriarDTO;
-            console.log(`novoProduto: ${novoProduto}`)
+            console.log(`Controller cadastrarNovoProduto: ${novoProduto}`)
             const resultado = await this.service.cadastrarNovoProduto(novoProduto);
-            console.log(`resultado: ${resultado}`)
+            console.log(`Controller resultado: ${resultado}`)
 
             if (!resultado)
                 throw new RegistroNaoSalvoError(

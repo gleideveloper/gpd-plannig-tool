@@ -106,6 +106,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
    * @see {@link ProdutosRepository.salvar}
    */
   public async salvar(produto: Produto): Promise<Produto> {
+    console.log(`Repository Salvar: ${Produto}`)
     let produtoSalvo: Produto | null = null;
     const produtoExiste = await this.existe(produto.id as string);
 
@@ -149,6 +150,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
    * @throws {RegistroNaoSalvoError} Houve uma falha ao criar um novo produto.
    */
   private async criarNovoProduto(produto: Produto): Promise<Produto> {
+      console.log(`Repository ProdutoNovo: ${Produto}`)
     try {
       return await Produto.create(
         {

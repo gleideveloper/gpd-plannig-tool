@@ -20,7 +20,7 @@ class Produto extends Model {
         defaultValue: DataType.UUIDV4(),
         primaryKey: true,
     })
-    id?: string;
+    id!: string;
 
     @Column({
         field: "nome",
@@ -43,15 +43,15 @@ class Produto extends Model {
     })
     lider_npi!: string;
 
-    @ForeignKey(()=> Template)
-    @Column ({
-        field:"tipo",
+    @ForeignKey(() => Template)
+    @Column({
+        field: "template_type",
         type: DataType.STRING(20),
         allowNull: false,
     })
     template_type!: string;
 
-    @BelongsTo (()=>Template, "tipo")
+    @BelongsTo(() => Template, "template_type")
     template?: Template;
 }
 
