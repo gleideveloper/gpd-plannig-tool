@@ -31,7 +31,7 @@ class Produto extends Model {
 
     @Column({
         field: "data_sa",
-        type: DataType.DATE, // Atualize o tipo para DataType.DATE
+        type: DataType.DATE,
         allowNull: false,
     })
     data_sa!: Date;
@@ -46,7 +46,7 @@ class Produto extends Model {
     @ForeignKey(() => Template)
     @Column({
         field: "template_type",
-        type: DataType.STRING(20),
+        type: DataType.STRING(20), // Ou poderia ser DataType.INTEGER, dependendo da chave primária em Template.
         allowNull: false,
     })
     template_type!: string;
@@ -55,4 +55,4 @@ class Produto extends Model {
     template?: Template;
 }
 
-export {Produto};
+export { Produto };
