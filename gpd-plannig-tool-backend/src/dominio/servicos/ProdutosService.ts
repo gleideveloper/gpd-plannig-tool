@@ -55,6 +55,10 @@ class ProdutosService {
     return await this.objectMapper.mapearListaOrigemParaListaDestino(produtos);
   }
 
+  public async listarProdutos() {
+      return this.repository.listarProdutos();
+  }
+
   /**
    *
    * Método que busca os dados de um produto
@@ -81,14 +85,11 @@ class ProdutosService {
   ): Promise<ProdutoDTO> {
     const produto = new Produto({
         nome: novoProduto.nome,
-        dataSa: novoProduto.dataSa,
-        lider: novoProduto.lider,
-        familia: novoProduto.familia,
-        escopo: novoProduto.escopo,
-        band: novoProduto.band,
-        odm: novoProduto.odm,
-        operadora: novoProduto.operadora,
+        data_sa: novoProduto.data_sa,
+        lider_npi: novoProduto.lider_npi,
+        template_type: novoProduto.template_type,
     });
+    console.log(`Service cadastrarNovoProduto: ${produto}`)
     const registro = await this.repository.salvar(produto);
 
     return await this.objectMapper.mapearOrigemParaDestino(registro);
@@ -112,12 +113,9 @@ class ProdutosService {
             nome: dadosParaAtualizar.nome,
             dataSa: dadosParaAtualizar.dataSa,
             lider: dadosParaAtualizar.lider,
-            familia: dadosParaAtualizar.familia,
-            escopo: dadosParaAtualizar.escopo,
-            band: dadosParaAtualizar.band,
-            odm: dadosParaAtualizar.odm,
-            operadora: dadosParaAtualizar.operadora,
+            template_type: dadosParaAtualizar.template_type,
         });
+        console.log(`Service atualizarProduto: ${produto}`)
         await this.repository.salvar(produto);
 
         return await this.objectMapper.mapearOrigemParaDestino(produto);

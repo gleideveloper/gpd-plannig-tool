@@ -6,6 +6,7 @@ import {Produto} from "@/dominio/modelos/Produto";
 import {ProdutosRepository} from "@/dominio/repositorios/ProdutosRepository";
 
 import {ValidationError} from "sequelize";
+import {Template} from "@/dominio/modelos/Template";
 
 /**
  *
@@ -38,7 +39,12 @@ class SequelizeProdutosRepository implements ProdutosRepository {
   public async buscarTodos(): Promise<Produto[]> {
     return await Produto.findAll();
   }
-
+  public async listarProdutos() {
+      return Produto.findAll({
+          attributes: ['id', 'nome', 'data_sa', 'lider_npi'],
+          include: Template, // Inclui o modelo Template na consulta
+      });
+  }
   /**
    *
    * Implementação do método que busca por
@@ -106,6 +112,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
    * @see {@link ProdutosRepository.salvar}
    */
   public async salvar(produto: Produto): Promise<Produto> {
+    console.log(`Repository Salvar: ${produto}`)
     let produtoSalvo: Produto | null = null;
     const produtoExiste = await this.existe(produto.id as string);
 
@@ -113,30 +120,6 @@ class SequelizeProdutosRepository implements ProdutosRepository {
     else produtoSalvo = await this.criarNovoProduto(produto);
 
     return produtoSalvo;
-  }
-
-  /**
-   *
-   * Implementação do método que busca por um
-   * registro de um produto na base de dados da
-   * aplicação a partir do código ISBN do produto.
-   *
-   * @see {@link ProdutosRepository.buscarPorIsbn}
-   * @throws {RegistroNaoEncontradoError} O produto não foi encontrado.
-   */
-  public async buscarPorFamilia(familia:string): Promise<Produto> {
-    const produto = await Produto.findOne({
-      where: {
-          familia: familia,
-      },
-    });
-
-    if (produto === null)
-      throw new RegistroNaoEncontradoError(
-        `O produto com a familia ISBN ${familia} não foi encontrado.`
-      );
-
-    return produto;
   }
 
   /**
@@ -149,31 +132,27 @@ class SequelizeProdutosRepository implements ProdutosRepository {
    * @throws {RegistroNaoSalvoError} Houve uma falha ao criar um novo produto.
    */
   private async criarNovoProduto(produto: Produto): Promise<Produto> {
-    try {
-      return await Produto.create(
-        {
-          nome: produto.nome,
-          dataSa: produto.data_sa,
-          lider: produto.lider_npi,
-          familia: produto.familia,
-          escopo: produto.escopo,
-          band: produto.network_band,
-          odm: produto.odm,
-          operadora: produto.operadora,
-        },
-        {
-          returning: true,
-        }
-      );
-    } catch (erro: any) {
-      if (erro instanceof ValidationError) {
-        const mensagem = "Há valores inválidos em alguns campos.";
-        const errosValidacao = {};
-        for (let itemErro of erro.errors) {
-          const campo = itemErro.path as string;
-          const textoValidacao = itemErro.message;
-          errosValidacao[campo] = textoValidacao;
-        }
+      console.log(`Repository ProdutoNovo: ${produto}`)
+      try {
+          // Cria um novo produto usando a desestruturação do objeto.
+          return await Produto.create({
+              nome: produto.nome,
+              data_sa: produto.data_sa,
+              lider_npi: produto.lider_npi,
+              template_type: produto.template_type,
+          }, {
+              returning: true, // Isso é opcional, dependendo de suas necessidades.
+          });
+      } catch (erro: any) {
+          if (erro instanceof ValidationError) {
+              // Tratar erros de validação, se aplicável.
+              const mensagem = "Há valores inválidos em alguns campos.";
+              const errosValidacao = {};
+
+              for (const itemErro of erro.errors) {
+                  const campo = itemErro.path as string;
+                  errosValidacao[campo] = itemErro.message;
+              }
 
         this.logger.error(mensagem);
         this.logger.error(JSON.stringify(errosValidacao));
@@ -205,11 +184,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
           nome: produto.nome,
           dataSa: produto.data_sa,
           lider: produto.lider_npi,
-          familia: produto.familia,
-          escopo: produto.escopo,
-          band: produto.network_band,
-          odm: produto.odm,
-          operadora: produto.operadora,
+          template: produto.template,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {

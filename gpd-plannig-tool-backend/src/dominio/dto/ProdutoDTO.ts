@@ -1,3 +1,5 @@
+import {Template} from "@/dominio/modelos/Template";
+
 /**
  *
  * Definição de tipo DTO que encapsula os dados
@@ -9,12 +11,7 @@ type ProdutoDTO = {
     nome: string;
     dataSa: Date,
     lider: string;
-    familia: string;
-    chipset: string;
-    escopo: string;
-    band: string;
-    odm: boolean;
-    operadora: string;
+    template_type: string;
 };
 
 export { ProdutoDTO };

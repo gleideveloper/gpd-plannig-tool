@@ -2,25 +2,25 @@ import { ProdutosController } from "../controllers/ProdutosController";
 import { Router } from "express";
 
 const rotasProdutos = Router();
-const livrosController = new ProdutosController();
+const produtosController = new ProdutosController();
 
 /************************ Ações executadas para a rota base /livros ************************/
-rotasProdutos.get("/", livrosController.buscarTodos.bind(livrosController));
+rotasProdutos.get("/", produtosController.buscarTodos.bind(produtosController));
 rotasProdutos.get(
   "/:id",
-  livrosController.buscarProdutoPorId.bind(livrosController)
+  produtosController.buscarProdutoPorId.bind(produtosController)
 );
 rotasProdutos.post(
   "/",
-  livrosController.cadastrarNovoProduto.bind(livrosController)
+  produtosController.cadastrarNovoProduto.bind(produtosController)
 );
 rotasProdutos.patch(
   "/:id",
-  livrosController.atualizarProduto.bind(livrosController)
+  produtosController.atualizarProduto.bind(produtosController)
 );
 rotasProdutos.delete(
   "/:id",
-  livrosController.deletarProduto.bind(livrosController)
+  produtosController.deletarProduto.bind(produtosController)
 );
 /************************ Ações executadas para a rota base /livros ************************/
 
