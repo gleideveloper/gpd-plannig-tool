@@ -45,12 +45,12 @@ const ListagemDatasRecursosPage: FC = (): JSX.Element => {
             {tituloPagina}
           </Typography>
           <Button
-            style={btnRegisterProductStyle}
-            variant='contained'
-            onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
-          >
-            <Add color='secondary' sx={{ mr: 1 }} /> {' Register a New Product'}
-          </Button>
+          style={btnRegisterProductStyle}
+          variant='contained'
+          onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
+        >
+          <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
+        </Button>
         </div>
         <ListagemDatasRecursosProvider />
       </Container>
