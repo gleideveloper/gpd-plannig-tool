@@ -49,7 +49,7 @@ const ListagemProdutosPage: FC = (): JSX.Element => {
           variant='contained'
           onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
         >
-          <Add color='secondary' sx={{ mr: 1 }} /> {' Register a New Product'}
+          <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
         </Button>
       </div>
       <ListagemProdutosProvider />

@@ -1,13 +1,8 @@
 type ProdutoParaCriarDTO = {
     nome: string;
-    dataSa: Date,
-    lider: string;
-    familia: string;
-    chipset: string;
-    escopo: string;
-    band: string;
-    odm: boolean;
-    operadora: string;
+    data_sa: Date,
+    lider_npi: string;
+    template_type: string;
 };
 
 export {ProdutoParaCriarDTO};

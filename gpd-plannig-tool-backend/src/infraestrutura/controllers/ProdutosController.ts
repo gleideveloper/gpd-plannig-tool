@@ -1,13 +1,13 @@
-import { Dotenv } from "@/common/Dotenv";
-import { Logger } from "@/common/Logger";
-import { ProdutoParaAtualizarDTO } from "@/dominio/dto/ProdutoParaAtualizarDTO";
-import { ProdutoParaCriarDTO } from "@/dominio/dto/ProdutoParaCriarDTO";
-import { RegistroNaoSalvoError } from "@/dominio/excecoes/RegistroNaoSalvoError";
-import { ProdutoDTOMapper } from "@/dominio/objectmapper/ProdutoDTOMapper";
-import { ProdutosService } from "@/dominio/servicos/ProdutosService";
-import { SequelizeProdutosRepository } from "../repositorios/sequelize/SequelizeProdutosRepository";
+import {Dotenv} from "@/common/Dotenv";
+import {Logger} from "@/common/Logger";
+import {ProdutoParaAtualizarDTO} from "@/dominio/dto/ProdutoParaAtualizarDTO";
+import {ProdutoParaCriarDTO} from "@/dominio/dto/ProdutoParaCriarDTO";
+import {RegistroNaoSalvoError} from "@/dominio/excecoes/RegistroNaoSalvoError";
+import {ProdutoDTOMapper} from "@/dominio/objectmapper/ProdutoDTOMapper";
+import {ProdutosService} from "@/dominio/servicos/ProdutosService";
+import {SequelizeProdutosRepository} from "../repositorios/sequelize/SequelizeProdutosRepository";
 
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 
 Dotenv.carregarVariaveis();
 
@@ -50,9 +50,15 @@ class ProdutosController {
      * @param res Objeto de resposta.
      */
     public async buscarTodos(req: Request, res: Response): Promise<void> {
-        const produtos = await this.service.buscarTodos();
-
-        res.json(produtos);
+        const produtos = await this.service.listarProdutos();
+        const produtosFormatados = produtos.map((produto) => ({
+            id: produto.id,
+            nome: produto.nome,
+            data_sa: new Date(produto.data_sa).toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' }),
+            lider_npi: produto.lider_npi,
+            template: produto.template,
+        }));
+        res.json(produtosFormatados);
     }
 
     /**
@@ -98,8 +104,10 @@ class ProdutosController {
     ): Promise<void> {
         try {
             const novoProduto: ProdutoParaCriarDTO = req.body as ProdutoParaCriarDTO;
-
+            console.log(`Controller cadastrarNovoProduto: ${novoProduto}`)
             const resultado = await this.service.cadastrarNovoProduto(novoProduto);
+            console.log(`Controller resultado: ${resultado}`)
+
             if (!resultado)
                 throw new RegistroNaoSalvoError(
                     `O produto com nome ${novoProduto.nome} não foi salvo no banco de dados.`
