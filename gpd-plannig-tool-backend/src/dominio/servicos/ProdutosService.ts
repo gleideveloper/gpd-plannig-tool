@@ -55,6 +55,10 @@ class ProdutosService {
     return await this.objectMapper.mapearListaOrigemParaListaDestino(produtos);
   }
 
+  public async listarProdutos() {
+      return this.repository.listarProdutos();
+  }
+
   /**
    *
    * Método que busca os dados de um produto
@@ -81,8 +85,8 @@ class ProdutosService {
   ): Promise<ProdutoDTO> {
     const produto = new Produto({
         nome: novoProduto.nome,
-        dataSa: novoProduto.dataSa,
-        lider: novoProduto.lider,
+        data_sa: novoProduto.data_sa,
+        lider_npi: novoProduto.lider_npi,
         template_type: novoProduto.template_type,
     });
     console.log(`Service cadastrarNovoProduto: ${produto}`)

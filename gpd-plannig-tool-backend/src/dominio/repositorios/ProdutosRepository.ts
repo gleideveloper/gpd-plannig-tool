@@ -22,6 +22,8 @@ interface ProdutosRepository extends BaseRepository<Produto, string> {
     //  * @returns Dados do produto encontrado.
     //  */
     // buscarPorFamilia(familia: string): Promise<Produto>;
+    listarProdutos(): Promise<Produto[]>;
+
 }
 
 export { ProdutosRepository };

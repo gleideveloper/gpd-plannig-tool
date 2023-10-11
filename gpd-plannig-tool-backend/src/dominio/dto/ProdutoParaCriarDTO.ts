@@ -1,7 +1,7 @@
 type ProdutoParaCriarDTO = {
     nome: string;
-    dataSa: Date,
-    lider: string;
+    data_sa: Date,
+    lider_npi: string;
     template_type: string;
 };
 

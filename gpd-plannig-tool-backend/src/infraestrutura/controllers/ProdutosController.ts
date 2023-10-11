@@ -1,13 +1,13 @@
-import { Dotenv } from "@/common/Dotenv";
-import { Logger } from "@/common/Logger";
-import { ProdutoParaAtualizarDTO } from "@/dominio/dto/ProdutoParaAtualizarDTO";
-import { ProdutoParaCriarDTO } from "@/dominio/dto/ProdutoParaCriarDTO";
-import { RegistroNaoSalvoError } from "@/dominio/excecoes/RegistroNaoSalvoError";
-import { ProdutoDTOMapper } from "@/dominio/objectmapper/ProdutoDTOMapper";
-import { ProdutosService } from "@/dominio/servicos/ProdutosService";
-import { SequelizeProdutosRepository } from "../repositorios/sequelize/SequelizeProdutosRepository";
+import {Dotenv} from "@/common/Dotenv";
+import {Logger} from "@/common/Logger";
+import {ProdutoParaAtualizarDTO} from "@/dominio/dto/ProdutoParaAtualizarDTO";
+import {ProdutoParaCriarDTO} from "@/dominio/dto/ProdutoParaCriarDTO";
+import {RegistroNaoSalvoError} from "@/dominio/excecoes/RegistroNaoSalvoError";
+import {ProdutoDTOMapper} from "@/dominio/objectmapper/ProdutoDTOMapper";
+import {ProdutosService} from "@/dominio/servicos/ProdutosService";
+import {SequelizeProdutosRepository} from "../repositorios/sequelize/SequelizeProdutosRepository";
 
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 
 Dotenv.carregarVariaveis();
 
@@ -50,7 +50,7 @@ class ProdutosController {
      * @param res Objeto de resposta.
      */
     public async buscarTodos(req: Request, res: Response): Promise<void> {
-        const produtos = await this.service.buscarTodos();
+        const produtos = await this.service.listarProdutos();
 
         res.json(produtos);
     }
