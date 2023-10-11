@@ -51,8 +51,14 @@ class ProdutosController {
      */
     public async buscarTodos(req: Request, res: Response): Promise<void> {
         const produtos = await this.service.listarProdutos();
-
-        res.json(produtos);
+        const produtosFormatados = produtos.map((produto) => ({
+            id: produto.id,
+            nome: produto.nome,
+            data_sa: new Date(produto.data_sa).toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' }),
+            lider_npi: produto.lider_npi,
+            template: produto.template,
+        }));
+        res.json(produtosFormatados);
     }
 
     /**
