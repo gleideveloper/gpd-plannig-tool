@@ -1,4 +1,3 @@
-
 import { FC, useState } from 'react';
 import {
   AppBar,
@@ -53,7 +52,7 @@ const CabecalhoLogo = styled('img')`
 
 const DrawerBackground = styled(Drawer)`
   .MuiPaper-root {
-    background-color: #00305C; /* Cor de fundo do Drawer */
+    background-color: #00305c; /* Cor de fundo do Drawer */
   }
 
   .MuiListItemText-primary {
@@ -76,32 +75,32 @@ const Cabecalho: FC = (): JSX.Element => {
 
   return (
     <>
-      <CabecalhoBarra position="sticky" sx={menuBarStyle}>
+      <CabecalhoBarra position='sticky' sx={menuBarStyle}>
         <Toolbar>
-          <IconButton color="inherit" onClick={toggleDrawer} sx={iconStyle}>
+          <IconButton color='inherit' onClick={toggleDrawer} sx={iconStyle}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             GPD planning tool
           </Typography>
         </Toolbar>
       </CabecalhoBarra>
-      <DrawerBackground anchor="left" open={open} onClose={toggleDrawer}>
+      <DrawerBackground anchor='left' open={open} onClose={toggleDrawer}>
         <List>
-          <Link href="/" underline="none">
+          <Link href='/' underline='none'>
             <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <PhonelinkSetupIcon sx={iconStyle} />
-                </ListItemIcon>
-                <ListItemText primary="Products" sx={listItemTextStyle} />
+              <ListItemIcon>
+                <PhonelinkSetupIcon sx={iconStyle} />
+              </ListItemIcon>
+              <ListItemText primary='Products Details' sx={listItemTextStyle} />
             </ListItem>
           </Link>
-          <Link href="/dates-and-resources" underline="none">
+          <Link href='/pi-forecast' underline='none'>
             <ListItem button onClick={toggleDrawer}>
-                <ListItemIcon>
-                  <CalendarMonthIcon sx={iconStyle} />
-                </ListItemIcon>
-                <ListItemText primary="Dates and Resources" sx={listItemTextStyle} />
+              <ListItemIcon>
+                <CalendarMonthIcon sx={iconStyle} />
+              </ListItemIcon>
+              <ListItemText primary='PI Forecast' sx={listItemTextStyle} />
             </ListItem>
           </Link>
         </List>
