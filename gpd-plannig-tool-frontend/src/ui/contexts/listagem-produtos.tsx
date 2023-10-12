@@ -7,7 +7,6 @@ import {
 } from '../components/ModalDeletarLivro';
 import { AlertasContext } from './alertas';
 
-import { format } from 'date-fns';
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
   Box,
@@ -32,12 +31,28 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+function formatDataSa(dataSa) {
+  // Divide a string em mês e ano
+  const [mes, ano] = dataSa.split('/');
+
+  // Converte o mês para nome abreviado
+  const mesAbreviado = new Date(`${mes}/01/${ano}`).toLocaleDateString(
+    'en-US',
+    { month: 'short' }
+  );
+
+  // Retorna a data formatada
+  return `${mesAbreviado} ${ano}`;
+}
+
 type ListagemProdutosContextData = {
   removerProduto: (nome: string) => void;
   adicionarProduto: (novoProduto: ProdutoDTO) => void;
 };
 
-const ListagemProdutosContext = createContext({} as ListagemProdutosContextData);
+const ListagemProdutosContext = createContext(
+  {} as ListagemProdutosContextData
+);
 
 const ListagemProdutosProvider: FC = (): JSX.Element => {
   const [produtos, setProdutos] = useState<ProdutoDTO[]>([]);
@@ -56,10 +71,11 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
   const buscarProdutos = async () => {
     try {
       const resposta = await ApiService.get<ProdutoDTO[]>(
-        import.meta.env.VITE_ROTA_PRODUTOS  // busca os produtos cadastrados na rota /produtos
+        import.meta.env.VITE_ROTA_PRODUTOS // busca os produtos cadastrados na rota /produtos
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
+      console.log(produtosBuscados);
     } catch (e: any) {
       const erro = e as AxiosError;
       adicionarAlerta({
@@ -76,7 +92,9 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
   }, []);
 
   return (
-    <ListagemProdutosContext.Provider value={{ adicionarProduto, removerProduto }}>
+    <ListagemProdutosContext.Provider
+      value={{ adicionarProduto, removerProduto }}
+    >
       <Box sx={{ my: 2 }}>
         <ModalDeletarLivro ref={modalDeletarProdutoRef} />
 
@@ -86,13 +104,8 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
               <TableRow>
                 <TableCell align='center'>Name</TableCell>
                 <TableCell align='center'>Date SA</TableCell>
-                <TableCell align='center'>Lead NPI</TableCell>
-                <TableCell align='center'>Family</TableCell>
-                <TableCell align='center'>Chipset</TableCell>
-                <TableCell align='center'>Scope Simplified</TableCell>
-                <TableCell align='center'>Frequency Band</TableCell>
-                <TableCell align='center'>ODM</TableCell>
-                <TableCell align='center'>Carrier</TableCell>
+                <TableCell align='center'>GPD Lead</TableCell>
+                <TableCell align='center'>Template</TableCell>
                 <TableCell align='center'>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -102,17 +115,12 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                   <TableRow key={produto.nome}>
                     <TableCell align='center'>{produto.nome}</TableCell>
                     <TableCell align='center'>
-                      {format(new Date(produto.dataSa), 'MM/yyyy')}
+                      {formatDataSa(produto.data_sa)}
                     </TableCell>
-                    <TableCell align='center'>{produto.lider}</TableCell>
-                    <TableCell align='center'>{produto.familia}</TableCell>
-                    <TableCell align='center'>{produto.chipset}</TableCell>
-                    <TableCell align='center'>{produto.escopo}</TableCell>
-                    <TableCell align='center'>{produto.band}</TableCell>
+                    <TableCell align='center'>{produto.lider_npi}</TableCell>
                     <TableCell align='center'>
-                      {produto.odm ? 'Partner' : 'Motorola'}
+                      {produto.template.template_type}
                     </TableCell>
-                    <TableCell align='center'>{produto.operadora}</TableCell>
                     <TableCell align='center'>
                       <IconButton
                         onClick={() => navigate(`/visualizar/${produto.nome}`)}

@@ -4,11 +4,14 @@ import { Add } from '@mui/icons-material';
 import { Button, Container, Typography } from '@mui/material';
 import { FC, JSX, useRef } from 'react';
 
-import { ModalRegisterNewProduct, ModalRegisterNewProductProps } from "../ui/components/ModalRegisterNewProduct"; 
+import {
+  ModalRegisterNewProduct,
+  ModalRegisterNewProductProps,
+} from '../ui/components/ModalRegisterNewProduct';
 
 const ListagemProdutosPage: FC = (): JSX.Element => {
   const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
-  const tituloPagina = 'Products Table';
+  const tituloPagina = 'Products Details';
 
   const tituloPaginaStyle = {
     marginTop: 2,
@@ -27,33 +30,35 @@ const ListagemProdutosPage: FC = (): JSX.Element => {
 
   return (
     <>
-    <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
-    <Container
-      sx={{
-        marginY: 7,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 40,
+      <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
+      <Container
+        sx={{
+          marginY: 7,
         }}
       >
-        <Typography component='h5' variant='h3' style={tituloPaginaStyle}>
-          {tituloPagina}
-        </Typography>
-        <Button
-          style={btnRegisterProductStyle}
-          variant='contained'
-          onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 40,
+          }}
         >
-          <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
-        </Button>
-      </div>
-      <ListagemProdutosProvider />
-    </Container>
+          <Typography component='h5' variant='h3' style={tituloPaginaStyle}>
+            {tituloPagina}
+          </Typography>
+          <Button
+            style={btnRegisterProductStyle}
+            variant='contained'
+            onClick={() => {
+              ModalRegisterNewProductRef.current.abrirModal();
+            }}
+          >
+            <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
+          </Button>
+        </div>
+        <ListagemProdutosProvider />
+      </Container>
     </>
   );
 };
