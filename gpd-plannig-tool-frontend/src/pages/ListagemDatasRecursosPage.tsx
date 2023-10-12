@@ -4,11 +4,14 @@ import { Add } from '@mui/icons-material';
 import { Button, Container, Typography } from '@mui/material';
 import { FC, JSX, useRef } from 'react';
 
-import { ModalRegisterNewProduct, ModalRegisterNewProductProps } from "../ui/components/ModalRegisterNewProduct"; 
+import {
+  ModalRegisterNewProduct,
+  ModalRegisterNewProductProps,
+} from '../ui/components/ModalRegisterNewProduct';
 
 const ListagemDatasRecursosPage: FC = (): JSX.Element => {
   const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
-  const tituloPagina = 'Dates and Resources Table';
+  const tituloPagina = 'PI Forecast';
 
   const tituloPaginaStyle = {
     marginTop: 2,
@@ -27,7 +30,7 @@ const ListagemDatasRecursosPage: FC = (): JSX.Element => {
 
   return (
     <>
-    <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
+      <ModalRegisterNewProduct ref={ModalRegisterNewProductRef} />
       <Container
         sx={{
           marginY: 7,
@@ -45,12 +48,14 @@ const ListagemDatasRecursosPage: FC = (): JSX.Element => {
             {tituloPagina}
           </Typography>
           <Button
-          style={btnRegisterProductStyle}
-          variant='contained'
-          onClick={() => { ModalRegisterNewProductRef.current.abrirModal(); }}
-        >
-          <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
-        </Button>
+            style={btnRegisterProductStyle}
+            variant='contained'
+            onClick={() => {
+              ModalRegisterNewProductRef.current.abrirModal();
+            }}
+          >
+            <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
+          </Button>
         </div>
         <ListagemDatasRecursosProvider />
       </Container>
