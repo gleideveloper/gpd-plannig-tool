@@ -1,5 +1,7 @@
-import produtoList from '../../../ProdutoTemplate';
-import { Produto } from '../../../ProdutoTemplate';
+import { ErroApiDTO } from '../../data/dto/ErroApiDTO';
+import { ProdutoDTO } from '../../data/dto/ProdutoDTO';
+import { ApiService } from '../../data/services/ApiService';
+import { AlertasContext } from './alertas';
 import { format } from 'date-fns';
 import {
   Box,
@@ -11,22 +13,48 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { FC, JSX } from 'react';
+import { AxiosError } from 'axios';
+import { FC, JSX, useState, useContext, useEffect } from 'react';
 
 const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
+  const [produtos, setProdutos] = useState<ProdutoDTO[]>([]);
+  const { adicionarAlerta } = useContext(AlertasContext);
+
+  const buscarProdutos = async () => {
+    try {
+      const resposta = await ApiService.get<ProdutoDTO[]>(
+        import.meta.env.VITE_ROTA_PRODUTOS // busca os produtos cadastrados na rota /produtos
+      );
+      const produtosBuscados = resposta.data as ProdutoDTO[];
+      setProdutos(produtosBuscados);
+      console.log(produtosBuscados);
+    } catch (e: any) {
+      const erro = e as AxiosError;
+      adicionarAlerta({
+        textoAlerta: `Falha ao tentar buscar produtos: ${
+          (erro.response.data as ErroApiDTO).mensagem
+        }`,
+        tipoAlerta: 'warning',
+      });
+    }
+  };
+
+  useEffect(() => {
+    buscarProdutos();
+  }, []);
+
   const VECTOR_SIZE = 9; // Tamanho pré-definido do vetor de datas para cada produto individualmente
   const columnNames: string[] = []; // Inicializando as colunas de datas com os cabeçalhos padrão
-  const produtosTeste = Object.values(produtoList);
 
   // Convertendo as datas SA para objetos Date
-  const datesSA = produtosTeste.map((produto) => {
-    const [month, year] = produto.sa_date.split('/');
+  const datesSA = produtos.map((produto) => {
+    const [month, year] = produto.data_sa.split('/');
     const date = new Date(parseInt(year), parseInt(month) - 1);
     return date;
   });
 
   // Verificando se já existe uma coluna com a data SA e atualizando as colunas conforme necessário
-  produtosTeste.forEach((produto, index) => {
+  produtos.forEach((produto, index) => {
     const saIndex = produto.template.sa_idx;
 
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
@@ -150,11 +178,16 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   });
 
   // Populando as colunas de Peak Amount (Recursos)
-  const renderPeakAmountColumns = (produto: Produto, columnIndex: number) => {
+  const renderPeakAmountColumns = (
+    produto: ProdutoDTO,
+    columnIndex: number
+  ) => {
     // columnIndex -> indica a posição do dateSA do produto na tabela
     // Obtém o valor do índice 'sa_idx' do produto
     const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
-    const peakAmountVector = produto.template.peak_amount;
+    const peakAmountVector = produto.template.peak_ammount
+      .split(',')
+      .map(parseFloat);
     const peakAmountCells: JSX.Element[] = []; // Array para armazenar as células
     let cont = 0;
 
@@ -184,8 +217,15 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     <Box sx={{ my: 2 }}>
       <TableContainer component={Paper} sx={{ mt: 1 }}>
         <Table sx={{ minWidth: 650 }}>
-          <TableHead style={{ position: 'sticky', top: 0, background: 'white', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' }}>
-            {produtosTeste.length > 0 ? (
+          <TableHead
+            style={{
+              position: 'sticky',
+              top: 0,
+              background: 'white',
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            {produtos.length > 0 ? (
               <TableRow>
                 <TableCell align='center'>Product Name</TableCell>
                 <TableCell align='center'>Date SA</TableCell>
@@ -210,17 +250,17 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
             )}
           </TableHead>
           <TableBody>
-            {produtosTeste.length > 0 ? (
-              produtosTeste.map((produto, index) => {
+            {produtos.length > 0 ? (
+              produtos.map((produto, index) => {
                 // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
                 const formattedSaDate = format(datesSA[index], 'MMM yyyy');
 
                 return (
-                  <TableRow key={produto.id}>
-                    <TableCell align='center'>{produto.name}</TableCell>
+                  <TableRow key={produto.nome}>
+                    <TableCell align='center'>{produto.nome}</TableCell>
                     <TableCell align='center'>{formattedSaDate}</TableCell>
                     <TableCell align='center'>
-                      {produto.template.type}
+                      {produto.template.template_type}
                     </TableCell>
                     {renderPeakAmountColumns(
                       produto,
