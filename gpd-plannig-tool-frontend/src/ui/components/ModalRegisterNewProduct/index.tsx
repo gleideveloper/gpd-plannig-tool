@@ -1,8 +1,5 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
-import { ProdutosService } from "../../../../../gpd-plannig-tool-backend/src/dominio/servicos/ProdutosService";
-import { ProdutoDTOMapper } from "../../../../../gpd-plannig-tool-backend/src/dominio/objectmapper/ProdutoDTOMapper";
-import { ProdutosRepository } from "../../../../../gpd-plannig-tool-backend/src/dominio/repositorios/ProdutosRepository";
 import { AlertasContext } from "../../contexts/alertas";
 
 import Box from "@mui/material/Box";
@@ -62,26 +59,22 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
 
     const { adicionarAlerta } = useContext(AlertasContext);
 
-    // const produtosRepository = new ProdutosRepository();
-    // const produtoDTOMapper = new ProdutoDTOMapper();
-
-    // const produtosService = new ProdutosService(produtosRepository, produtoDTOMapper);
-
     const salvarProduto = async () => {
       try {
-        const novoProduto = {
+        const produtoData = {
           nome: nome,
-          data_sa: date, 
           lider_npi: lider,
+          data_sa: date,
           template_type: template,
         };
-    
-        const produtoCadastrado = await produtosService.cadastrarNovoProduto(novoProduto);
+
+        await ApiService.post(`${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}`, produtoData);
 
         adicionarAlerta({
-          textoAlerta: `Produto "${produtoCadastrado.nome}" adicionado com sucesso!`,
+          textoAlerta: `Produto "${nome}" adicionado com sucesso!`,
           tipoAlerta: "success",
         });
+
         fecharModal();
       } catch (e: any) {
         console.log(e);
@@ -175,7 +168,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                         onChange={handleChangeTemplate}
                       >
                         <MenuItem value="low">Low</MenuItem>
-                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="mid">Mid</MenuItem>
                         <MenuItem value="high">High</MenuItem>
                       </Select>
                     </FormControl>
@@ -202,7 +195,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                   <Grid item xs={12} sx={{ marginLeft: "auto" }}>
                     <Box
                       m={1}
-                      //margin
                       display="flex"
                       justifyContent="flex-end"
                       alignItems="flex-end"
