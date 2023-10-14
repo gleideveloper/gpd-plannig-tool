@@ -3,8 +3,6 @@ import { ApiService } from "../../../data/services/ApiService";
 import { AlertasContext } from "../../contexts/alertas";
 
 import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import {
@@ -33,7 +31,6 @@ import {
   useImperativeHandle,
   useState,
 } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 type ModalRegisterNewProductProps = {
   abrirModal: () => void;
@@ -64,11 +61,20 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
 
     const salvarProduto = async () => {
       try {
-        await ApiService.post(`${import.meta.env.VITE_ROTA_PRODUTOS}/`);
+        const produtoData = {
+          nome: nome,
+          lider_npi: lider,
+          data_sa: date,
+          template_type: template,
+        };
+
+        await ApiService.post(`${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}`, produtoData);
+
         adicionarAlerta({
           textoAlerta: `Produto "${nome}" adicionado com sucesso!`,
           tipoAlerta: "success",
         });
+
         fecharModal();
       } catch (e: any) {
         console.log(e);
@@ -133,6 +139,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                       required
                       fullWidth
                       value={nome}
+                      onChange={(e) => setNome(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -143,6 +150,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                       required
                       fullWidth
                       value={lider}
+                      onChange={(e) => setLider(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -156,10 +164,11 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                         value={template}
                         label="Template *"
                         defaultValue="low"
+                        required
                         onChange={handleChangeTemplate}
                       >
                         <MenuItem value="low">Low</MenuItem>
-                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="mid">Mid</MenuItem>
                         <MenuItem value="high">High</MenuItem>
                       </Select>
                     </FormControl>
@@ -177,6 +186,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                             value={date}
                             onChange={(newValue) => setDate(newValue)}
                             format="MM/YYYY"
+                            required
                           />
                         </DemoContainer>
                       </LocalizationProvider>
@@ -185,7 +195,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                   <Grid item xs={12} sx={{ marginLeft: "auto" }}>
                     <Box
                       m={1}
-                      //margin
                       display="flex"
                       justifyContent="flex-end"
                       alignItems="flex-end"
