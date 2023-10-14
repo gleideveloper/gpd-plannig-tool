@@ -1,10 +1,11 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
+import { ProdutosService } from "../../../../../gpd-plannig-tool-backend/src/dominio/servicos/ProdutosService";
+import { ProdutoDTOMapper } from "../../../../../gpd-plannig-tool-backend/src/dominio/objectmapper/ProdutoDTOMapper";
+import { ProdutosRepository } from "../../../../../gpd-plannig-tool-backend/src/dominio/repositorios/ProdutosRepository";
 import { AlertasContext } from "../../contexts/alertas";
 
 import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import {
@@ -33,7 +34,6 @@ import {
   useImperativeHandle,
   useState,
 } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 type ModalRegisterNewProductProps = {
   abrirModal: () => void;
@@ -62,11 +62,24 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
 
     const { adicionarAlerta } = useContext(AlertasContext);
 
+    // const produtosRepository = new ProdutosRepository();
+    // const produtoDTOMapper = new ProdutoDTOMapper();
+
+    // const produtosService = new ProdutosService(produtosRepository, produtoDTOMapper);
+
     const salvarProduto = async () => {
       try {
-        await ApiService.post(`${import.meta.env.VITE_ROTA_PRODUTOS}/`);
+        const novoProduto = {
+          nome: nome,
+          data_sa: date, 
+          lider_npi: lider,
+          template_type: template,
+        };
+    
+        const produtoCadastrado = await produtosService.cadastrarNovoProduto(novoProduto);
+
         adicionarAlerta({
-          textoAlerta: `Produto "${nome}" adicionado com sucesso!`,
+          textoAlerta: `Produto "${produtoCadastrado.nome}" adicionado com sucesso!`,
           tipoAlerta: "success",
         });
         fecharModal();
@@ -133,6 +146,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                       required
                       fullWidth
                       value={nome}
+                      onChange={(e) => setNome(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -143,6 +157,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                       required
                       fullWidth
                       value={lider}
+                      onChange={(e) => setLider(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -156,6 +171,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                         value={template}
                         label="Template *"
                         defaultValue="low"
+                        required
                         onChange={handleChangeTemplate}
                       >
                         <MenuItem value="low">Low</MenuItem>
@@ -177,6 +193,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                             value={date}
                             onChange={(newValue) => setDate(newValue)}
                             format="MM/YYYY"
+                            required
                           />
                         </DemoContainer>
                       </LocalizationProvider>
