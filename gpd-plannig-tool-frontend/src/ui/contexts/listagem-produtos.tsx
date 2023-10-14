@@ -7,6 +7,11 @@ import {
 } from '../components/ModalDeletarLivro';
 import { AlertasContext } from './alertas';
 
+import {
+  ModalReadProduct,
+  ModalReadProductProps,
+} from '../components/ModalReadProduct';
+
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
   Box,
@@ -55,6 +60,8 @@ const ListagemProdutosContext = createContext(
 );
 
 const ListagemProdutosProvider: FC = (): JSX.Element => {
+  const ModalReadProductRef = useRef<ModalReadProductProps>(null);
+
   const [produtos, setProdutos] = useState<ProdutoDTO[]>([]);
   const modalDeletarProdutoRef = useRef<ModalDeletarLivroRefProps>(null);
   const { adicionarAlerta } = useContext(AlertasContext);
@@ -97,6 +104,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
     >
       <Box sx={{ my: 2 }}>
         <ModalDeletarLivro ref={modalDeletarProdutoRef} />
+        <ModalReadProduct ref={ModalReadProductRef} />
 
         <TableContainer component={Paper} sx={{ mt: 1 }}>
           <Table sx={{ minWidth: 650 }}>
@@ -112,7 +120,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
             <TableBody>
               {produtos.length > 0 ? (
                 produtos.map((produto) => (
-                  <TableRow key={produto.nome}>
+                  <TableRow key={produto.id}>
                     <TableCell align='center'>{produto.nome}</TableCell>
                     <TableCell align='center'>
                       {formatDataSa(produto.data_sa)}
@@ -123,7 +131,9 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                     </TableCell>
                     <TableCell align='center'>
                       <IconButton
-                        onClick={() => navigate(`/visualizar/${produto.nome}`)}
+                        onClick={() => {
+                          ModalReadProductRef.current.abrirModal(produto.id);
+                        }}
                       >
                         <Visibility color='secondary' />
                       </IconButton>
