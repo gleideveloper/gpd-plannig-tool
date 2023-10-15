@@ -176,8 +176,8 @@ class ProdutosController {
         next: NextFunction
     ): Promise<void> {
         try {
-            const { isbn } = req.params;
-            await this.service.deletarProduto(isbn);
+            const { id } = req.params;
+            await this.service.deletarProduto(id);
 
             res.sendStatus(200);
         } catch (erro: any) {
