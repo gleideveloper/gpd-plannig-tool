@@ -1,16 +1,16 @@
 import { ErroApiDTO } from '../../data/dto/ErroApiDTO';
 import { ProdutoDTO } from '../../data/dto/ProdutoDTO';
 import { ApiService } from '../../data/services/ApiService';
-import {
-  ModalDeletarLivro,
-  ModalDeletarLivroRefProps,
-} from '../components/ModalDeletarLivro';
 import { AlertasContext } from './alertas';
 
 import {
   ModalReadProduct,
   ModalReadProductProps,
 } from '../components/ModalReadProduct';
+import {
+  ModalDeleteProduct,
+  ModalDeleteProductProps,
+} from '../components/ModalDeleteProduct';
 
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
@@ -51,7 +51,7 @@ function formatDataSa(dataSa) {
 }
 
 type ListagemProdutosContextData = {
-  removerProduto: (nome: string) => void;
+  removerProduto: (id: string) => void;
   adicionarProduto: (novoProduto: ProdutoDTO) => void;
 };
 
@@ -61,18 +61,18 @@ const ListagemProdutosContext = createContext(
 
 const ListagemProdutosProvider: FC = (): JSX.Element => {
   const ModalReadProductRef = useRef<ModalReadProductProps>(null);
+  const ModalDeletarProdutoRef = useRef<ModalDeleteProductProps>(null);
 
   const [produtos, setProdutos] = useState<ProdutoDTO[]>([]);
-  const modalDeletarProdutoRef = useRef<ModalDeletarLivroRefProps>(null);
   const { adicionarAlerta } = useContext(AlertasContext);
   const navigate = useNavigate();
 
   const adicionarProduto = (novoProduto: ProdutoDTO) => {
     setProdutos((produtosAtuais) => [...produtosAtuais, novoProduto]);
   };
-  const removerProduto = (nome: string) => {
+  const removerProduto = (id: string) => {
     setProdutos((produtosAtuais) =>
-      produtosAtuais.filter((produto) => produto.nome !== nome)
+      produtosAtuais.filter((produto) => produto.id !== id)
     );
   };
   const buscarProdutos = async () => {
@@ -103,7 +103,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
       value={{ adicionarProduto, removerProduto }}
     >
       <Box sx={{ my: 2 }}>
-        <ModalDeletarLivro ref={modalDeletarProdutoRef} />
+        <ModalDeleteProduct ref={ModalDeletarProdutoRef} />
         <ModalReadProduct ref={ModalReadProductRef} />
 
         <TableContainer component={Paper} sx={{ mt: 1 }}>
@@ -146,10 +146,10 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                       </IconButton>
                       <IconButton
                         onClick={() => {
-                          // modalDeletarProdutoRef.current.abrirModal(
-                          //   produto.nome,
-                          //   produto.isbn
-                          // );
+                          ModalDeletarProdutoRef.current.abrirModal(
+                            produto.id,
+                            produto.nome
+                          );
                         }}
                       >
                         <Delete color='secondary' />
