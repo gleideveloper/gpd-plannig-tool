@@ -124,7 +124,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                     label="GPD Leader"
                     variant="standard"
                     fullWidth
-                    value={produto.lider}
+                    value={produto.lider_npi}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -135,7 +135,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                     label="Date SA"
                     variant="standard"
                     fullWidth
-                    value={formatDataSa(produto.dataSa)}
+                    value={formatDataSa(produto.data_sa)}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -165,7 +165,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                       onClick={fecharModal}
                       sx={{ height: 40, marginRight: 1 }}
                     >
-                      Voltar
+                      Cancel
                     </Button>
                   </Box>
                 </Grid>

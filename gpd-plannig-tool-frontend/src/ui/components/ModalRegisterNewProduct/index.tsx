@@ -205,7 +205,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                         onClick={fecharModal}
                         sx={{ height: 40, marginRight: 1 }}
                       >
-                        Cancelar
+                        Cancel
                       </Button>
                       <Button
                         variant="contained"
@@ -213,7 +213,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                         sx={{ height: 40 }}
                         onClick={salvarProduto}
                       >
-                        Salvar
+                        Save
                       </Button>
                     </Box>
                   </Grid>
