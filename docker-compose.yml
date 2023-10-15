@@ -1,33 +1,6 @@
 version: "3"
 
 services:
-#  bdmysql:
-#    image: acrgleidev.azurecr.io/mysql:latest
-#    container_name: bdmysql
-#    ports:
-#      - 3306:3306
-#    environment:
-#      - MYSQL_DATABASE=loja-livros
-#      - MYSQL_ROOT_PASSWORD=R@12345
-#    networks:
-#      - rede_livros
-#    volumes:
-#      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
-#      - dbMyApp:/var/lib/mysql
-#
-#  phpmyadmin:
-#    image: acrgleidev.azurecr.io/phpmyadmin:latest
-#    container_name: phpmyadmin
-#    ports:
-#      - 8080:80
-#    environment:
-#      - PMA_HOST=bdmysql
-#      - PMA_PORT=3306
-#      - PMA_USER=root
-#      - PMA_PASSWORD=R@12345
-#    networks:
-#      - rede_livros
-
   backendlivros:
     image: acrgleidev.azurecr.io/backend-gpd-plannig-tool:${TAG}
     container_name: backend-gpd-plannig-tool

@@ -1,24 +1,15 @@
-import { FormularioLivroPage } from "./pages/FormularioLivroPage";
-import { ListagemLivrosPage } from "./pages/ListagemLivrosPage";
-import { VisualizacaoLivroPage } from "./pages/VisualizacaoLivroPage";
+import { ListagemDatasRecursosPage } from './pages/ListagemDatasRecursosPage';
+import { ListagemProdutosPage } from './pages/ListagemProdutosPage';
 
-import { FC } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { FC } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const Router: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" index element={<ListagemLivrosPage />} />
-        <Route path="/adicionar-livro" element={<FormularioLivroPage />} />
-        <Route
-          path="/editar-livro/:isbnLivroSelecionado"
-          element={<FormularioLivroPage />}
-        />
-        <Route
-          path="/visualizar/:isbnLivroSelecionado"
-          element={<VisualizacaoLivroPage />}
-        />
+        <Route path='/' index element={<ListagemProdutosPage />} />
+        <Route path='/pi-forecast' element={<ListagemDatasRecursosPage />} />
       </Routes>
     </BrowserRouter>
   );

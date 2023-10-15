@@ -1,9 +1,12 @@
 import { Dotenv } from "@/common/Dotenv";
 import { Logger } from "@/common/Logger";
 import { Livro } from "@/dominio/modelos/Livro";
-
+import { Operadora } from "@/dominio/modelos/Operadora";
+import { Usuario } from "@/dominio/modelos/Usuario";
 import { Dialect } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
+import {Produto} from "@/dominio/modelos/Produto";
+import { Template } from "@/dominio/modelos/Template";
 
 Dotenv.carregarVariaveis();
 
@@ -34,7 +37,8 @@ const gerarConexaoBDSequelize = async (): Promise<Sequelize> => {
       host: BD_ENDERECO,
       port: BD_PORTA as string as unknown as number,
       dialect: BD_DIALETO as Dialect,
-      models: [Livro],
+      models: [Produto, Template],
+
       logging: logger.info.bind(logger),
     }
   );
@@ -43,3 +47,4 @@ const gerarConexaoBDSequelize = async (): Promise<Sequelize> => {
 };
 
 export { gerarConexaoBDSequelize };
+
