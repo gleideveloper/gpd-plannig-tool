@@ -24,8 +24,8 @@ class ProdutoDTOMapper extends ObjectMapper<Produto, ProdutoDTO> {
   public async mapearOrigemParaDestino(modelo: Produto): Promise<ProdutoDTO> {
     return {
       nome: modelo.nome,
-      dataSa: modelo.data_sa,
-      lider: modelo.lider_npi,
+      data_sa: modelo.data_sa,
+      lider_npi: modelo.lider_npi,
       template_type: modelo.template_type,
     };
   }
