@@ -68,7 +68,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
           template_type: template,
         };
 
-        await ApiService.post(`${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}`, produtoData);
+        await ApiService.post(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}`, produtoData);
 
         adicionarAlerta({
           textoAlerta: `Produto "${nome}" adicionado com sucesso!`,

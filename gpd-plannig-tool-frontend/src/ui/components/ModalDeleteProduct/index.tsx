@@ -48,7 +48,7 @@ const ModalDeleteProduct = forwardRef<ModalDeleteProductProps>(
 
     const deletarProduto = async (produto_id: string) => {
       try {
-        await ApiService.delete(`${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`);
+        await ApiService.delete(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`);
         removerProduto(produto_id);
         adicionarAlerta({
           textoAlerta: `Produto ${nome} deletado com sucesso!`,
