@@ -9,8 +9,8 @@ import {Template} from "@/dominio/modelos/Template";
  */
 type ProdutoDTO = {
     nome: string;
-    dataSa: Date,
-    lider: string;
+    data_sa: Date,
+    lider_npi: string;
     template_type: string;
 };
 

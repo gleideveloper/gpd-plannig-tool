@@ -182,9 +182,9 @@ class SequelizeProdutosRepository implements ProdutosRepository {
 
       return await produtoBanco.update({
           nome: produto.nome,
-          dataSa: produto.data_sa,
-          lider: produto.lider_npi,
-          template: produto.template,
+          data_sa: produto.data_sa,
+          lider_npi: produto.lider_npi,
+          template_type: produto.template_type,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {

@@ -138,15 +138,18 @@ class ProdutosController {
     ): Promise<void> {
         try {
             const dadosParaAtualizar = req.body as ProdutoParaAtualizarDTO;
-            const { isbn } = req.params;
+            const { id } = req.params;
+            console.log(`Resultado para atualizar: ${id}`)
 
             const resultado = await this.service.atualizarProduto(
-                isbn,
+                id,
                 dadosParaAtualizar
             );
+             console.log(`Resultado para atualizar: ${resultado}`)
+
             if (!resultado)
                 throw new RegistroNaoSalvoError(
-                    `O produto com código ISBN ${isbn} não foi atualizado no banco de dados.`
+                    `O produto com código ${id} não foi atualizado no banco de dados.`
                 );
 
             res.json(resultado);
@@ -173,8 +176,8 @@ class ProdutosController {
         next: NextFunction
     ): Promise<void> {
         try {
-            const { isbn } = req.params;
-            await this.service.deletarProduto(isbn);
+            const { id } = req.params;
+            await this.service.deletarProduto(id);
 
             res.sendStatus(200);
         } catch (erro: any) {

@@ -111,11 +111,15 @@ class ProdutosService {
 
         produto.set({
             nome: dadosParaAtualizar.nome,
-            dataSa: dadosParaAtualizar.dataSa,
-            lider: dadosParaAtualizar.lider,
+            data_sa: dadosParaAtualizar.data_sa,
+            lider_npi: dadosParaAtualizar.lider_npi,
             template_type: dadosParaAtualizar.template_type,
         });
-        console.log(`Service atualizarProduto: ${produto}`)
+        console.log(`Service atualizarProduto nome: ${produto.nome}`)
+        console.log(`Service atualizarProduto data_sa: ${produto.data_sa}`)
+        console.log(`Service atualizarProduto lider_npi: ${produto.lider_npi}`)
+        console.log(`Service atualizarProduto template_type: ${produto.template_type}`)
+
         await this.repository.salvar(produto);
 
         return await this.objectMapper.mapearOrigemParaDestino(produto);
