@@ -57,7 +57,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
     const abrirModal = async (produto_id: string) => {
       try {
         const response = await ApiService.get(
-          `${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
+          `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
         );
         setProduto(response.data);
         setOpen(true);

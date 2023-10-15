@@ -62,7 +62,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     const abrirModal = async (produto_id: string) => {
       try {
         const response = await ApiService.get(
-          `${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
+          `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
         );
         const produtoData = response.data;
         const dataSa = dayjs(produtoData.data_sa);
@@ -93,7 +93,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
           template_type: template,
         };
 
-        await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL_LOCAL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
+        await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
 
         adicionarAlerta({
           textoAlerta: `Produto "${nome}" editado com sucesso!`,
