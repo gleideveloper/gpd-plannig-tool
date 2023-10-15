@@ -11,6 +11,10 @@ import {
   ModalDeleteProduct,
   ModalDeleteProductProps,
 } from '../components/ModalDeleteProduct';
+import {
+  ModalEditProduct,
+  ModalEditProductProps,
+} from '../components/ModalEditProduct';
 
 import { Delete, Edit, Visibility } from '@mui/icons-material';
 import {
@@ -34,7 +38,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function formatDataSa(dataSa) {
   // Divide a string em mês e ano
@@ -62,10 +65,10 @@ const ListagemProdutosContext = createContext(
 const ListagemProdutosProvider: FC = (): JSX.Element => {
   const ModalReadProductRef = useRef<ModalReadProductProps>(null);
   const ModalDeletarProdutoRef = useRef<ModalDeleteProductProps>(null);
+  const ModalEditProductRef = useRef<ModalEditProductProps>(null);
 
   const [produtos, setProdutos] = useState<ProdutoDTO[]>([]);
   const { adicionarAlerta } = useContext(AlertasContext);
-  const navigate = useNavigate();
 
   const adicionarProduto = (novoProduto: ProdutoDTO) => {
     setProdutos((produtosAtuais) => [...produtosAtuais, novoProduto]);
@@ -105,6 +108,7 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
       <Box sx={{ my: 2 }}>
         <ModalDeleteProduct ref={ModalDeletarProdutoRef} />
         <ModalReadProduct ref={ModalReadProductRef} />
+        <ModalEditProduct ref={ModalEditProductRef} />
 
         <TableContainer component={Paper} sx={{ mt: 1 }}>
           <Table sx={{ minWidth: 650 }}>
@@ -138,9 +142,9 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
                         <Visibility color='secondary' />
                       </IconButton>
                       <IconButton
-                        onClick={() =>
-                          navigate(`/editar-produto/${produto.nome}`)
-                        }
+                        onClick={() => {
+                          ModalEditProductRef.current.abrirModal(produto.id);
+                        }}
                       >
                         <Edit color='secondary' />
                       </IconButton>
