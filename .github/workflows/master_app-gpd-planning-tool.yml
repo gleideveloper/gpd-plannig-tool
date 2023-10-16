@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: acrgleidev.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_f45b6b047e2b44ec8e54575c43602508 }}/frontend-gpd-plannig-tool:${{ github.sha }}
-        file: ./../Dockerfile
+        file: ./gpd-plannig-tool-frontend/.Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
