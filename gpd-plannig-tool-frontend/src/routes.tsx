@@ -8,7 +8,6 @@ const Router: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" />
           <Route path='/product-detail'
                  element={<ListagemProdutosPage/>}/>
           <Route path='/'
