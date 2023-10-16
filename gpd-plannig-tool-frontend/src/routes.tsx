@@ -11,7 +11,7 @@ const Router: FC = () => {
           <Route path="/" />
           <Route path='/product-detail'
                  element={<ListagemProdutosPage/>}/>
-          <Route path='/pi-forecasting'
+          <Route path='/'
                  element={<ListagemDatasRecursosPage/>}/>
       </Routes>
     </BrowserRouter>

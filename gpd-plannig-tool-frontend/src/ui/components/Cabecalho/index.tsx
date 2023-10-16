@@ -95,7 +95,7 @@ const Cabecalho: FC = (): JSX.Element => {
               <ListItemText primary='Products Details' sx={listItemTextStyle} />
             </ListItem>
           </Link>
-          <Link href='/pi-forecasting' underline='none'>
+          <Link href='/' underline='none'>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <CalendarMonthIcon sx={iconStyle} />
