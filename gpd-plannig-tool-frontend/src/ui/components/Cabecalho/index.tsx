@@ -87,7 +87,7 @@ const Cabecalho: FC = (): JSX.Element => {
       </CabecalhoBarra>
       <DrawerBackground anchor='left' open={open} onClose={toggleDrawer}>
         <List>
-          <Link href='product-detail' underline='none'>
+          <Link href='/product-detail' underline='none'>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <PhonelinkSetupIcon sx={iconStyle} />
@@ -95,7 +95,7 @@ const Cabecalho: FC = (): JSX.Element => {
               <ListItemText primary='Products Details' sx={listItemTextStyle} />
             </ListItem>
           </Link>
-          <Link href='/' underline='none'>
+          <Link href='/pi-forecasting' underline='none'>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <CalendarMonthIcon sx={iconStyle} />
