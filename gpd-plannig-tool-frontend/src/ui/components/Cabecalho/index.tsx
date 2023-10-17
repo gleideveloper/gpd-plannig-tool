@@ -5,7 +5,6 @@ import {
   IconButton,
   Drawer,
   List,
-  Link,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -15,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 import { styled } from '@mui/material/styles';
-
+import { Link } from "react-router-dom";
 // Estilo para aplicar a cor #00305C à barra do menu antes de clicar no ícone
 const menuBarStyle = { backgroundColor: '#00305C' };
 
@@ -87,7 +86,7 @@ const Cabecalho: FC = (): JSX.Element => {
       </CabecalhoBarra>
       <DrawerBackground anchor='left' open={open} onClose={toggleDrawer}>
         <List>
-          <Link href='/product-detail' underline='none'>
+          <Link to={'/product-detail'}>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <PhonelinkSetupIcon sx={iconStyle} />
@@ -95,7 +94,7 @@ const Cabecalho: FC = (): JSX.Element => {
               <ListItemText primary='Products Details' sx={listItemTextStyle} />
             </ListItem>
           </Link>
-          <Link href='/' underline='none'>
+          <Link to={'/'}>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <CalendarMonthIcon sx={iconStyle} />
