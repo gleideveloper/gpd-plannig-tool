@@ -8,8 +8,8 @@ const Router: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' index element={<ListagemProdutosPage />} />
-        <Route path='/pi-forecast' element={<ListagemDatasRecursosPage />} />
+        <Route path='/product-detail' index element={<ListagemProdutosPage />} />
+        <Route path='/' element={<ListagemDatasRecursosPage />} />
       </Routes>
     </BrowserRouter>
   );

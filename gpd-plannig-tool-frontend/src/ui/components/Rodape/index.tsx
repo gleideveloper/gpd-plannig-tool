@@ -1,15 +1,8 @@
-import { InformacoesApi } from "../../../data/dto/InformacoesApi";
-import { ApiService } from "../../../data/services/ApiService";
-import {
-  RodapeContainer,
-  RodapeItemLista,
-  RodapeLista,
-  RodapeStyled,
-} from "./index.style";
-
-import { Email, GitHub } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import {InformacoesApi} from "../../../data/dto/InformacoesApi";
+import {ApiService} from "../../../data/services/ApiService";
+import {RodapeContainer, RodapeStyled,} from "./index.style";
+import {Box, Typography} from "@mui/material";
+import {FC, useEffect, useState} from "react";
 
 const Rodape: FC = (): JSX.Element => {
   const [infosApi, setInfosApi] = useState<InformacoesApi>();
