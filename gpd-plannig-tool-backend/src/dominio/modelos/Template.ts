@@ -33,6 +33,13 @@ class Template extends Model {
         allowNull: false,
     })
     peak_ammount!: string;
+
+    @Column({
+        field: "length",
+        type: DataType.TEXT,
+        allowNull: false,
+    })
+    length!: number;
 }
 
 export { Template };

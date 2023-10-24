@@ -82,7 +82,8 @@ class TemplatesService {
     const template = new Template({
       template_type: novoTemplate.template_type,
       sa_idx: novoTemplate.sa_idx,
-      peak_amount: novoTemplate.peak_amount
+      peak_amount: novoTemplate.peak_ammount,
+      length: novoTemplate.length,
     });
     const registro = await this.repository.salvar(template);
 
@@ -106,6 +107,8 @@ class TemplatesService {
     template.set({
       template_type: dadosParaAtualizar.template_type,
       sa_idx: dadosParaAtualizar.sa_idx,
+      peak_amount: dadosParaAtualizar.peak_ammount,
+      length: dadosParaAtualizar.length,
     });
     await this.repository.salvar(template);
 
