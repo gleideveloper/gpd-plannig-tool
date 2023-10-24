@@ -6,6 +6,7 @@ interface Template {
   pm?: number[];
   tl?: number[];
   ut_lead?: number[];
+  length: number;
 }
 
 interface Produto {
@@ -26,7 +27,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023ce',
       type: 'High',
       sa_idx: 6,
-      peak_amount: [0.5, 1, 3, 4.2, 5, 5, 5.2, 5.2, 5],
+      peak_amount: [0.5, 1.0, 3.0, 4.2, 5.0, 5.0, 5.2, 5.2, 5.0, 4.5],
+      length: 10,
     },
   },
   produto02: {
@@ -38,7 +40,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cd',
       type: 'Mid',
       sa_idx: 4,
-      peak_amount: [0, 0.5, 1, 3, 4.2, 4.2, 5, 5, 4.2],
+      peak_amount: [0.0, 0.5, 1.0, 3.0, 4.2, 4.2, 5.0, 4.2],
+      length: 8,
     },
   },
   produto03: {
@@ -50,7 +53,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
       type: 'Low',
       sa_idx: 2,
-      peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
+      peak_amount: [0.0, 0.5, 1.0, 3.0, 2.5, 2.0],
+      length: 6,
     },
   },
   produto04: {
@@ -62,7 +66,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
       type: 'Low',
       sa_idx: 2,
-      peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
+      peak_amount: [0.0, 0.5, 1.0, 3.0, 2.5, 2.0],
+      length: 6,
     },
   },
   produto05: {
@@ -74,7 +79,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
       type: 'High',
       sa_idx: 6,
-      peak_amount: [0.5, 1, 3, 4.2, 5, 5, 5.2, 5.2, 5],
+      peak_amount: [0.5, 1.0, 3.0, 4.2, 5.0, 5.0, 5.2, 5.2, 5.0, 4.5],
+      length: 10,
     },
   },
   produto06: {
@@ -86,7 +92,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cd',
       type: 'Mid',
       sa_idx: 4,
-      peak_amount: [0, 0.5, 1, 3, 4.2, 4.2, 5, 5, 4.2],
+      peak_amount: [0.0, 0.5, 1.0, 3.0, 4.2, 4.2, 5.0, 4.2],
+      length: 8,
     },
   },
   produto07: {
@@ -98,7 +105,8 @@ const produtoList: Record<string, Produto> = {
       id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
       type: 'Low',
       sa_idx: 2,
-      peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
+      peak_amount: [0.0, 0.5, 1.0, 3.0, 2.5, 2.0],
+      length: 6,
     },
   },
   // produto08: {
@@ -110,7 +118,8 @@ const produtoList: Record<string, Produto> = {
   //     id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
   //     type: 'High',
   //     sa_idx: 6,
-  //     peak_amount: [0, 0, 0.5, 0.5, 1, 1, 3, 3, 3],
+  //     peak_amount: [0.5, 1.0, 3.0, 4.2, 5.0, 5.0, 5.2, 5.2, 5.0, 4.5],
+  //     length: 10,
   //   },
   // },
   // produto09: {
@@ -122,7 +131,8 @@ const produtoList: Record<string, Produto> = {
   //     id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
   //     type: 'Low',
   //     sa_idx: 2,
-  //     peak_amount: [0.5, 1, 3, 4.2, 5, 5, 5.2, 5.2, 5],
+  //     peak_amount: [0.0, 0.5, 1.0, 3.0, 2.5, 2.0],
+  //     length: 6,
   //   },
   // },
   // produto10: {
@@ -134,7 +144,8 @@ const produtoList: Record<string, Produto> = {
   //     id: '4a960b5f-4207-466a-a2cd-65bbf91023cf',
   //     type: 'Low',
   //     sa_idx: 2,
-  //     peak_amount: [0.5, 1, 3, 4.2, 5, 5, 5.2, 5.2, 5],
+  //     peak_amount: [0.0, 0.5, 1.0, 3.0, 2.5, 2.0],
+  //     length: 6,
   //   },
   // },
 };
