@@ -36,7 +36,7 @@ class Template extends Model {
 
     @Column({
         field: "length",
-        type: DataType.TEXT,
+        type: DataType.INTEGER,
         allowNull: false,
     })
     length!: number;
