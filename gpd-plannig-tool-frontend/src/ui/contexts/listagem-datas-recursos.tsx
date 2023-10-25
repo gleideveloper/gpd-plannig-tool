@@ -43,7 +43,6 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     buscarProdutos();
   }, []);
 
-  const VECTOR_SIZE = 9; // Tamanho pré-definido do vetor de datas para cada produto individualmente
   const columnNames: string[] = []; // Inicializando as colunas de datas com os cabeçalhos padrão
 
   // Convertendo as datas SA para objetos Date
@@ -55,6 +54,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
 
   // Verificando se já existe uma coluna com a data SA e atualizando as colunas conforme necessário
   produtos.forEach((produto, index) => {
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const saIndex = produto.template.sa_idx;
 
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
@@ -184,6 +184,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   ) => {
     // columnIndex -> indica a posição do dateSA do produto na tabela
     // Obtém o valor do índice 'sa_idx' do produto
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
     const peakAmountVector = produto.template.peak_ammount
       .split(',')
