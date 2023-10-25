@@ -87,20 +87,20 @@ const Cabecalho: FC = (): JSX.Element => {
       </CabecalhoBarra>
       <DrawerBackground anchor='left' open={open} onClose={toggleDrawer}>
         <List>
-          <Link href='/product-detail' underline='none'>
-            <ListItem button onClick={toggleDrawer}>
-              <ListItemIcon>
-                <PhonelinkSetupIcon sx={iconStyle} />
-              </ListItemIcon>
-              <ListItemText primary='Products Details' sx={listItemTextStyle} />
-            </ListItem>
-          </Link>
           <Link href='/' underline='none'>
             <ListItem button onClick={toggleDrawer}>
               <ListItemIcon>
                 <CalendarMonthIcon sx={iconStyle} />
               </ListItemIcon>
               <ListItemText primary='PI Forecast' sx={listItemTextStyle} />
+            </ListItem>
+          </Link>
+          <Link href='/product-detail' underline='none'>
+            <ListItem button onClick={toggleDrawer}>
+              <ListItemIcon>
+                <PhonelinkSetupIcon sx={iconStyle} />
+              </ListItemIcon>
+              <ListItemText primary='Products Details' sx={listItemTextStyle} />
             </ListItem>
           </Link>
         </List>
