@@ -52,11 +52,11 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     const [allocations, setAllocations] = useState([])
 
     const formTemplate = {
-      name: "",
+      nome: "",
       allocations: allocations,
       lider_npi: "",
       template_type: "",
-      data_sa: dayjs('2025-04-17')
+      data_sa: ""
     };
 
     const [data, setData] = useState(formTemplate);
@@ -85,7 +85,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
 
     const salvarProduto = async () => {
       try {
-        console.log(data);
         await ApiService.post(
           `${import.meta.env.VITE_API_BASE_URL}${
             import.meta.env.VITE_ROTA_PRODUTOS
@@ -94,7 +93,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         );
 
         adicionarAlerta({
-          textoAlerta: `Produto "${data.name}" adicionado com sucesso!`,
+          textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
           tipoAlerta: "success",
         });
 
@@ -102,12 +101,20 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       } catch (e: any) {
         console.log(e);
         const erro = e as AxiosError;
-        adicionarAlerta({
-          textoAlerta: `Falha o tentar inserir o produto: ${
-            (erro.response.data as ErroApiDTO).mensagem
-          }`,
-          tipoAlerta: "error",
-        });
+        if(erro.code != 'ERR_NETWORK') {
+          adicionarAlerta({
+            textoAlerta: `Falha o tentar inserir o produto: ${
+              (erro.response.data as ErroApiDTO).mensagem
+            }`,
+            tipoAlerta: "error",
+          });
+        } else {
+          adicionarAlerta({
+            textoAlerta: "Sem conexão com a internet!",
+            tipoAlerta: "error",
+          });
+        }
+        
       }
     };
 
@@ -151,7 +158,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                           <>
                             <Button
                               variant="outlined"
-                              disabled={ data.name.length == 0 || data.lider_npi.length == 0 || data.data_sa.length == 0 || data.template_type.length == 0 }
+                              disabled={ data.nome.length == 0 || data.lider_npi.length == 0 || data.data_sa.length == 0 || data.template_type.length == 0 }
                               color="primary"
                               sx={{ height: 40, marginRight: 1 }}
                               onClick={() => changeStep(currentStep + 1)}

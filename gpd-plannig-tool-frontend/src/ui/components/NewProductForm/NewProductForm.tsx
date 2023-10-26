@@ -13,7 +13,7 @@ const NewProductForm = ( {data, updateFieldHandler, setData } ) => {
     },
     {
       label: "Medium",
-      value: "medium",
+      value: "mid",
       months: 8
     },
     {
@@ -50,13 +50,13 @@ const NewProductForm = ( {data, updateFieldHandler, setData } ) => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="name"
+            id="nome"
             label="Product Name"
             variant="outlined"
             required
             fullWidth
-            value={data.name}
-            onChange={(e) => updateFieldHandler("name", e.target.value)}
+            value={data.nome}
+            onChange={(e) => updateFieldHandler("nome", e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
