@@ -3,7 +3,7 @@ import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
-const NewProductForm = ( {data, updateFieldHandler, handleButtonDisable } ) => {
+const NewProductForm = ( {data, updateFieldHandler, setData } ) => {
 
   const options = [
     {
@@ -25,7 +25,15 @@ const NewProductForm = ( {data, updateFieldHandler, handleButtonDisable } ) => {
   
   const handleChangeTemplate = (option) => {
     updateFieldHandler("template_type", option.value)
-    handleButtonDisable(false)
+
+    const allocations = [data.allocations]
+    for (let i = 1; i < option.months; i++) {
+      allocations.push({month: i, allocation: 0});
+    }
+    
+    setData((prev) => {
+      return { ...prev, allocations  };
+    });
   };
 
   return (
@@ -88,7 +96,7 @@ const NewProductForm = ( {data, updateFieldHandler, handleButtonDisable } ) => {
               <DemoContainer components={["DateField"]}>
                 <DateField
                   label="Date SA "
-                  value={data.data_sa}
+                  value={data.data_sa }
                   onChange={(e) => updateFieldHandler("data_sa", e)}
                   format="MM/YYYY"
                   required

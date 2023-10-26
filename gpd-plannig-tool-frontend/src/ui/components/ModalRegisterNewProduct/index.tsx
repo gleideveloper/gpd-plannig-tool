@@ -22,6 +22,7 @@ import {
 
 import NewProductForm from "../NewProductForm/NewProductForm";
 import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
+import dayjs from "dayjs";
 
 type ModalRegisterNewProductProps = {
   abrirModal: () => void;
@@ -41,33 +42,27 @@ const style = {
 
 const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
   (_: unknown, ref: Ref<unknown>): JSX.Element => {
-    const [hrmButton, setHrmButton] = useState(true);
+    
+    let defaultDate = new Date()
+    defaultDate.setDate(defaultDate.getDate() + 3)
 
     const [open, setOpen] = useState<boolean>(false);
     const { adicionarAlerta } = useContext(AlertasContext);
 
-    const allocations = []
-    for (let i = 1; i < 7; i++) {
-      allocations.push({month: i, allocation: 0});
-    }
+    const [allocations, setAllocations] = useState([])
 
     const formTemplate = {
       name: "",
       allocations: allocations,
       lider_npi: "",
       template_type: "",
+      data_sa: dayjs('2025-04-17')
     };
 
     const [data, setData] = useState(formTemplate);
 
-    const handleDisabledButtonState = () => {
-      setHrmButton(false);
-    };
-
-    const updateFieldHandler = (key, value) => {
-      setData((prev) => {
-        return { ...prev, [key]: value };
-      });
+    const updateFieldHandler = (key, value) => {      
+      setData({ ...data, [key]: value });  
     };
 
     const updateAllocationHandler = (e, index) => {
@@ -82,7 +77,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       <NewProductForm
         data={data}
         updateFieldHandler={updateFieldHandler}
-        handleButtonDisable={handleDisabledButtonState}
         setData={setData}
       />,
       <HrmPerMonthForm data={data} updateFieldHandler={updateAllocationHandler} />,
@@ -157,7 +151,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                           <>
                             <Button
                               variant="outlined"
-                              disabled={hrmButton}
+                              disabled={ data.name.length == 0 || data.lider_npi.length == 0 || data.data_sa.length == 0 || data.template_type.length == 0 }
                               color="primary"
                               sx={{ height: 40, marginRight: 1 }}
                               onClick={() => changeStep(currentStep + 1)}
