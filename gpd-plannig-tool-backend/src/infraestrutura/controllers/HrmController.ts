@@ -58,6 +58,33 @@ class HrmsController {
   /**
    *
    * Método que responde a ação de chamada para a
+   * rota **GET /hrms/:id**.
+   *
+   * @param req Objeto de requisição.
+   * @param res Objeto de resposta.
+   * @param next Referência do middleware de exceções.
+   */
+  public async buscarHrmPorId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { id } = req.params;
+      const hrm = await this.service.buscarHrmPorId(id);
+
+      res.json(hrm);
+    } catch (erro: any) {
+      this.logger.error(
+        `Exceção lançada na rota ${req.method} ${req.originalUrl}: ${erro.message}`
+      );
+      next(erro);
+    }
+  }
+
+  /**
+   *
+   * Método que responde a ação de chamada para a
    * rota **POST /hrms**.
    *
    * @param req Objeto de requisição.
