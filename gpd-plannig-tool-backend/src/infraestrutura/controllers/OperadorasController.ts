@@ -165,8 +165,8 @@ class OperadorasController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { isbn } = req.params;
-      await this.service.deletarOperadora(isbn);
+      const { nome } = req.params;
+      await this.service.deletarOperadora(nome);
 
       res.sendStatus(200);
     } catch (erro: any) {
