@@ -155,7 +155,8 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
         {
           template_type: template.template_type,
           sa_idx: template.sa_idx,
-          peak_amount: template.peak_ammount
+          peak_amount: template.peak_ammount,
+          length: template.length,
         },
         {
           returning: true,
@@ -206,6 +207,8 @@ class SequelizeTemplatesRepository implements TemplatesRepository {
       return await templateBanco.update({
         template_type: template.template_type,
         sa_idx: template.sa_idx,
+        peak_amount: template.peak_ammount,
+        length: template.length,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {
