@@ -33,10 +33,6 @@ const NewProductForm = ({
       .catch((error) => console.error("Erro ao obter os templates:", error));
   }, []);
 
-  if (!templates.length) {
-    return <>Loading</>;
-  }
-
   const options = templates.map((template) => ({
     label: template.template_type,
     value: template.template_type,
