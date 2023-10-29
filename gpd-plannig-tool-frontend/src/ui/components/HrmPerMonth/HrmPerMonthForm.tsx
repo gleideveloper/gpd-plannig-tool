@@ -1,7 +1,10 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { theme } from "../../themes/index"
 
 const HrmPerMonthForm = ({ data, updateFieldHandler }) => {
+
+  const colorHighlight = theme.palette.secondary.light;
 
   const generateMonthLabels = () => {
     const { data_sa, template_type, newData } = data;
@@ -51,7 +54,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler }) => {
           {monthLabels.map((labelData, index) => (
             <>
               <Grid item xs={3}>
-                <span style={labelData.isSAMonth ? {color: 'blue', fontWeight: 'bold'} : {}}>{labelData.label}</span>
+                <span style={labelData.isSAMonth ? {color: colorHighlight, fontWeight: 'bold'} : {}}>{labelData.label}</span>
               </Grid>
               <Grid item xs={5}>
                 <TextField

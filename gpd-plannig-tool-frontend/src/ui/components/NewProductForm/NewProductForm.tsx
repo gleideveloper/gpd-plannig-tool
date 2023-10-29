@@ -26,7 +26,6 @@ const NewProductForm = ({
     fetch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}`)
       .then((response) => response.json())
       .then((newData) => {
-        console.log(newData);
         setTemplates(newData);
         setData({ ...data, newData });
       })
