@@ -1,6 +1,5 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
-import { TemplateDTO } from '../../data/dto/TemplateDTO';
 import { AlertasContext } from "../../contexts/alertas";
 
 import Box from "@mui/material/Box";
@@ -8,7 +7,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Backdrop, Fade, Grid } from "@mui/material";
 
-//Hooks
 import { useForm } from "../../../hooks/useForm";
 
 import { AxiosError } from "axios";
@@ -22,7 +20,6 @@ import {
 
 import NewProductForm from "../NewProductForm/NewProductForm";
 import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
-import dayjs from "dayjs";
 
 type ModalRegisterNewProductProps = {
   abrirModal: () => void;
