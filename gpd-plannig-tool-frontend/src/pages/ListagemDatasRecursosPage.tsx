@@ -1,30 +1,30 @@
-import { ListagemDatasRecursosProvider } from '../ui/contexts/listagem-datas-recursos';
+import { ListagemDatasRecursosProvider } from "../ui/contexts/listagem-datas-recursos";
 
-import { Add } from '@mui/icons-material';
-import { Button, Container, Typography } from '@mui/material';
-import { FC, JSX, useRef } from 'react';
+import { Add } from "@mui/icons-material";
+import { Button, Container, Typography } from "@mui/material";
+import { FC, JSX, useRef } from "react";
 
 import {
   ModalRegisterNewProduct,
   ModalRegisterNewProductProps,
-} from '../ui/components/ModalRegisterNewProduct';
+} from "../ui/components/ModalRegisterNewProduct";
 
 const ListagemDatasRecursosPage: FC = (): JSX.Element => {
   const ModalRegisterNewProductRef = useRef<ModalRegisterNewProductProps>(null);
-  const tituloPagina = 'PI Forecast';
+  const tituloPagina = "PI Forecast";
 
   const tituloPaginaStyle = {
     marginTop: 2,
-    fontSize: '40px',
-    fontStyle: 'normal',
-    lineHeight: 'normal',
-    fontWeight: '500',
-    letterSpacing: '2.25px',
-    color: '#00305C',
+    fontSize: "40px",
+    fontStyle: "normal",
+    lineHeight: "normal",
+    fontWeight: "500",
+    letterSpacing: "2.25px",
+    color: "#00305C",
   };
   const btnRegisterProductStyle = {
-    backgroundColor: '#E45344',
-    color: '#F8F5EF',
+    backgroundColor: "#E45344",
+    color: "#F8F5EF",
     height: 40,
   };
 
@@ -38,23 +38,23 @@ const ListagemDatasRecursosPage: FC = (): JSX.Element => {
       >
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
             marginBottom: 40,
           }}
         >
-          <Typography component='h5' variant='h3' style={tituloPaginaStyle}>
+          <Typography component="h5" variant="h3" style={tituloPaginaStyle}>
             {tituloPagina}
           </Typography>
           <Button
             style={btnRegisterProductStyle}
-            variant='contained'
+            variant="contained"
             onClick={() => {
               ModalRegisterNewProductRef.current.abrirModal();
             }}
           >
-            <Add color='secondary' sx={{ mr: 1 }} /> {' New Product'}
+            <Add color="secondary" sx={{ mr: 1 }} /> {" New Product"}
           </Button>
         </div>
         <ListagemDatasRecursosProvider />
