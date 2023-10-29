@@ -27,7 +27,6 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
-      console.log(produtosBuscados);
     } catch (e: any) {
       const erro = e as AxiosError;
       adicionarAlerta({
@@ -54,7 +53,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
 
   // Verificando se já existe uma coluna com a data SA e atualizando as colunas conforme necessário
   produtos.forEach((produto, index) => {
-    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
+    const VECTOR_SIZE = produto.template.peak_ammount.split(',').length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const saIndex = produto.template.sa_idx;
 
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
@@ -184,13 +183,14 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   ) => {
     // columnIndex -> indica a posição do dateSA do produto na tabela
     // Obtém o valor do índice 'sa_idx' do produto
-    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
+    const VECTOR_SIZE = produto.template.peak_ammount.split(',').length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
     const peakAmountVector = produto.template.peak_ammount
       .split(',')
       .map(parseFloat);
     const peakAmountCells: JSX.Element[] = []; // Array para armazenar as células
     let cont = 0;
+   
 
     for (let i = 0; i < columnNames.length; i++) {
       if (i >= lowestPosition && i < lowestPosition + VECTOR_SIZE) {
