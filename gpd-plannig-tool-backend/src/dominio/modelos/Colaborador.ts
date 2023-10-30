@@ -43,7 +43,7 @@ class Colaborador extends Model {
     })
     id_role!: string;
 
-    @BelongsTo(() => Role, "id")
+    @BelongsTo(() => Role, "id_role")
     role?: Role;
 }
 

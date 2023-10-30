@@ -13,12 +13,12 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 })
 class Role extends Model {
     @Column({
-        field: "id",
+        field: "id_role",
         type: DataType.UUID,
         defaultValue: DataType.UUIDV4(),
         primaryKey: true,
     })
-    id!: string;
+    id_role!: string;
 
     @Column({
         field: "nome",
