@@ -1,6 +1,5 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
-import { TemplateDTO } from '../../data/dto/TemplateDTO';
 import { AlertasContext } from "../../contexts/alertas";
 
 import Box from "@mui/material/Box";
@@ -8,7 +7,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Backdrop, Fade, Grid } from "@mui/material";
 
-//Hooks
 import { useForm } from "../../../hooks/useForm";
 
 import { AxiosError } from "axios";
@@ -41,33 +39,27 @@ const style = {
 
 const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
   (_: unknown, ref: Ref<unknown>): JSX.Element => {
-    const [hrmButton, setHrmButton] = useState(true);
+    
+    let defaultDate = new Date()
+    defaultDate.setDate(defaultDate.getDate() + 3)
 
     const [open, setOpen] = useState<boolean>(false);
     const { adicionarAlerta } = useContext(AlertasContext);
 
-    const allocations = []
-    for (let i = 1; i < 7; i++) {
-      allocations.push({month: i, allocation: 0});
-    }
+    const [allocations, setAllocations] = useState([])
 
     const formTemplate = {
-      name: "",
+      nome: "",
       allocations: allocations,
       lider_npi: "",
       template_type: "",
+      data_sa: ""
     };
 
     const [data, setData] = useState(formTemplate);
 
-    const handleDisabledButtonState = () => {
-      setHrmButton(false);
-    };
-
-    const updateFieldHandler = (key, value) => {
-      setData((prev) => {
-        return { ...prev, [key]: value };
-      });
+    const updateFieldHandler = (key, value) => {      
+      setData({ ...data, [key]: value });  
     };
 
     const updateAllocationHandler = (e, index) => {
@@ -82,7 +74,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       <NewProductForm
         data={data}
         updateFieldHandler={updateFieldHandler}
-        handleButtonDisable={handleDisabledButtonState}
         setData={setData}
       />,
       <HrmPerMonthForm data={data} updateFieldHandler={updateAllocationHandler} />,
@@ -91,7 +82,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
 
     const salvarProduto = async () => {
       try {
-        console.log(data);
         await ApiService.post(
           `${import.meta.env.VITE_API_BASE_URL}${
             import.meta.env.VITE_ROTA_PRODUTOS
@@ -100,7 +90,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         );
 
         adicionarAlerta({
-          textoAlerta: `Produto "${data.name}" adicionado com sucesso!`,
+          textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
           tipoAlerta: "success",
         });
 
@@ -108,12 +98,20 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       } catch (e: any) {
         console.log(e);
         const erro = e as AxiosError;
-        adicionarAlerta({
-          textoAlerta: `Falha o tentar inserir o produto: ${
-            (erro.response.data as ErroApiDTO).mensagem
-          }`,
-          tipoAlerta: "error",
-        });
+        if(erro.code != 'ERR_NETWORK') {
+          adicionarAlerta({
+            textoAlerta: `Falha o tentar inserir o produto: ${
+              (erro.response.data as ErroApiDTO).mensagem
+            }`,
+            tipoAlerta: "error",
+          });
+        } else {
+          adicionarAlerta({
+            textoAlerta: "Sem conexão com a internet!",
+            tipoAlerta: "error",
+          });
+        }
+        
       }
     };
 
@@ -157,7 +155,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                           <>
                             <Button
                               variant="outlined"
-                              disabled={hrmButton}
+                              disabled={ data.nome.length == 0 || data.lider_npi.length == 0 || data.data_sa.length == 0 || data.template_type.length == 0 }
                               color="primary"
                               sx={{ height: 40, marginRight: 1 }}
                               onClick={() => changeStep(currentStep + 1)}
