@@ -54,7 +54,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   return (
     <>
       {selectedMonth ? (
-          <HrmSpecificMonthModal monthLabel={selectedMonth} onClose={handleCloseModal} setSpecificMonth={setSpecificMonth} />
+          <HrmSpecificMonthModal monthLabel={selectedMonth} onClose={handleCloseModal} />
         ) : (
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
