@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Backdrop, Fade, Grid } from "@mui/material";
 
-import { useForm } from "../../../hooks/useForm";
+import { useForm } from "../../../data/hooks/useForm";
 
 import { AxiosError } from "axios";
 import {
@@ -57,6 +57,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     };
 
     const [data, setData] = useState(formTemplate);
+    const [isSpecificMonth, setIsSpecificMonth] = useState(false)
 
     const updateFieldHandler = (key, value) => {      
       setData({ ...data, [key]: value });  
@@ -76,11 +77,12 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         updateFieldHandler={updateFieldHandler}
         setData={setData}
       />,
-      <HrmPerMonthForm data={data} updateFieldHandler={updateAllocationHandler} />,
+      <HrmPerMonthForm data={data} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
     ];
-    const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents);
+    const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
     const salvarProduto = async () => {
+      console.log(data)
       try {
         await ApiService.post(
           `${import.meta.env.VITE_API_BASE_URL}${
@@ -183,7 +185,8 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                               Save
                             </Button>
                           </>
-                        ) : (
+                        ) : !isSpecificMonth ? (
+                          <>
                           <Button
                             variant="outlined"
                             color="primary"
@@ -192,7 +195,8 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                           >
                             Return
                           </Button>
-                        )}
+                          </>
+                        ) : <></>}
                       </Box>
                     </Grid>
                   </div>

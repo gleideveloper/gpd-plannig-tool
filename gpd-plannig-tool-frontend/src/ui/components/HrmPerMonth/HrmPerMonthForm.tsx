@@ -4,7 +4,7 @@ import { theme } from "../../themes/index";
 import HrmSpecificMonthModal from '../HrmSpecificMonth/HrmSpecificMonthForm';
 import { useState } from "react";
 
-const HrmPerMonthForm = ({ data, updateFieldHandler }) => {
+const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
 
   const colorHighlight = theme.palette.secondary.light;
 
@@ -43,16 +43,18 @@ const HrmPerMonthForm = ({ data, updateFieldHandler }) => {
 
   const handleUpdateButtonClick = (label) => {
     setSelectedMonth(label);
+    setSpecificMonth(true)
   };
 
   const handleCloseModal = () => {
     setSelectedMonth(null);
+    setSpecificMonth(false)
   };
 
   return (
     <>
       {selectedMonth ? (
-          <HrmSpecificMonthModal monthLabel={selectedMonth} onClose={handleCloseModal} />
+          <HrmSpecificMonthModal monthLabel={selectedMonth} onClose={handleCloseModal} setSpecificMonth={setSpecificMonth} />
         ) : (
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
