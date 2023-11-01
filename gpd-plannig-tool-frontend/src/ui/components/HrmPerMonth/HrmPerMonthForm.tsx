@@ -68,11 +68,17 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
-          <Grid item xs={3} sx={{ marginBottom: 2 }}>
+          <Grid item xs={3} sx={{ marginBottom: 4 }}>
             <strong>Months</strong>
           </Grid>
-          <Grid item xs={5} sx={{ marginBottom: 2 }}>
-            <strong>Allocations</strong>
+          <Grid item xs={3} sx={{ marginBottom: 4 }}>
+            <strong>Current Allocation</strong>
+          </Grid>
+          <Grid item xs={3} sx={{ marginBottom: 4 }}>
+            <strong>Maximum Allocation</strong>
+          </Grid>
+          <Grid item xs={3} sx={{ marginBottom: 4 }}>
+            <strong>Actions</strong>
           </Grid>
           {monthLabels.map((labelData, index) => (
             <>
@@ -80,22 +86,37 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                 <Grid item xs={3} sx={{paddingLeft: '24px'}}>
                   <span style={labelData.isSAMonth ? {color: colorHighlight, fontWeight: 'bold'} : {}}>{labelData.label}</span>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={3} sx={{paddingLeft: '24px'}}>
                   <TextField
                     name={labelData.label} // aqui foi alterado para usar o label como nome
-                    label="Allocation"
+                    label="Current"
                     InputProps={{
                       readOnly: true,
                     }}
                     error
                     variant="outlined"
                     fullWidth
+                    sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
                     value={(data.allocations[index] && data.allocations[index].allocation) || "0"}
                     onChange={(e) => updateFieldHandler(e, index)}
                     size="small"
                   />
                 </Grid>
-                <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid item xs={3} sx={{ display: 'flex', alignItems: 'center', paddingLeft: '24px' }}>
+                  <TextField
+                    label="Max"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    variant="outlined"
+                    fullWidth
+                    color="grey"
+                    sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
+                    value={(data.allocations[index] && data.allocations[index].maxAllocation) || "0"} // Adicione a propriedade maxAllocation
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={3} sx={{paddingLeft: '24px'}}>
                   <Button
                     color="secondary"
                     sx={{ height: 40}}
