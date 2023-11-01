@@ -80,8 +80,8 @@ class HrmsService {
     novoHrm: HrmParaCriarDTO
   ): Promise<HrmDTO> {
     const hrm = new Hrm({
-      template_id: novoHrm.template_id,
-      produto_id: novoHrm.produto_id,
+      template: novoHrm.template,
+      produto: novoHrm.produto,
     });
     const registro = await this.repository.salvar(hrm);
 
@@ -103,8 +103,8 @@ class HrmsService {
     const hrm = await this.repository.buscarPorId(id);
 
     hrm.set({
-      template_id: dadosParaAtualizar.template_id,
-      produto_id: dadosParaAtualizar.produto_id,
+      template: dadosParaAtualizar.template,
+      produto: dadosParaAtualizar.produto,
     });
     await this.repository.salvar(hrm);
 
