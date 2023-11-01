@@ -60,7 +60,7 @@ const HrmSpecificMonthModal = ({ monthLabel, onClose }) => {
             </Grid>
           ))}
         </Grid>
-        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <div style={{display: 'flex', justifyContent: 'flex-start', marginTop: '20px'}}>
           <Button
             variant="outlined"
             color="primary"
