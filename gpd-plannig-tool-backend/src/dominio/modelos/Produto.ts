@@ -51,8 +51,16 @@ class Produto extends Model {
     })
     template_type!: string;
 
+    @Column({
+        field: "hr_json",
+        type: DataType.JSON,
+        allowNull: false,
+    })
+    hr_json!: JSON[];
+
     @BelongsTo(() => Template, "template_type")
     template?: Template;
 }
+
 
 export { Produto };
