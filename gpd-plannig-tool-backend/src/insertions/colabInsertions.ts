@@ -1,18 +1,17 @@
-import { Colaborador } from "@/dominio/modelos/Colaborador"; // Import the Colaborador model
+import { Colaborador } from "@/dominio/modelos/Colaborador";
 import { faker } from '@faker-js/faker';
-import * as uuid from "uuid"; // Import the uuid library
+import * as uuid from "uuid";
 
-// Function to insert colaboradores into the database for a given role
 async function insertColaboradoresForRole(roleName) {
   try {
     const colaboradores: Array<Colaborador> = [];
     const qtde_colab = 5;
     for (let i = 0; i < qtde_colab; i++) {
-      const nome = faker.person.fullName(); // Generate a random name
-      const departamento = `Dpto${Math.floor(Math.random() * 3) + 1}`; // Random department froom 1 to 3
+      const nome = faker.person.fullName(); 
+      const departamento = `Dpto${Math.floor(Math.random() * 3) + 1}`; 
 
       const colaborador = await Colaborador.create({
-        id: uuid.v4(), // Generate a unique UUID
+        id: uuid.v4(), 
         nome,
         departamento,
         role_name: roleName,
@@ -28,17 +27,20 @@ async function insertColaboradoresForRole(roleName) {
   }
 }
 
-// Insert colaboradores for each role using their respective UUIDs
 async function insertColaboradores() {
   try {
-    // Define the roles and their UUIDs
     const roles = [
       { role_name: 'Developer' },
       { role_name: 'PM' },
       { role_name: 'TL' },
+      { role_name: 'PL' },
+      { role_name: 'UT_LEAD' },
+      { role_name: 'CM' },
+      { role_name: 'FACTORY' },
+      { role_name: 'DATA_ANALYST' },
+      { role_name: 'NETWORK' },
     ];
 
-    // Insert colaboradores for each role
     for (const role of roles) {
       await insertColaboradoresForRole(role.role_name);
     }
