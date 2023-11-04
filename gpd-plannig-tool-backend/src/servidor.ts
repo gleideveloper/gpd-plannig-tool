@@ -25,8 +25,8 @@ const iniciarAplicacao = async (): Promise<void> => {
     await conexao.sync();
 
     //Povoar DB
-    insertRoles();
-    insertColaboradores();
+    // insertRoles();
+    // insertColaboradores();
 
 
     servidor.listen(porta, () =>
