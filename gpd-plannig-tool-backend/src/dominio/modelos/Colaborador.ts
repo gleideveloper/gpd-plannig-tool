@@ -37,13 +37,13 @@ class Colaborador extends Model {
 
     @ForeignKey(() => Role)
     @Column({
-        field: "id_role",
-        type: DataType.UUID,
+        field: "role_name",
+        type: DataType.STRING(20),
         allowNull: false,
     })
-    id_role!: string;
+    role_name!: string;
 
-    @BelongsTo(() => Role, "id_role")
+    @BelongsTo(() => Role, "role_name")
     role?: Role;
 }
 
