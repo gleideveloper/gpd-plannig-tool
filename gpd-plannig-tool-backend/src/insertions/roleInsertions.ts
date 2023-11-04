@@ -12,7 +12,7 @@ async function insertRoles() {
     });
 
     const dev_role = await Role.create({
-      role_name: 'Developer',
+      role_name: 'DEV',
       description: 'Software Developer',
     });
 
@@ -21,7 +21,36 @@ async function insertRoles() {
       description: 'Tech Lead',
     });
 
-    // Additional role insertions can be added as needed
+    const ut_role = await Role.create({
+      role_name: 'UT_LEAD',
+      description: 'UT Lead',
+    });
+
+    const pl_role = await Role.create({
+      role_name: 'PL',
+      description: 'Project Leader',
+    });
+
+    const da_role = await Role.create({
+      role_name: 'DATA_ANALYST',
+      description: 'Data Analyst',
+    });
+
+    const net_role = await Role.create({
+      role_name: 'NETWORK',
+      description: 'Network',
+    });
+
+    const cm_role = await Role.create({
+      role_name: 'CM',
+      description: 'CM',
+    });
+
+    const fact_role = await Role.create({
+      role_name: 'FACTORY',
+      description: 'Factory resource',
+    });
+
   } catch (error) {
     console.error('Error inserting roles:', error);
   }

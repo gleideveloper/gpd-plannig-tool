@@ -5,8 +5,8 @@ import { Logger } from "@/common/Logger";
 import { gerarConexaoBDSequelize } from "@/infraestrutura/bd";
 
 import { createServer, Server } from "node:http";
+import { templateInsertions } from "./insertions/templateInsertions";
 import { insertRoles } from "./insertions/roleInsertions";
-import { insertColaboradores } from "./insertions/colabInsertions";
 
 /**
  *
@@ -25,9 +25,9 @@ const iniciarAplicacao = async (): Promise<void> => {
     await conexao.sync();
 
     //Povoar DB
-    // insertRoles();
+    insertRoles();
     // insertColaboradores();
-
+    templateInsertions();
 
     servidor.listen(porta, () =>
       logger.info(`SERVIDOR RODANDO VIOLENTAMENTE NA PORTA ${porta}.`)
