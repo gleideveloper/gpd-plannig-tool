@@ -53,10 +53,10 @@ class Produto extends Model {
 
     @Column({
         field: "hr_json",
-        type: DataType.JSON,
+        type: DataType.TEXT,
         allowNull: false,
     })
-    hr_json!: JSON[];
+    hr_json!: string;
 
     @BelongsTo(() => Template, "template_type")
     template?: Template;
