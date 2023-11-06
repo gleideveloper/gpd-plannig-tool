@@ -41,7 +41,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
   }
   public async listarProdutos() {
       return Produto.findAll({
-          attributes: ['id', 'nome', 'data_sa', 'lider_npi'],
+          attributes: ['id', 'nome', 'data_sa', 'lider_npi', 'hr_json'],
           include: Template, // Inclui o modelo Template na consulta
       });
   }
@@ -140,6 +140,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
               data_sa: produto.data_sa,
               lider_npi: produto.lider_npi,
               template_type: produto.template_type,
+              hr_json: produto.hr_json,
           }, {
               returning: true, // Isso é opcional, dependendo de suas necessidades.
           });
@@ -185,6 +186,7 @@ class SequelizeProdutosRepository implements ProdutosRepository {
           data_sa: produto.data_sa,
           lider_npi: produto.lider_npi,
           template_type: produto.template_type,
+          hr_json: produto.hr_json,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {

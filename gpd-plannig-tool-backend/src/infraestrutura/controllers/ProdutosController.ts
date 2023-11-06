@@ -57,6 +57,7 @@ class ProdutosController {
             data_sa: new Date(produto.data_sa).toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' }),
             lider_npi: produto.lider_npi,
             template: produto.template,
+            hr_json: produto.hr_json,
         }));
         res.json(produtosFormatados);
     }
