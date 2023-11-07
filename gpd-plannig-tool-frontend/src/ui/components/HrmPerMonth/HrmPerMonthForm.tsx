@@ -2,7 +2,8 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { theme } from "../../themes/index";
 import HrmSpecificMonthModal from '../HrmSpecificMonth/HrmSpecificMonthForm';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
 
@@ -31,7 +32,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
       const index = (saMonth + i + 12) % 12;
       const year = saYear + Math.floor((saMonth + i) / 12);
       const label = `${monthNames[index]} ${year}`;
-      monthLabels.push({ label, isSAMonth: i === 0 });
+      monthLabels.push({ label, isSAMonth: i === 0});
     }
 
     return monthLabels;
@@ -40,6 +41,33 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   const monthLabels = generateMonthLabels();
 
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const [maxAllocation, setMaxAllocation] = useState(null);
+  const [maxAllocationLoaded, setMaxAllocationLoaded] = useState(false);
+
+  const fetchMaxAllocationData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${data.template_type}`);
+      const templateData = response.data; 
+
+      const peakAmountData = JSON.parse(templateData.peak_ammount);
+
+      const maxAllocationValues = monthLabels.map((labelData, index) => {
+        const mes_atual = "month" + (index + 1);
+        const monthValue = peakAmountData[mes_atual];
+        let soma = 0;
+        for (const cargo in monthValue) {
+          const value = parseFloat(monthValue[cargo]);
+          soma += value;
+        }
+        return soma.toFixed(1);
+      });
+
+      setMaxAllocation(maxAllocationValues);
+      setMaxAllocationLoaded(true); // Marcamos os dados como carregados
+    } catch (error) {
+      console.error("Erro ao buscar dados da API:", error);
+    }
+  };
 
   const handleUpdateButtonClick = (label) => {
     setSelectedMonth(label);
@@ -50,6 +78,12 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
     setSelectedMonth(null);
     setSpecificMonth(false)
   };
+
+  useEffect(() => {
+    fetchMaxAllocationData();
+  }, []);  
+
+  console.log("teste", maxAllocation)
 
   return (
     <>
@@ -112,7 +146,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                     fullWidth
                     color="grey"
                     sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
-                    value={(data.allocations[index] && data.allocations[index].maxAllocation) || "0"} // Adicione a propriedade maxAllocation
+                    value={maxAllocationLoaded ? maxAllocation[index] : "0"} // Adicione a propriedade maxAllocation
                     size="small"
                   />
                 </Grid>
