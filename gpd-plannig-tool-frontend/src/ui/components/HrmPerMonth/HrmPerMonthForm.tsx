@@ -2,7 +2,26 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { theme } from "../../themes/index";
 import HrmSpecificMonthModal from '../HrmSpecificMonth/HrmSpecificMonthForm';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ApiService } from "../../../data/services/ApiService";
+
+function somarValoresPorMes(template, indice_mes) {
+
+  const peakAmmountJSONformat = JSON.parse(template.peak_ammount);
+
+  const nome_mes = "month" + (indice_mes + 1);
+
+  let somaDoMes = 0;
+
+  for (const cargo in peakAmmountJSONformat[nome_mes]) {
+    if (peakAmmountJSONformat[nome_mes].hasOwnProperty(cargo)) {
+      const value = parseFloat(peakAmmountJSONformat[nome_mes][cargo]);
+      somaDoMes += value;
+    }
+  }
+  return somaDoMes.toFixed(1);
+}
+
 
 const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
 
@@ -31,7 +50,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
       const index = (saMonth + i + 12) % 12;
       const year = saYear + Math.floor((saMonth + i) / 12);
       const label = `${monthNames[index]} ${year}`;
-      monthLabels.push({ label, isSAMonth: i === 0 });
+      monthLabels.push({ label, isSAMonth: i === 0, template_type: template_type });
     }
 
     return monthLabels;
@@ -40,6 +59,8 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   const monthLabels = generateMonthLabels();
 
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const [template, setTemplate] = useState<any>({});
+  const [maxAllocations, setMaxAllocations] = useState([]);
 
   const handleUpdateButtonClick = (label) => {
     setSelectedMonth(label);
@@ -50,6 +71,30 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
     setSelectedMonth(null);
     setSpecificMonth(false)
   };
+
+  const buscarTemplate = async (template_type: string) => {
+    try {
+      const response = await ApiService.get(
+        `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${template_type}`
+      );
+      setTemplate(response.data);
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    function fetchMaxAllocations() {
+      const maxAllocations = monthLabels.map((labelData, index) => {
+        return somarValoresPorMes(template, index);
+      });
+
+      setMaxAllocations(maxAllocations);
+    }
+
+    buscarTemplate(data.template_type);
+    fetchMaxAllocations();
+  }, []); 
 
   return (
     <>
@@ -112,7 +157,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                     fullWidth
                     color="grey"
                     sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
-                    value={(data.allocations[index] && data.allocations[index].maxAllocation) || "0"} // Adicione a propriedade maxAllocation
+                    value={maxAllocations[index]} // Adicione a propriedade maxAllocation
                     size="small"
                   />
                 </Grid>
