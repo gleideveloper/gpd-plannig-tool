@@ -3,25 +3,7 @@ import dayjs from "dayjs";
 import { theme } from "../../themes/index";
 import HrmSpecificMonthModal from '../HrmSpecificMonth/HrmSpecificMonthForm';
 import { useEffect, useState } from "react";
-import { ApiService } from "../../../data/services/ApiService";
-
-function somarValoresPorMes(template, indice_mes) {
-
-  const peakAmmountJSONformat = JSON.parse(template.peak_ammount);
-
-  const nome_mes = "month" + (indice_mes + 1);
-
-  let somaDoMes = 0;
-
-  for (const cargo in peakAmmountJSONformat[nome_mes]) {
-    if (peakAmmountJSONformat[nome_mes].hasOwnProperty(cargo)) {
-      const value = parseFloat(peakAmmountJSONformat[nome_mes][cargo]);
-      somaDoMes += value;
-    }
-  }
-  return somaDoMes.toFixed(1);
-}
-
+import axios from "axios";
 
 const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
 
@@ -50,7 +32,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
       const index = (saMonth + i + 12) % 12;
       const year = saYear + Math.floor((saMonth + i) / 12);
       const label = `${monthNames[index]} ${year}`;
-      monthLabels.push({ label, isSAMonth: i === 0, template_type: template_type });
+      monthLabels.push({ label, isSAMonth: i === 0});
     }
 
     return monthLabels;
@@ -59,8 +41,33 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   const monthLabels = generateMonthLabels();
 
   const [selectedMonth, setSelectedMonth] = useState(null);
-  const [template, setTemplate] = useState<any>({});
-  const [maxAllocations, setMaxAllocations] = useState([]);
+  const [maxAllocation, setMaxAllocation] = useState(null);
+  const [maxAllocationLoaded, setMaxAllocationLoaded] = useState(false);
+
+  const fetchMaxAllocationData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${data.template_type}`);
+      const templateData = response.data; 
+
+      const peakAmountData = JSON.parse(templateData.peak_ammount);
+
+      const maxAllocationValues = monthLabels.map((labelData, index) => {
+        const mes_atual = "month" + (index + 1);
+        const monthValue = peakAmountData[mes_atual];
+        let soma = 0;
+        for (const cargo in monthValue) {
+          const value = parseFloat(monthValue[cargo]);
+          soma += value;
+        }
+        return soma.toFixed(1);
+      });
+
+      setMaxAllocation(maxAllocationValues);
+      setMaxAllocationLoaded(true); // Marcamos os dados como carregados
+    } catch (error) {
+      console.error("Erro ao buscar dados da API:", error);
+    }
+  };
 
   const handleUpdateButtonClick = (label) => {
     setSelectedMonth(label);
@@ -72,29 +79,11 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
     setSpecificMonth(false)
   };
 
-  const buscarTemplate = async (template_type: string) => {
-    try {
-      const response = await ApiService.get(
-        `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${template_type}`
-      );
-      setTemplate(response.data);
-    } catch (e: any) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
-    function fetchMaxAllocations() {
-      const maxAllocations = monthLabels.map((labelData, index) => {
-        return somarValoresPorMes(template, index);
-      });
+    fetchMaxAllocationData();
+  }, []);  
 
-      setMaxAllocations(maxAllocations);
-    }
-
-    buscarTemplate(data.template_type);
-    fetchMaxAllocations();
-  }, []); 
+  console.log("teste", maxAllocation)
 
   return (
     <>
@@ -157,7 +146,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                     fullWidth
                     color="grey"
                     sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
-                    value={maxAllocations[index]} // Adicione a propriedade maxAllocation
+                    value={maxAllocationLoaded ? maxAllocation[index] : "0"} // Adicione a propriedade maxAllocation
                     size="small"
                   />
                 </Grid>
