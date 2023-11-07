@@ -1,5 +1,5 @@
 import { BaseRepository } from "./BaseRepository";
-import {Colaborador} from "@/dominio/modelos/Colaborador";
+import { Colaborador } from "@/dominio/modelos/Colaborador";
 
 /**
  *
@@ -9,10 +9,16 @@ import {Colaborador} from "@/dominio/modelos/Colaborador";
  *
  * Esta interface extende a interface {@link BaseRepository}.
  *
- * @author Gleides Vinente <gleidevelop@gmail.com>
+ * @author Laura Lima
  */
 interface ColaboradoresRepository extends BaseRepository<Colaborador, string> {
-
+    /**
+     *
+     * Método que busca pelos registros dos colaboradores de um tipo especifico 
+     * @param tipo Tipo do template pesquisado.
+     * @returns Dados do template encontrado.
+     */
+    buscarPorTipo(tipo: string): Promise<Colaborador[]>;
 }
 
 export { ColaboradoresRepository };
