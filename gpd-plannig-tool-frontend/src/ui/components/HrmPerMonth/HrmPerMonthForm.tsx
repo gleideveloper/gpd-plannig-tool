@@ -20,7 +20,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
         return monthLabels;
     }
 
-    const numMonthsToShow = templateData.peak_ammount.split(',').length;
+    const numMonthsToShow = templateData.length;
     const monthsBeforeSA = templateData.sa_idx;
     const monthsAfterSA = numMonthsToShow - monthsBeforeSA - 1;
 

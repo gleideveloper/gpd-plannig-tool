@@ -53,7 +53,8 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       allocations: allocations,
       lider_npi: "",
       template_type: "",
-      data_sa: ""
+      data_sa: "",
+      hr_json: "{}",
     };
 
     const [data, setData] = useState(formTemplate);
@@ -82,7 +83,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
     const salvarProduto = async () => {
-      console.log(data)
+      console.log("DATA:",data)
       try {
         await ApiService.post(
           `${import.meta.env.VITE_API_BASE_URL}${
