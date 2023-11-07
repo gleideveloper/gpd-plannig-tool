@@ -6,6 +6,7 @@ import {rotasUsuarios} from "@/infraestrutura/rotas/usuario";
 import { HomeController } from "../controllers/HomeController";
 import { Router } from "express";
 import { rotasTemplates } from "./templates";
+import { rotasColaboradores } from './colaboradores'
 
 const rotas = Router();
 const homeController = new HomeController();
@@ -24,6 +25,8 @@ rotas.use("/produtos", rotasProdutos);
 rotas.use("/usuarios", rotasUsuarios);
 
 rotas.use("/templates", rotasTemplates);
+
+rotas.use("/colaboradores", rotasColaboradores);
 
 /************************ Ações executadas para a rota base /produtos ************************/
 

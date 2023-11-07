@@ -17,7 +17,7 @@ import {Role} from "@/dominio/modelos/Role";
  *
  * Esta classe implementa a interface {@link ColaboradoresRepository}.
  *
- * @author Gleides Vinente <gleidevelop@gmail.com>
+ * @author Gleides Vinente <gleidevelop@gmail.com> and Laura Lima
  */
 class SequelizeColaboradoresRepository implements ColaboradoresRepository {
   /**
@@ -30,6 +30,14 @@ class SequelizeColaboradoresRepository implements ColaboradoresRepository {
     this.logger = Logger.pegarInstancia();
   }
 
+  public async buscarPorTipo(tipo: string): Promise<Colaborador[]> {
+    return Colaborador.findAll({
+      where: {
+        'role_name': tipo
+      }
+    });
+  }
+
   /**
    *
    * Implementação do método que busca todos
@@ -39,7 +47,7 @@ class SequelizeColaboradoresRepository implements ColaboradoresRepository {
    */
   public async buscarTodos(): Promise<Colaborador[]> {
       return Colaborador.findAll({
-          attributes: ['id', 'nome', 'departamento'],
+          attributes: ['id', 'nome', 'departamento', 'role_name'],
           include: Role, // Inclui o modelo Template na consulta
       });
   }
@@ -136,7 +144,7 @@ class SequelizeColaboradoresRepository implements ColaboradoresRepository {
           return await Colaborador.create({
               nome: colaborador.nome,
               departamento: colaborador.departamento,
-              id_role: colaborador.id_role,
+              id_role: colaborador.id,
           }, {
               returning: true, // Isso é opcional, dependendo de suas necessidades.
           });
@@ -180,7 +188,7 @@ class SequelizeColaboradoresRepository implements ColaboradoresRepository {
       return await produtoBanco.update({
           nome: colaborador.nome,
           departamento: colaborador.departamento,
-          id_role: colaborador.id_role,
+          id_role: colaborador.id,
       });
     } catch (erro: any) {
       if (erro instanceof ValidationError) {
