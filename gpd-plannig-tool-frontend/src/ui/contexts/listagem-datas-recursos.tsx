@@ -23,7 +23,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   const buscarProdutos = async () => {
     try {
       const resposta = await ApiService.get<ProdutoDTO[]>(
-        import.meta.env.VITE_ROTA_PRODUTOS // busca os produtos cadastrados na rota /produtos
+        import.meta.env.VITE_ROTA_PRODUTOS
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
@@ -53,7 +53,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
 
   // Verificando se já existe uma coluna com a data SA e atualizando as colunas conforme necessário
   produtos.forEach((produto, index) => {
-    const VECTOR_SIZE = produto.template.peak_ammount.split(',').length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const saIndex = produto.template.sa_idx;
 
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
@@ -183,21 +183,28 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   ) => {
     // columnIndex -> indica a posição do dateSA do produto na tabela
     // Obtém o valor do índice 'sa_idx' do produto
-    const VECTOR_SIZE = produto.template.peak_ammount.split(',').length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
-    const peakAmountVector = produto.template.peak_ammount
-      .split(',')
-      .map(parseFloat);
+    const peakAmmountJSONformat = JSON.parse(produto.template.peak_ammount);
     const peakAmountCells: JSX.Element[] = []; // Array para armazenar as células
     let cont = 0;
-   
+
+    const resultado = [];
+
+    for (const month in peakAmmountJSONformat) {
+      if (peakAmmountJSONformat.hasOwnProperty(month) && typeof peakAmmountJSONformat[month] === 'object') {
+        const valoresDoMes = Object.values(peakAmmountJSONformat[month]);
+        const somaDoMes = valoresDoMes.reduce((acc: number, valor: string) => acc + parseFloat(valor), 0);
+        resultado.push(somaDoMes.toFixed(1));
+      }
+    }
 
     for (let i = 0; i < columnNames.length; i++) {
       if (i >= lowestPosition && i < lowestPosition + VECTOR_SIZE) {
         // Mapeia os valores de 'peak_amount' e realoca-os nas colunas correspondentes, criando e adicionando as células ao array
         peakAmountCells.push(
           <TableCell align='center' key={`peak_amount_${cont}`}>
-            {peakAmountVector[cont]}
+            {resultado[cont]}
           </TableCell>
         );
         cont++;
