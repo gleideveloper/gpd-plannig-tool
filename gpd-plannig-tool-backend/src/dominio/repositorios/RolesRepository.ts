@@ -4,7 +4,7 @@ import { Role } from "../modelos/Role";
 /**
  *
  * Interface que define as operações básicas
- * de manipulação de registros de templates na
+ * de manipulação de registros de roles na
  * base de dados da aplicação.
  *
  * Esta interface extende a interface {@link BaseRepository}.
@@ -15,13 +15,13 @@ interface RolesRepository extends BaseRepository<Role, string> {
   /**
    *
    * Método que busca por um registro de um
-   * template na base de dados da aplicação a
-   * partir do tipo do template.
+   * role na base de dados da aplicação a
+   * partir do role_name do role.
    *
-   * @param tipo Tipo do template pesquisado.
-   * @returns Dados do template encontrado.
+   * @param role_name Tipo do role pesquisado.
+   * @returns Dados do role encontrado.
    */
-  buscarPorTipo(tipo: string): Promise<Role>;
+  buscarPorName(role_name: string): Promise<Role>;
 }
 
 export { RolesRepository };

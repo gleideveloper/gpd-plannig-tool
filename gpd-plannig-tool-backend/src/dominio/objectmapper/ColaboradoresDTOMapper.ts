@@ -1,6 +1,5 @@
-import { ObjectMapper } from "@/common/ObjectMapper";
-import { ColaboradorDTO } from "../dto/ColaboradorDTO";
-import { Colaborador } from "../modelos/Colaborador";
+import {ColaboradorDTO} from "../dto/ColaboradorDTO";
+import {Colaborador} from "../modelos/Colaborador";
 
 
 export class ColaboradorDTOMapper {
