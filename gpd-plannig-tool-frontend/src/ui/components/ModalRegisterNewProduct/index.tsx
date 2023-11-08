@@ -37,6 +37,16 @@ const style = {
   p: 4,
 };
 
+// Função para substituir os números por strings vazias
+function replaceNumbersWithEmptyStrings(hr_jsonAux, template_length) {
+  for (let i=0; i < template_length; i++) {
+    const nome_mes = "month" + (i+1);
+    for (const cargo in hr_jsonAux[nome_mes]) {
+      hr_jsonAux[nome_mes][cargo] = "";
+    }
+  }
+}
+
 const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
   (_: unknown, ref: Ref<unknown>): JSX.Element => {
     
@@ -46,7 +56,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     const [open, setOpen] = useState<boolean>(false);
     const { adicionarAlerta } = useContext(AlertasContext);
 
-    const [allocations, setAllocations] = useState([])
+    const [allocations, setAllocations] = useState([]);
 
     const formTemplate = {
       nome: "",
@@ -58,6 +68,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     };
 
     const [data, setData] = useState(formTemplate);
+    const [hrJson, setHrJson] = useState(false);
     const [isSpecificMonth, setIsSpecificMonth] = useState(false)
 
     const updateFieldHandler = (key, value) => {      
@@ -78,13 +89,34 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         updateFieldHandler={updateFieldHandler}
         setData={setData}
       />,
-      <HrmPerMonthForm data={data} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
+      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
     ];
     const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
-    const salvarProduto = async () => {
-      console.log("DATA:",data)
+    const repassarHrJsonParaModalHRMSpecificMonth = async () => {
       try {
+        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${data.template_type}`);
+        const peak_ammountFounded = response.data.peak_ammount;
+        const hr_jsonAux = JSON.parse(peak_ammountFounded);
+  
+        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
+  
+        setHrJson(hr_jsonAux); 
+      } catch (e: any) {
+        console.log(e);
+      }
+    }
+
+    const salvarProduto = async () => {
+      try {
+        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${data.template_type}`);
+        const peak_ammountFounded = response.data.peak_ammount;
+        const hr_jsonAux = JSON.parse(peak_ammountFounded); // Converte a string em um objeto JSON
+
+        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
+
+        data.hr_json = JSON.stringify(hr_jsonAux); // hr_json possui os mesmos meses e roles que o peak_ammount do respectivo template
+
         await ApiService.post(
           `${import.meta.env.VITE_API_BASE_URL}${
             import.meta.env.VITE_ROTA_PRODUTOS
@@ -97,7 +129,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
           tipoAlerta: "success",
         });
 
-        fecharModal();
+        fecharModalAndResetValues();
       } catch (e: any) {
         console.log(e);
         const erro = e as AxiosError;
@@ -121,8 +153,25 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     const abrirModal = () => {
       setOpen(true);
     };
+    const fecharModalAndResetValues = () => {
+      setOpen(false);
+      resetState();
+    };
     const fecharModal = () => {
       setOpen(false);
+    };
+
+    const resetState = () => {
+      const defaultData = {
+        nome: "",
+        allocations: [],
+        lider_npi: "",
+        template_type: "",
+        data_sa: "",
+        hr_json: "{}",
+      };
+      setData(defaultData);
+      setIsSpecificMonth(false);
     };
 
     useImperativeHandle(ref, () => ({
@@ -161,14 +210,17 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                               disabled={ data.nome.length == 0 || data.lider_npi.length == 0 || data.data_sa.length == 0 || data.template_type.length == 0 }
                               color="primary"
                               sx={{ height: 40, marginRight: 1 }}
-                              onClick={() => changeStep(currentStep + 1)}
+                              onClick={() => {
+                                repassarHrJsonParaModalHRMSpecificMonth();
+                                changeStep(currentStep + 1);
+                              }}
                             >
                               HRM
                             </Button>
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={fecharModal}
+                              onClick={fecharModalAndResetValues}
                               sx={{
                                 height: 40,
                                 marginRight: 1,
@@ -188,14 +240,6 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
                           </>
                         ) : !isSpecificMonth ? (
                           <>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            sx={{ height: 40, marginRight: 1 }}
-                            onClick={() => changeStep(currentStep - 1)}
-                          >
-                            Return
-                          </Button>
                           </>
                         ) : <></>}
                       </Box>

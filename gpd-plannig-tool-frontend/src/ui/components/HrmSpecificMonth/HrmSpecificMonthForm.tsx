@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Grid, MenuItem, Select, Typography } from '@mui/material';
 import axios from 'axios';
 
-const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClose }) => {
+const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, hrJson, onClose }) => {
 
   const generateRolesForThisMonth = () => {
     const rolesLabels = [];
@@ -36,6 +36,20 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClos
     }
   };
 
+  const saveCollaborators = () => {
+    const updatedHrJson = { ...hrJson };
+  
+    rolesLabels.forEach((role) => {
+      const formattedRole = role.replace(' ', '_');
+      if (selectedRoles[role] === undefined) {
+        selectedRoles[role] = '';
+      }
+      updatedHrJson[`month${monthIndex + 1}`][formattedRole] = selectedRoles[role];
+    });
+
+    hrJson = updatedHrJson;
+  };
+
   const handleRoleChange = (event, role) => {
     const selectedRole = event.target.value;
     
@@ -50,7 +64,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClos
       ...selectedRoles,
       [role]: '',
     });
-  };
+  };    
 
   useEffect(() => {
     rolesLabels.forEach((role) => {
@@ -83,7 +97,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClos
               </Grid>
               <Grid item xs={5} sx={{ marginLeft: 2 }}>
               <Select
-                value={selectedRoles[role] || ''}
+                value={selectedRoles[role] || hrJson[`month${monthIndex + 1}`][role.replace(' ', '_')] || ''}
                 fullWidth
                 onChange={(event) => handleRoleChange(event, role)}
                 sx={{height: 35}}
@@ -123,6 +137,10 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClos
             variant="contained"
             color="success"
             sx={{ height: 40, marginRight: 1}}
+            onClick={() => {
+              saveCollaborators();
+              onClose();
+            }}
           >
             Save
           </Button>
