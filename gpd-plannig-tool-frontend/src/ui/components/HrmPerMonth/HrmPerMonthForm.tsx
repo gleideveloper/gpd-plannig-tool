@@ -1,16 +1,20 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { theme } from "../../themes/index";
+import { AlertasContext } from "../../contexts/alertas";
 import HrmSpecificMonthModal from '../HrmSpecificMonth/HrmSpecificMonthForm';
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import axios, { AxiosError } from "axios";
+import { ApiService } from "../../../data/services/ApiService";
+import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 
-const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
+const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth }) => {
 
+  const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
 
   const generateMonthLabels = () => {
-    const { data_sa, template_type, newData } = data;
+    const { data_sa, template_type, newData} = data;
     const monthLabels = [];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     
@@ -72,6 +76,42 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
     }
   };
 
+  const salvarProdutoHRM = async () => {
+    try {
+      data.hr_json = JSON.stringify(hrJson);
+
+      await ApiService.post(
+        `${import.meta.env.VITE_API_BASE_URL}${
+          import.meta.env.VITE_ROTA_PRODUTOS
+        }`,
+        data
+      );
+
+      adicionarAlerta({
+        textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
+        tipoAlerta: "success",
+      });
+
+    } catch (e: any) {
+      console.log(e);
+      const erro = e as AxiosError;
+      if(erro.code != 'ERR_NETWORK') {
+        adicionarAlerta({
+          textoAlerta: `Falha o tentar inserir o produto: ${
+            (erro.response.data as ErroApiDTO).mensagem
+          }`,
+          tipoAlerta: "error",
+        });
+      } else {
+        adicionarAlerta({
+          textoAlerta: "Sem conexão com a internet!",
+          tipoAlerta: "error",
+        });
+      }
+      
+    }
+  };
+
   const handleUpdateButtonClick = (label, index) => {
     setSelectedMonth(label);
     setSelectedMonthIndex(index);
@@ -91,7 +131,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   return (
     <>
       {selectedMonth ? (
-          <HrmSpecificMonthModal monthLabel={selectedMonth} monthIndex={selectedMonthIndex} peakAmmountJson={peakAmmountJson} onClose={handleCloseModal} />
+          <HrmSpecificMonthModal monthLabel={selectedMonth} monthIndex={selectedMonthIndex} peakAmmountJson={peakAmmountJson} hrJson={hrJson} onClose={handleCloseModal} />
         ) : (
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
@@ -165,6 +205,14 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
               </Grid>
             </>
           ))}
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ height: 35, marginRight: 2, marginLeft: "auto" }}
+            onClick={salvarProdutoHRM}
+          >
+            Save Allocations
+          </Button>
         </Grid>
       </Box>
       )}
