@@ -41,6 +41,8 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
   const monthLabels = generateMonthLabels();
 
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonthIndex, setSelectedMonthIndex] = useState(null);
+  const [peakAmmountJson, setPeakAmmountJson] = useState(null);
   const [maxAllocation, setMaxAllocation] = useState(null);
   const [maxAllocationLoaded, setMaxAllocationLoaded] = useState(false);
 
@@ -50,6 +52,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
       const templateData = response.data; 
 
       const peakAmountData = JSON.parse(templateData.peak_ammount);
+      setPeakAmmountJson(peakAmountData);
 
       const maxAllocationValues = monthLabels.map((labelData, index) => {
         const mes_atual = "month" + (index + 1);
@@ -63,19 +66,21 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
       });
 
       setMaxAllocation(maxAllocationValues);
-      setMaxAllocationLoaded(true); // Marcamos os dados como carregados
+      setMaxAllocationLoaded(true); 
     } catch (error) {
       console.error("Erro ao buscar dados da API:", error);
     }
   };
 
-  const handleUpdateButtonClick = (label) => {
+  const handleUpdateButtonClick = (label, index) => {
     setSelectedMonth(label);
+    setSelectedMonthIndex(index);
     setSpecificMonth(true)
   };
 
   const handleCloseModal = () => {
     setSelectedMonth(null);
+    setSelectedMonthIndex(null);
     setSpecificMonth(false)
   };
 
@@ -83,12 +88,10 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
     fetchMaxAllocationData();
   }, []);  
 
-  console.log("teste", maxAllocation)
-
   return (
     <>
       {selectedMonth ? (
-          <HrmSpecificMonthModal monthLabel={selectedMonth} onClose={handleCloseModal} />
+          <HrmSpecificMonthModal monthLabel={selectedMonth} monthIndex={selectedMonthIndex} peakAmmountJson={peakAmmountJson} onClose={handleCloseModal} />
         ) : (
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
@@ -122,7 +125,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                 </Grid>
                 <Grid item xs={3} sx={{paddingLeft: '24px'}}>
                   <TextField
-                    name={labelData.label} // aqui foi alterado para usar o label como nome
+                    name={labelData.label}
                     label="Current"
                     InputProps={{
                       readOnly: true,
@@ -146,7 +149,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                     fullWidth
                     color="grey"
                     sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
-                    value={maxAllocationLoaded ? maxAllocation[index] : "0"} // Adicione a propriedade maxAllocation
+                    value={maxAllocationLoaded ? maxAllocation[index] : "0"} 
                     size="small"
                   />
                 </Grid>
@@ -154,7 +157,7 @@ const HrmPerMonthForm = ({ data, updateFieldHandler, setSpecificMonth }) => {
                   <Button
                     color="secondary"
                     sx={{ height: 40}}
-                    onClick={() => handleUpdateButtonClick(labelData.label)}
+                    onClick={() => handleUpdateButtonClick(labelData.label, index)}
                   >
                     Update
                   </Button>

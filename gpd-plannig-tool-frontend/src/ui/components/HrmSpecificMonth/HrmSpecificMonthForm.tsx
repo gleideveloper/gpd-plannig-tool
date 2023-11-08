@@ -1,26 +1,62 @@
-import React, { useState } from 'react';
-import { Box, Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Grid, MenuItem, Select, Typography } from '@mui/material';
+import axios from 'axios';
 
-const HrmSpecificMonthModal = ({ monthLabel, onClose }) => {
+const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, onClose }) => {
 
-  // Exemplo de dados para popular os dropdowns (que virão do backend, assim que estiver pronto)
-  const rolesExample = [
-    "Role 1",
-    "Role 2",
-    "Role 3",
-    "Role 4",
-  ];
+  const generateRolesForThisMonth = () => {
+    const rolesLabels = [];
+    const mes_atual = "month" + (monthIndex + 1);
+    
+    const monthValue = peakAmmountJson[mes_atual];
+    for (const role in monthValue) {
+      const formattedRole = role.replace(/_/g, ' ');
+      rolesLabels.push(formattedRole)
+    }
 
-  // State para controlar o valor selecionado para cada dropdown
+    return rolesLabels;
+  };
+
+  const rolesLabels = generateRolesForThisMonth();
+
   const [selectedRoles, setSelectedRoles] = useState({});
+  const [collaboratorsByRole, setCollaboratorsByRole] = useState({});
 
-  // Função para atualizar o valor selecionado do dropdown
+  const fetchCollaboratorsAndSet = async (role) => {
+    try {
+      const formattedRole = role.replace(' ', '_');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_COLABORADORES}/${formattedRole}`);
+      const collaborators = response.data;
+      setCollaboratorsByRole((prevCollaboratorsByRole) => ({
+        ...prevCollaboratorsByRole,
+        [role]: collaborators,
+      }));
+    } catch (error) {
+      console.error('Erro ao buscar colaboradores:', error);
+    }
+  };
+
   const handleRoleChange = (event, role) => {
+    const selectedRole = event.target.value;
+    
     setSelectedRoles({
       ...selectedRoles,
-      [role]: event.target.value,
+      [role]: selectedRole,
     });
   };
+
+  const clearSelectedRole = (role) => {
+    setSelectedRoles({
+      ...selectedRoles,
+      [role]: '',
+    });
+  };
+
+  useEffect(() => {
+    rolesLabels.forEach((role) => {
+      fetchCollaboratorsAndSet(role);
+    });
+  }, []);
 
   return (
     <>
@@ -34,29 +70,43 @@ const HrmSpecificMonthModal = ({ monthLabel, onClose }) => {
           <Grid item xs={3} sx={{ marginBottom: 2 }}>
             <strong>Roles</strong>
           </Grid>
-          <Grid item xs={5} sx={{ marginBottom: 2 }}>
+          <Grid item xs={6} sx={{ marginBottom: 2 }}>
             <strong>Collaborators</strong>
           </Grid>
-          {rolesExample.map((role, index) => (
+          <Grid item xs={2} sx={{ marginBottom: 4 }}>
+            <strong>Actions</strong>
+          </Grid>
+          {rolesLabels.map((role, index) => (
             <Grid container key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px'}}>
               <Grid item xs={3} sx={{paddingLeft: '16px'}}>
                 <span>{role}</span>
               </Grid>
-              <Grid item xs={5}>
-                <Select
-                  value={selectedRoles[role] || ''}
-                  fullWidth
-                  onChange={(event) => handleRoleChange(event, role)}
-                  sx={{height: 35}}
-                >
-                  <MenuItem disabled value="">
-                    <em>Select a collaborator</em>
+              <Grid item xs={5} sx={{ marginLeft: 2 }}>
+              <Select
+                value={selectedRoles[role] || ''}
+                fullWidth
+                onChange={(event) => handleRoleChange(event, role)}
+                sx={{height: 35}}
+              >
+                <MenuItem disabled value="">
+                  <em>Select a collaborator</em>
+                </MenuItem>
+                {collaboratorsByRole[role] && collaboratorsByRole[role].map((colaborador, index) => (
+                  <MenuItem key={index} value={colaborador.nome}>
+                    {colaborador.nome}
                   </MenuItem>
-                  <MenuItem value="Option 1">Option 1</MenuItem>
-                  <MenuItem value="Option 2">Option 2</MenuItem>
-                  <MenuItem value="Option 3">Option 3</MenuItem>
-                </Select>
+                ))}
+              </Select>
               </Grid>
+              <Grid item xs={3} sx={{paddingLeft: '24px'}}>
+                  <Button
+                    color="error"
+                    sx={{ height: 40, marginLeft: '10px'}}
+                    onClick={() => clearSelectedRole(role)}
+                  >
+                    Clear
+                  </Button>
+                </Grid>
             </Grid>
           ))}
         </Grid>
