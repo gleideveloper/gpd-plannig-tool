@@ -1,6 +1,6 @@
-import { ColaboradorDTO } from "../dto/ColaboradorDTO";
 import { ColaboradorDTOMapper } from "../objectmapper/ColaboradoresDTOMapper";
 import { ColaboradoresRepository } from "../repositorios/ColaboradoresRepository";
+import {ColaboradorDTO} from "@/dominio/dto/ColaboradorDTO";
 
 class ColaboradoresService {
   private repository: ColaboradoresRepository;
@@ -24,7 +24,18 @@ class ColaboradoresService {
     const operadoras = await this.repository.buscarTodos();
     return await this.objectMapper.mapearListaOrigemParaListaDestino(operadoras);
   }
+    /**
+     * Método que busca os dados de um colaborador
+     * a partir de um código id.
+     *
+     * @param id Código do colaborador pesquisado.
+     * @returns Dados do colaborador.
+     */
+    public async buscarColaboradorPorId(id: string): Promise<ColaboradorDTO> {
+        const colaborador = await this.repository.buscarPorId(id);
 
+        return await this.objectMapper.mapearOrigemParaDestino(colaborador);
+    }
 }
 
 export { ColaboradoresService };
