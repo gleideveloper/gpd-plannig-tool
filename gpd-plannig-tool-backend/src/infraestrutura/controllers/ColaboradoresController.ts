@@ -1,10 +1,10 @@
-import { Dotenv } from "@/common/Dotenv";
-import { Logger } from "@/common/Logger";
-import { ColaboradorDTOMapper } from "@/dominio/objectmapper/ColaboradoresDTOMapper";
-import { ColaboradoresService } from "@/dominio/servicos/ColaboradoresService";
-import { SequelizeColaboradoresRepository } from "../repositorios/sequelize/SequelizeColaboradoresRepository";
+import {Dotenv} from "@/common/Dotenv";
+import {Logger} from "@/common/Logger";
+import {ColaboradorDTOMapper} from "@/dominio/objectmapper/ColaboradoresDTOMapper";
+import {ColaboradoresService} from "@/dominio/servicos/ColaboradoresService";
+import {SequelizeColaboradoresRepository} from "../repositorios/sequelize/SequelizeColaboradoresRepository";
 
-import { NextFunction, Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 
 Dotenv.carregarVariaveis();
 
@@ -50,6 +50,32 @@ class ColaboradoresController {
       );
       next(erro);
     }
+  }
+
+  /**
+   *
+   * Método que responde a ação de chamada para a
+   * rota **GET /colaboradors/:id**.
+   * @param req Objeto de requisição.
+   * @param res Objeto de resposta.
+   * @param next Referência do middleware de exceções.
+   */
+  public async buscarColaboradorPorId(
+      req: Request,
+      res: Response,
+      next: NextFunction
+  ): Promise<void> {
+      try {
+          const {id} = req.params;
+          const colaborador = await this.service.buscarColaboradorPorId(id);
+
+          res.json(colaborador);
+      } catch (erro: any) {
+          this.logger.error(
+              `Exceção lançada na rota ${req.method} ${req.originalUrl}: ${erro.message}`
+          );
+          next(erro);
+      }
   }
 }
 
