@@ -55,7 +55,7 @@ class ColaboradoresController {
   /**
    *
    * Método que responde a ação de chamada para a
-   * rota **GET /produtos/:id**.
+   * rota **GET /colaboradors/:id**.
    * @param req Objeto de requisição.
    * @param res Objeto de resposta.
    * @param next Referência do middleware de exceções.
@@ -67,9 +67,9 @@ class ColaboradoresController {
   ): Promise<void> {
       try {
           const {id} = req.params;
-          const produto = await this.service.buscarColaboradorPorId(id);
+          const colaborador = await this.service.buscarColaboradorPorId(id);
 
-          res.json(produto);
+          res.json(colaborador);
       } catch (erro: any) {
           this.logger.error(
               `Exceção lançada na rota ${req.method} ${req.originalUrl}: ${erro.message}`
