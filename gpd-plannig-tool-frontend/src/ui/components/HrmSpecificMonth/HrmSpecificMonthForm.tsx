@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Grid, MenuItem, Select, Typography } from '@mui/material';
 import axios from 'axios';
+import { theme } from '../../themes/index';
 
-const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, hrJson, onClose }) => {
+const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmmountJson, hrJson, onClose }) => {
+  
+  const colorHighlight = theme.palette.secondary.light;
 
   const generateRolesForThisMonth = () => {
     const rolesLabels = [];
@@ -25,7 +28,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, hrJson
   const fetchCollaboratorsAndSet = async (role) => {
     try {
       const formattedRole = role.replace(' ', '_');
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_COLABORADORES}/${formattedRole}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_COLABORADORES}/tipo/${formattedRole}`);
       const collaborators = response.data;
       setCollaboratorsByRole((prevCollaboratorsByRole) => ({
         ...prevCollaboratorsByRole,
@@ -76,8 +79,8 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, peakAmmountJson, hrJson
     <>
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
-          <Typography variant="h5" component="h2">
-            Allocation on {monthLabel}
+         <Typography variant="h5" component="h2">
+            Allocation on <span style={monthLabelInfo.isSAMonth ? {color: colorHighlight, fontWeight: 'bold'} : {}}>{monthLabel}</span>
           </Typography>
         </Grid>
         <Grid container sx={{ marginTop: 2 }} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>

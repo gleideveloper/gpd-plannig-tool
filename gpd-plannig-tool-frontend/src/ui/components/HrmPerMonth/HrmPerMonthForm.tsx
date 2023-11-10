@@ -131,7 +131,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
   return (
     <>
       {selectedMonth ? (
-          <HrmSpecificMonthModal monthLabel={selectedMonth} monthIndex={selectedMonthIndex} peakAmmountJson={peakAmmountJson} hrJson={hrJson} onClose={handleCloseModal} />
+          <HrmSpecificMonthModal monthLabel={selectedMonth} monthIndex={selectedMonthIndex} monthLabelInfo={monthLabels[selectedMonthIndex]} peakAmmountJson={peakAmmountJson} hrJson={hrJson} onClose={handleCloseModal} />
         ) : (
       <Box sx={{ width: "100%" }}>
         <Grid item xs={12}>
