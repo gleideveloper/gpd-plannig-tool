@@ -6,7 +6,7 @@ const colaboradoresController = new ColaboradoresController();
 
 /************************ Ações executadas para a rota base /colaborador ************************/
 
-rotasColaboradores.get("/:id", colaboradoresController.buscarColaboradorPorId.bind(colaboradoresController));
+rotasColaboradores.get("/id/:id", colaboradoresController.buscarColaboradorPorId.bind(colaboradoresController));
 rotasColaboradores.get("/tipo/:tipo", colaboradoresController.buscarColaboradorPorTipo.bind(colaboradoresController));
 rotasColaboradores.get("/", colaboradoresController.buscarTodos.bind(colaboradoresController));
 
