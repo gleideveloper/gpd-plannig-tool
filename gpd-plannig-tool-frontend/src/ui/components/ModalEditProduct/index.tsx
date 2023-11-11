@@ -31,6 +31,8 @@ import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
+import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
+
 type ModalEditProductProps = {
   abrirModal: (produto_id: string) => void;
 };
@@ -47,6 +49,16 @@ const style = {
   p: 4,
 };
 
+// Função para substituir os números por strings vazias
+function replaceNumbersWithEmptyStrings(hr_jsonAux, template_length) {
+  for (let i=0; i < template_length; i++) {
+    const nome_mes = "month" + (i+1);
+    for (const cargo in hr_jsonAux[nome_mes]) {
+      hr_jsonAux[nome_mes][cargo] = "";
+    }
+  }
+}
+
 const ModalEditProduct = forwardRef<ModalEditProductProps>(
   (_: unknown, ref: Ref<unknown>): JSX.Element => {
     const [id, setId] = useState<string>("");
@@ -54,16 +66,43 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     const [lider, setLider] = useState<string>("");
     const [date, setDate] = useState<Dayjs | null>(null);
     const [template, setTemplate] = useState<string>("");
-
+    const [isSpecificMonth, setIsSpecificMonth] = useState(false);
     const [open, setOpen] = useState<boolean>(false);
-
     const { adicionarAlerta } = useContext(AlertasContext);
+    const [allocations, setAllocations] = useState([]);
+    const [hrJson, setHrJson] = useState(false);
+    const [templates, setTemplates] = useState([]);
+    const [showHrmPerMonthForm, setShowHrmPerMonthForm] = useState(false);
+    const [showWarningModal, setShowWarningModal] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(template);
+    const [newSelectedTemplate, setNewSelectedTemplate] = useState(template);
+
+    const formTemplate = {
+      nome: nome,
+      allocations: allocations,
+      lider_npi: lider,
+      template_type: template,
+      data_sa: date,
+      hr_json: hrJson,
+      newData: templates,
+    };
+
+    const updateAllocationHandler = (e, index) => {
+      const allocations = [...data.allocations]
+      allocations[index].allocation = (e.target.value)
+      setData((prev) => {
+        return { ...prev, allocations  };
+      });
+    };
+
+    const [data, setData] = useState(formTemplate);
 
     const abrirModal = async (produto_id: string) => {
       try {
         const response = await ApiService.get(
           `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
         );
+
         const produtoData = response.data;
         const dataSa = dayjs(produtoData.data_sa);
         setId(produto_id);
@@ -71,6 +110,24 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         setLider(produtoData.lider_npi);
         setTemplate(produtoData.template_type);
         setDate(dataSa);
+        setData(produtoData);
+        setHrJson(produtoData.hr_json);
+
+        const response_templates = await ApiService.get(
+          `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}`
+        );
+
+        setTemplates(response_templates.data);
+
+        const templateData = response_templates.data.find(item => item.template_type === produtoData.template_type);
+        const numMonthsToShow = templateData.length;
+        const allocations = [];
+        for (let i = 1; i <= numMonthsToShow; i++) {
+          allocations.push({ month: i, allocation: 0 });
+        }
+
+        setData({ ...produtoData, allocations: allocations, newData: response_templates.data });
+
         setOpen(true);
       } catch (e: any) {
         console.log(e);
@@ -95,12 +152,13 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
 
         await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
 
+        handleClose();
+
         adicionarAlerta({
           textoAlerta: `Produto "${nome}" editado com sucesso!`,
           tipoAlerta: "success",
         });
 
-        fecharModal();
       } catch (e: any) {
         console.log(e);
         const erro = e as AxiosError;
@@ -114,10 +172,66 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     };
 
     const handleChangeTemplate = (event: SelectChangeEvent) => {
-      setTemplate(event.target.value as string);
+      const newTemplate = event.target.value as string;
+      if (newTemplate !== selectedTemplate) {
+        // Se o novo template não for igual ao anterior, exibir o modal de aviso
+        setNewSelectedTemplate(newTemplate);
+        setShowWarningModal(true);
+      } else {
+        // Se o novo template for igual ao anterior, atualize o estado diretamente
+        setTemplate(newTemplate);
+      }
     };
 
-    const fecharModal = () => {
+    const confirmChangeTemplate = async (id: string) => {
+      try {
+        setTemplate(newSelectedTemplate);
+
+        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${newSelectedTemplate}`);
+        const peak_ammountFounded = response.data.peak_ammount;
+        const hr_jsonAux = JSON.parse(peak_ammountFounded);
+  
+        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
+
+        const produtoData = {
+          nome: nome,
+          lider_npi: lider,
+          data_sa: date,
+          template_type: newSelectedTemplate,
+          hr_json: JSON.stringify(hr_jsonAux)
+        };
+
+        await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
+
+        handleClose();
+        setShowWarningModal(false);
+
+        adicionarAlerta({
+          textoAlerta: `Produto "${nome}" editado com sucesso!`,
+          tipoAlerta: "success",
+        });
+
+      } catch (e: any) {
+        console.log(e);
+        const erro = e as AxiosError;
+        adicionarAlerta({
+          textoAlerta: `Falha o tentar editar o produto: ${
+            (erro.response.data as ErroApiDTO).mensagem
+          }`,
+          tipoAlerta: "error",
+        });
+      }
+    };    
+
+    const fecharModal = (event, reason) => {
+      if (event.keyCode == 27 || reason === "backdropClick") return;
+      setShowWarningModal(false);
+      setOpen(false);
+    };
+    
+    const handleClose = () => {
+      setShowHrmPerMonthForm(false)
+      setIsSpecificMonth(false);
       setOpen(false);
     };
 
@@ -143,6 +257,17 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
           <Fade in={open}>
             <Box sx={style}>
               <form noValidate autoComplete="off">
+              {showHrmPerMonthForm ? (
+                <HrmPerMonthForm
+                  data={data}
+                  hrJson={hrJson}
+                  updateFieldHandler={updateAllocationHandler}
+                  setSpecificMonth={setIsSpecificMonth}
+                  isEditProduct={true}
+                  idProduct={id}
+                  handleClose={handleClose}
+                />
+              ) : (
                 <Grid
                   container
                   spacing={{ xs: 2, md: 3 }}
@@ -188,9 +313,9 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                         required
                         onChange={handleChangeTemplate}
                       >
-                        <MenuItem value="Low">Low</MenuItem>
-                        <MenuItem value="Mid">Mid</MenuItem>
-                        <MenuItem value="High">High</MenuItem>
+                        <MenuItem value="low">Low</MenuItem>
+                        <MenuItem value="mid">Mid</MenuItem>
+                        <MenuItem value="high">High</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -217,14 +342,27 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                     <Box
                       m={1}
                       display="flex"
-                      justifyContent="flex-end"
-                      alignItems="flex-end"
+                      justifyContent="flex-start"
                     >
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        sx={{ height: 40, marginRight: 1 }}
+                        onClick={() => {
+                          setShowHrmPerMonthForm(true);
+                        }}
+                      >
+                        HRM
+                      </Button>
                       <Button
                         variant="contained"
                         color="primary"
                         onClick={fecharModal}
-                        sx={{ height: 40, marginRight: 1 }}
+                        sx={{
+                          height: 40,
+                          marginRight: 1,
+                          marginLeft: "auto",
+                        }}
                       >
                         Cancel
                       </Button>
@@ -239,11 +377,54 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                     </Box>
                   </Grid>
                 </Grid>
+              )}
               </form>
             </Box>
           </Fade>
         </Modal>
-      </div>
+        {/* Modal de aviso */}
+        <Modal
+          aria-labelledby="warning-modal-title"
+          aria-describedby="warning-modal-description"
+          open={showWarningModal}
+          onClose={fecharModal}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              TransitionComponent: Fade,
+            },
+          }}
+        >
+          {/* Conteúdo do modal de aviso */}
+          <Fade in={showWarningModal}>
+            <Box sx={style}>
+              <Typography variant="h5" component="h2" gutterBottom>
+                Warning
+              </Typography>
+              <Typography variant="body1" id="warning-modal-description" paragraph>
+                Changing the template type will discard the previous data. <br/>Do you want to continue?
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ height: 40, marginRight: 1 }}
+                onClick={() => setShowWarningModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ height: 40, marginRight: 1 }}
+                onClick={() => confirmChangeTemplate(id)}
+              >
+                Confirm
+              </Button>
+            </Box>
+          </Fade>
+        </Modal>
+          </div>
     );
   }
 );

@@ -83,13 +83,18 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       });
     };
     
+    const handleClose = () => {
+      setOpen(false);
+      changeStep(0)
+    };
+
     const formComponents = [
       <NewProductForm
         data={data}
         updateFieldHandler={updateFieldHandler}
         setData={setData}
       />,
-      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
+      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth} isEditProduct={false} idProduct={""} handleClose={handleClose}/>,
     ];
     const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
@@ -157,7 +162,12 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
       setOpen(false);
       resetState();
     };
-    const fecharModal = () => {
+    const fecharModal = (event, reason) => {
+      if (event.keyCode == 27) 
+        return;
+      if (reason == "backdropClick") 
+        return;
+      setOpen(false);
       setOpen(false);
     };
 

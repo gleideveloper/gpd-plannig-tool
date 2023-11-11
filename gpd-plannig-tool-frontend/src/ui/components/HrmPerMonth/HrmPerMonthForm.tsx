@@ -8,7 +8,7 @@ import axios, { AxiosError } from "axios";
 import { ApiService } from "../../../data/services/ApiService";
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 
-const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth }) => {
+const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct, idProduct, handleClose }) => {
 
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
@@ -70,7 +70,9 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
       });
 
       setMaxAllocation(maxAllocationValues);
-      setMaxAllocationLoaded(true); 
+      setMaxAllocationLoaded(true);
+
+      return
     } catch (error) {
       console.error("Erro ao buscar dados da API:", error);
     }
@@ -89,10 +91,10 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
         }
         resultado.push(somaDoMes.toFixed(1));
       }
-
       for (const {index, value} of resultado.map((value, index) => ({index, value}))) { 
         data.allocations[index].allocation = value
       }
+      return
     } catch (error) {
       console.error("Erro ao calcular valores de Current Allocation:", error);
     }
@@ -109,6 +111,8 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
         data
       );
 
+      handleClose()
+      
       adicionarAlerta({
         textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
         tipoAlerta: "success",
@@ -134,6 +138,25 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
     }
   };
 
+  const editarProdutoHRM = async () => {
+    const produtoData = {
+      nome: data.nome,
+      lider_npi: data.lider_npi,
+      data_sa: data.data_sa,
+      template_type: data.template_type,
+      hr_json: JSON.stringify(hrJson)
+    };
+
+    await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${idProduct}`, produtoData);
+    
+    handleClose()
+
+    adicionarAlerta({
+      textoAlerta: `Produto "${produtoData.nome}" editado com sucesso!`,
+      tipoAlerta: "success",
+    });
+  };
+
   const handleUpdateButtonClick = (label, index) => {
     setSelectedMonth(label);
     setSelectedMonthIndex(index);
@@ -144,11 +167,12 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
     setSelectedMonth(null);
     setSelectedMonthIndex(null);
     setSpecificMonth(false)
-    fetchCurrentAllocationData()
   };
-
+  
+  fetchCurrentAllocationData()
+  
   useEffect(() => {
-    fetchMaxAllocationData();
+    fetchMaxAllocationData()
   }, []);  
 
   return (
@@ -242,7 +266,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
             variant="contained"
             color="success"
             sx={{ height: 35, marginRight: 2, marginLeft: "auto" }}
-            onClick={salvarProdutoHRM}
+            onClick={ isEditProduct ? editarProdutoHRM : salvarProdutoHRM}
           >
             Save Allocations
           </Button>
