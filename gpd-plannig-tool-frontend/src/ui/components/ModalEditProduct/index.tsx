@@ -145,12 +145,13 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
 
         await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
 
+        handleClose();
+
         adicionarAlerta({
           textoAlerta: `Produto "${nome}" editado com sucesso!`,
           tipoAlerta: "success",
         });
 
-        fecharModal();
       } catch (e: any) {
         console.log(e);
         const erro = e as AxiosError;
@@ -176,6 +177,8 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     };
     
     const handleClose = () => {
+      setShowHrmPerMonthForm(false)
+      setIsSpecificMonth(false);
       setOpen(false);
     };
 

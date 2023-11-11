@@ -85,6 +85,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
     
     const handleClose = () => {
       setOpen(false);
+      changeStep(0)
     };
 
     const formComponents = [
