@@ -148,7 +148,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
       lider_npi: data.lider_npi,
       data_sa: data.data_sa,
       template_type: data.template_type,
-      hr_json: hrJson
+      hr_json: JSON.stringify(hrJson)
     };
     console.log(idProduct)
 
