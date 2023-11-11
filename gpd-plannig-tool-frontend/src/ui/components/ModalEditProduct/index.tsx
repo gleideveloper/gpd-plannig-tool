@@ -34,7 +34,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import NewProductForm from "../NewProductForm/NewProductForm";
-import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
+import HrmPerMonthEditForm from "../HrmPerMonth/HrmPerMonthEditForm";
 
 type ModalEditProductProps = {
   abrirModal: (produto_id: string) => void;
@@ -65,6 +65,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     const [allocations, setAllocations] = useState([]);
     const [hrJson, setHrJson] = useState(false);
     const [templates, setTemplates] = useState([]);
+    const [showHrmPerMonthForm, setShowHrmPerMonthForm] = useState(false);
 
     const formTemplate = {
       nome: nome,
@@ -89,12 +90,6 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     };
 
     const [data, setData] = useState(formTemplate);
-
-    const formComponents = [
-      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
-    ];
-
-    const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
     const abrirModal = async (produto_id: string) => {
       try {
@@ -202,7 +197,14 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
           <Fade in={open}>
             <Box sx={style}>
               <form noValidate autoComplete="off">
-                {currentComponent}
+              {showHrmPerMonthForm ? (
+                <HrmPerMonthEditForm
+                  data={data}
+                  hrJson={hrJson}
+                  updateFieldHandler={updateAllocationHandler}
+                  setSpecificMonth={setIsSpecificMonth}
+                />
+              ) : (
                 <Grid
                   container
                   spacing={{ xs: 2, md: 3 }}
@@ -279,46 +281,40 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                       display="flex"
                       justifyContent="flex-start"
                     >
-                      {!isHrmForm ? (
-                        <>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            sx={{ height: 40, marginRight: 1 }}
-                            onClick={() => {
-                              changeStep(currentStep + 1);
-                            }}
-                          >
-                            HRM
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={fecharModal}
-                            sx={{
-                              height: 40,
-                              marginRight: 1,
-                              marginLeft: "auto",
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ height: 40 }}
-                            onClick={() => editarProduto(id)}
-                          >
-                            Save
-                          </Button>
-                        </>
-                      ) : !isSpecificMonth ? (
-                        <>
-                        </>
-                      ) : <></>}
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        sx={{ height: 40, marginRight: 1 }}
+                        onClick={() => {
+                          setShowHrmPerMonthForm(true);
+                        }}
+                      >
+                        HRM
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={fecharModal}
+                        sx={{
+                          height: 40,
+                          marginRight: 1,
+                          marginLeft: "auto",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ height: 40 }}
+                        onClick={() => editarProduto(id)}
+                      >
+                        Save
+                      </Button>
                     </Box>
                   </Grid>
                 </Grid>
+              )}
               </form>
             </Box>
           </Fade>
