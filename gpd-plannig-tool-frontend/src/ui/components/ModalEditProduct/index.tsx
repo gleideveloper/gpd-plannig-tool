@@ -168,6 +168,8 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     };
 
     const fecharModal = (event, reason) => {
+      if (event.keyCode == 27) 
+        return;
       if (reason == "backdropClick") 
         return;
       setOpen(false);
