@@ -1,7 +1,6 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
 import { AlertasContext } from "../../contexts/alertas";
-import { useForm } from "../../../data/hooks/useForm";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -23,7 +22,6 @@ import {
   forwardRef,
   Ref,
   useContext,
-  useEffect,
   useImperativeHandle,
   useState,
 } from "react";
@@ -75,6 +73,9 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     const [hrJson, setHrJson] = useState(false);
     const [templates, setTemplates] = useState([]);
     const [showHrmPerMonthForm, setShowHrmPerMonthForm] = useState(false);
+    const [showWarningModal, setShowWarningModal] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(template);
+    const [newSelectedTemplate, setNewSelectedTemplate] = useState(template);
 
     const formTemplate = {
       nome: nome,
@@ -84,10 +85,6 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
       data_sa: date,
       hr_json: hrJson,
       newData: templates,
-    };
-
-    const updateFieldHandler = (key, value) => {      
-      setData({ ...data, [key]: value });  
     };
 
     const updateAllocationHandler = (e, index) => {
@@ -146,19 +143,11 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
 
     const editarProduto = async (id: string) => {
       try {
-
-        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${template}`);
-        const peak_ammountFounded = response.data.peak_ammount;
-        const hr_jsonAux = JSON.parse(peak_ammountFounded);
-  
-        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
-
         const produtoData = {
           nome: nome,
           lider_npi: lider,
           data_sa: date,
           template_type: template,
-          hr_json: JSON.stringify(hr_jsonAux)
         };
 
         await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
@@ -183,14 +172,60 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     };
 
     const handleChangeTemplate = (event: SelectChangeEvent) => {
-      setTemplate(event.target.value as string);
+      const newTemplate = event.target.value as string;
+      if (newTemplate !== selectedTemplate) {
+        // Se o novo template não for igual ao anterior, exibir o modal de aviso
+        setNewSelectedTemplate(newTemplate);
+        setShowWarningModal(true);
+      } else {
+        // Se o novo template for igual ao anterior, atualize o estado diretamente
+        setTemplate(newTemplate);
+      }
     };
 
+    const confirmChangeTemplate = async (id: string) => {
+      try {
+        setTemplate(newSelectedTemplate);
+
+        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${newSelectedTemplate}`);
+        const peak_ammountFounded = response.data.peak_ammount;
+        const hr_jsonAux = JSON.parse(peak_ammountFounded);
+  
+        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
+
+        const produtoData = {
+          nome: nome,
+          lider_npi: lider,
+          data_sa: date,
+          template_type: newSelectedTemplate,
+          hr_json: JSON.stringify(hr_jsonAux)
+        };
+
+        await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
+
+        handleClose();
+        setShowWarningModal(false);
+
+        adicionarAlerta({
+          textoAlerta: `Produto "${nome}" editado com sucesso!`,
+          tipoAlerta: "success",
+        });
+
+      } catch (e: any) {
+        console.log(e);
+        const erro = e as AxiosError;
+        adicionarAlerta({
+          textoAlerta: `Falha o tentar editar o produto: ${
+            (erro.response.data as ErroApiDTO).mensagem
+          }`,
+          tipoAlerta: "error",
+        });
+      }
+    };    
+
     const fecharModal = (event, reason) => {
-      if (event.keyCode == 27) 
-        return;
-      if (reason == "backdropClick") 
-        return;
+      if (event.keyCode == 27 || reason === "backdropClick") return;
+      setShowWarningModal(false);
       setOpen(false);
     };
     
@@ -203,9 +238,6 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     useImperativeHandle(ref, () => ({
       abrirModal,
     }));
-
-    console.log("DATA QUE TA INDO PRO MODAL");
-    console.log(data)
 
     return (
       <div>
@@ -350,7 +382,49 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
             </Box>
           </Fade>
         </Modal>
-      </div>
+        {/* Modal de aviso */}
+        <Modal
+          aria-labelledby="warning-modal-title"
+          aria-describedby="warning-modal-description"
+          open={showWarningModal}
+          onClose={fecharModal}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              TransitionComponent: Fade,
+            },
+          }}
+        >
+          {/* Conteúdo do modal de aviso */}
+          <Fade in={showWarningModal}>
+            <Box sx={style}>
+              <Typography variant="h5" component="h2" gutterBottom>
+                Warning
+              </Typography>
+              <Typography variant="body1" id="warning-modal-description" paragraph>
+                Changing the template type will discard the previous data. <br/>Do you want to continue?
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ height: 40, marginRight: 1 }}
+                onClick={() => setShowWarningModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ height: 40, marginRight: 1 }}
+                onClick={() => confirmChangeTemplate(id)}
+              >
+                Confirm
+              </Button>
+            </Box>
+          </Fade>
+        </Modal>
+          </div>
     );
   }
 );

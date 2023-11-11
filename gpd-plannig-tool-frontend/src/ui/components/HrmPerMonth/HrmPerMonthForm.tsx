@@ -13,10 +13,6 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
 
-  console.log("DATA QUE TA CHEGANDO NO MODAL");
-  console.log(data)
-  console.log(idProduct)
-
   const generateMonthLabels = () => {
     const { data_sa, template_type, newData} = data;
     const monthLabels = [];
@@ -84,7 +80,6 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
 
   const fetchCurrentAllocationData = async () => {
     try {
-      console.log("hrJson", hrJson)
       const resultado = [];
       for (const month in hrJson) {
         let somaDoMes = 0;
@@ -144,7 +139,6 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
   };
 
   const editarProdutoHRM = async () => {
-    console.log("INFOS DE EDITAR:")
     const produtoData = {
       nome: data.nome,
       lider_npi: data.lider_npi,
@@ -152,7 +146,6 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
       template_type: data.template_type,
       hr_json: JSON.stringify(hrJson)
     };
-    console.log(idProduct)
 
     await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${idProduct}`, produtoData);
     
