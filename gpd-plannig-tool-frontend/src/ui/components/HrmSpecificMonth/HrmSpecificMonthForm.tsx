@@ -10,7 +10,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
   const generateRolesForThisMonth = () => {
     const rolesLabels = [];
     const mes_atual = "month" + (monthIndex + 1);
-    
+
     const monthValue = peakAmmountJson[mes_atual];
     for (const role in monthValue) {
       const formattedRole = role.replace(/_/g, ' ');
@@ -55,12 +55,10 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
 
   const handleRoleChange = (event, role, month) => {
     const selectedRole = event.target.value;
-    
     setSelectedRoles({
       ...selectedRoles,
       [role]: selectedRole,
     });
-
     const formattedRole = role.replace(' ', '_');
     const updatedHrJson = { ...hrJson };
     updatedHrJson[`month${month}`][formattedRole] = selectedRole;
@@ -72,7 +70,6 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
       ...selectedRoles,
       [role]: '',
     });
-
     const formattedRole = role.replace(' ', '_');
     const updatedHrJson = { ...hrJson };
     updatedHrJson[`month${month}`][formattedRole] = "";
