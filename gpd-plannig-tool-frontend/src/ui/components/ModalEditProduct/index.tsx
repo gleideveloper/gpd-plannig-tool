@@ -33,8 +33,7 @@ import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import NewProductForm from "../NewProductForm/NewProductForm";
-import HrmPerMonthEditForm from "../HrmPerMonth/HrmPerMonthEditForm";
+import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
 
 type ModalEditProductProps = {
   abrirModal: (produto_id: string) => void;
@@ -198,11 +197,12 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
             <Box sx={style}>
               <form noValidate autoComplete="off">
               {showHrmPerMonthForm ? (
-                <HrmPerMonthEditForm
+                <HrmPerMonthForm
                   data={data}
                   hrJson={hrJson}
                   updateFieldHandler={updateAllocationHandler}
                   setSpecificMonth={setIsSpecificMonth}
+                  isEditProduct={true}
                 />
               ) : (
                 <Grid

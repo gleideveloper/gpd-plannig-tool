@@ -8,7 +8,7 @@ import axios, { AxiosError } from "axios";
 import { ApiService } from "../../../data/services/ApiService";
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 
-const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth }) => {
+const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct }) => {
 
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
@@ -137,6 +137,13 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
     }
   };
 
+  const editarProdutoHRM = () => {
+    adicionarAlerta({
+      textoAlerta: `Produto "${data.nome}" editado com sucesso!`,
+      tipoAlerta: "success",
+    });
+  };
+
   const handleUpdateButtonClick = (label, index) => {
     setSelectedMonth(label);
     setSelectedMonthIndex(index);
@@ -245,7 +252,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
             variant="contained"
             color="success"
             sx={{ height: 35, marginRight: 2, marginLeft: "auto" }}
-            onClick={salvarProdutoHRM}
+            onClick={ isEditProduct ? editarProdutoHRM : salvarProdutoHRM}
           >
             Save Allocations
           </Button>

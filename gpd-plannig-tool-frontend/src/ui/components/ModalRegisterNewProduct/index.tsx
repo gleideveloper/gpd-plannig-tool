@@ -89,7 +89,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         updateFieldHandler={updateFieldHandler}
         setData={setData}
       />,
-      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
+      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth} isEditProduct={false}/>,
     ];
     const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
