@@ -8,7 +8,7 @@ import axios, { AxiosError } from "axios";
 import { ApiService } from "../../../data/services/ApiService";
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 
-const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct, idProduct }) => {
+const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct, idProduct, handleClose }) => {
 
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
@@ -116,6 +116,8 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
         data
       );
 
+      handleClose()
+      
       adicionarAlerta({
         textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
         tipoAlerta: "success",
@@ -153,6 +155,8 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
     console.log(idProduct)
 
     await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${idProduct}`, produtoData);
+    
+    handleClose()
 
     adicionarAlerta({
       textoAlerta: `Produto "${produtoData.nome}" editado com sucesso!`,

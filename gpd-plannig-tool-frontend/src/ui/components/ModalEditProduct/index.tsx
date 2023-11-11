@@ -174,6 +174,10 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         return;
       setOpen(false);
     };
+    
+    const handleClose = () => {
+      setOpen(false);
+    };
 
     useImperativeHandle(ref, () => ({
       abrirModal,
@@ -208,6 +212,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                   setSpecificMonth={setIsSpecificMonth}
                   isEditProduct={true}
                   idProduct={id}
+                  handleClose={handleClose}
                 />
               ) : (
                 <Grid
