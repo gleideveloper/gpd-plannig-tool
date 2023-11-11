@@ -51,6 +51,16 @@ const style = {
   p: 4,
 };
 
+// Função para substituir os números por strings vazias
+function replaceNumbersWithEmptyStrings(hr_jsonAux, template_length) {
+  for (let i=0; i < template_length; i++) {
+    const nome_mes = "month" + (i+1);
+    for (const cargo in hr_jsonAux[nome_mes]) {
+      hr_jsonAux[nome_mes][cargo] = "";
+    }
+  }
+}
+
 const ModalEditProduct = forwardRef<ModalEditProductProps>(
   (_: unknown, ref: Ref<unknown>): JSX.Element => {
     const [id, setId] = useState<string>("");
@@ -136,11 +146,19 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
 
     const editarProduto = async (id: string) => {
       try {
+
+        const response = await ApiService.get(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}/${template}`);
+        const peak_ammountFounded = response.data.peak_ammount;
+        const hr_jsonAux = JSON.parse(peak_ammountFounded);
+  
+        replaceNumbersWithEmptyStrings(hr_jsonAux, response.data.length);
+
         const produtoData = {
           nome: nome,
           lider_npi: lider,
           data_sa: date,
           template_type: template,
+          hr_json: JSON.stringify(hr_jsonAux)
         };
 
         await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${id}`, produtoData);
