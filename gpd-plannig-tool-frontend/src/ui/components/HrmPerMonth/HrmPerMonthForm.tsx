@@ -13,6 +13,9 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
 
+  console.log("DATA QUE TA CHEGANDO NO MODAL");
+  console.log(data)
+
   const generateMonthLabels = () => {
     const { data_sa, template_type, newData} = data;
     const monthLabels = [];

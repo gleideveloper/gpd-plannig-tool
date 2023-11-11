@@ -1,6 +1,7 @@
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 import { ApiService } from "../../../data/services/ApiService";
 import { AlertasContext } from "../../contexts/alertas";
+import { useForm } from "../../../data/hooks/useForm";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -22,6 +23,7 @@ import {
   forwardRef,
   Ref,
   useContext,
+  useEffect,
   useImperativeHandle,
   useState,
 } from "react";
@@ -30,6 +32,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+import NewProductForm from "../NewProductForm/NewProductForm";
+import HrmPerMonthForm from "../HrmPerMonth/HrmPerMonthForm";
 
 type ModalEditProductProps = {
   abrirModal: (produto_id: string) => void;
@@ -54,16 +59,49 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
     const [lider, setLider] = useState<string>("");
     const [date, setDate] = useState<Dayjs | null>(null);
     const [template, setTemplate] = useState<string>("");
-
+    const [isSpecificMonth, setIsSpecificMonth] = useState(false);
     const [open, setOpen] = useState<boolean>(false);
-
     const { adicionarAlerta } = useContext(AlertasContext);
+    const [allocations, setAllocations] = useState([]);
+    const [hrJson, setHrJson] = useState(false);
+    const [templates, setTemplates] = useState([]);
+
+    const formTemplate = {
+      nome: nome,
+      allocations: allocations,
+      lider_npi: lider,
+      template_type: template,
+      data_sa: date,
+      hr_json: hrJson,
+      newData: templates,
+    };
+
+    const updateFieldHandler = (key, value) => {      
+      setData({ ...data, [key]: value });  
+    };
+
+    const updateAllocationHandler = (e, index) => {
+      const allocations = [...data.allocations]
+      allocations[index].allocation = (e.target.value)
+      setData((prev) => {
+        return { ...prev, allocations  };
+      });
+    };
+
+    const [data, setData] = useState(formTemplate);
+
+    const formComponents = [
+      <HrmPerMonthForm data={data} hrJson={hrJson} updateFieldHandler={updateAllocationHandler} setSpecificMonth={setIsSpecificMonth}/>,
+    ];
+
+    const { currentStep, currentComponent, changeStep, isHrmForm } = useForm(formComponents, setIsSpecificMonth);
 
     const abrirModal = async (produto_id: string) => {
       try {
         const response = await ApiService.get(
           `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
         );
+
         const produtoData = response.data;
         const dataSa = dayjs(produtoData.data_sa);
         setId(produto_id);
@@ -71,6 +109,24 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         setLider(produtoData.lider_npi);
         setTemplate(produtoData.template_type);
         setDate(dataSa);
+        setData(produtoData);
+        setHrJson(produtoData.hr_json);
+
+        const response_templates = await ApiService.get(
+          `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}`
+        );
+
+        setTemplates(response_templates.data);
+
+        const templateData = response_templates.data.find(item => item.template_type === produtoData.template_type);
+        const numMonthsToShow = templateData.length;
+        const allocations = [];
+        for (let i = 1; i <= numMonthsToShow; i++) {
+          allocations.push({ month: i, allocation: 0 });
+        }
+
+        setData({ ...produtoData, allocations: allocations, newData: response_templates.data });
+
         setOpen(true);
       } catch (e: any) {
         console.log(e);
@@ -125,6 +181,9 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
       abrirModal,
     }));
 
+    console.log("DATA QUE TA INDO PRO MODAL");
+    console.log(data)
+
     return (
       <div>
         <Modal
@@ -143,6 +202,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
           <Fade in={open}>
             <Box sx={style}>
               <form noValidate autoComplete="off">
+                {currentComponent}
                 <Grid
                   container
                   spacing={{ xs: 2, md: 3 }}
@@ -217,25 +277,45 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                     <Box
                       m={1}
                       display="flex"
-                      justifyContent="flex-end"
-                      alignItems="flex-end"
+                      justifyContent="flex-start"
                     >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={fecharModal}
-                        sx={{ height: 40, marginRight: 1 }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ height: 40 }}
-                        onClick={() => editarProduto(id)}
-                      >
-                        Save
-                      </Button>
+                      {!isHrmForm ? (
+                        <>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            sx={{ height: 40, marginRight: 1 }}
+                            onClick={() => {
+                              changeStep(currentStep + 1);
+                            }}
+                          >
+                            HRM
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={fecharModal}
+                            sx={{
+                              height: 40,
+                              marginRight: 1,
+                              marginLeft: "auto",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ height: 40 }}
+                            onClick={() => editarProduto(id)}
+                          >
+                            Save
+                          </Button>
+                        </>
+                      ) : !isSpecificMonth ? (
+                        <>
+                        </>
+                      ) : <></>}
                     </Box>
                   </Grid>
                 </Grid>
