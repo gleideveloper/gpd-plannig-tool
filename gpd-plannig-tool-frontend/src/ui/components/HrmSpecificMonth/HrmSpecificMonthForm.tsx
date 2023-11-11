@@ -10,7 +10,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
   const generateRolesForThisMonth = () => {
     const rolesLabels = [];
     const mes_atual = "month" + (monthIndex + 1);
-    
+
     const monthValue = peakAmmountJson[mes_atual];
     for (const role in monthValue) {
       const formattedRole = role.replace(/_/g, ' ');
@@ -53,20 +53,27 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
     hrJson = updatedHrJson;
   };
 
-  const handleRoleChange = (event, role) => {
+  const handleRoleChange = (event, role, month) => {
     const selectedRole = event.target.value;
-    
     setSelectedRoles({
       ...selectedRoles,
       [role]: selectedRole,
     });
+    const formattedRole = role.replace(' ', '_');
+    const updatedHrJson = { ...hrJson };
+    updatedHrJson[`month${month}`][formattedRole] = selectedRole;
+    hrJson = updatedHrJson;
   };
 
-  const clearSelectedRole = (role) => {
+  const clearSelectedRole = (role, month) => {
     setSelectedRoles({
       ...selectedRoles,
       [role]: '',
     });
+    const formattedRole = role.replace(' ', '_');
+    const updatedHrJson = { ...hrJson };
+    updatedHrJson[`month${month}`][formattedRole] = "";
+    hrJson = updatedHrJson;
   };    
 
   useEffect(() => {
@@ -102,7 +109,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
               <Select
                 value={selectedRoles[role] || hrJson[`month${monthIndex + 1}`][role.replace(' ', '_')] || ''}
                 fullWidth
-                onChange={(event) => handleRoleChange(event, role)}
+                onChange={(event) => handleRoleChange(event, role, monthIndex + 1)}
                 sx={{height: 35}}
               >
                 <MenuItem disabled value="">
@@ -119,7 +126,7 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
                   <Button
                     color="error"
                     sx={{ height: 40, marginLeft: '10px'}}
-                    onClick={() => clearSelectedRole(role)}
+                    onClick={() => clearSelectedRole(role, monthIndex + 1)}
                   >
                     Clear
                   </Button>
@@ -130,20 +137,9 @@ const HrmSpecificMonthModal = ({ monthLabel, monthIndex, monthLabelInfo, peakAmm
         <div style={{display: 'flex', justifyContent: 'flex-start', marginTop: '20px'}}>
           <Button
             variant="outlined"
-            color="primary"
-            sx={{ height: 40, marginRight: 1}}
-            onClick={onClose}
-          >
-            Return
-          </Button>
-          <Button
-            variant="contained"
             color="success"
             sx={{ height: 40, marginRight: 1}}
-            onClick={() => {
-              saveCollaborators();
-              onClose();
-            }}
+            onClick={onClose}
           >
             Save
           </Button>
