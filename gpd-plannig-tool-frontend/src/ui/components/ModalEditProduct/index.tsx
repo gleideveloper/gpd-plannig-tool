@@ -167,7 +167,9 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
       setTemplate(event.target.value as string);
     };
 
-    const fecharModal = () => {
+    const fecharModal = (event, reason) => {
+      if (reason == "backdropClick") 
+        return;
       setOpen(false);
     };
 
