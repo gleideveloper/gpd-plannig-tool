@@ -76,6 +76,28 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
     }
   };
 
+  const fetchCurrentAllocationData = async () => {
+    try {
+      const resultado = [];
+      for (const month in hrJson) {
+        let somaDoMes = 0;
+        for (const role in hrJson[month]) {
+          const colaborador = hrJson[month][role];
+          if(colaborador != "") {
+            somaDoMes += parseFloat(peakAmmountJson[month][role])
+          }
+        }
+        resultado.push(somaDoMes.toFixed(1));
+      }
+
+      for (const {index, value} of resultado.map((value, index) => ({index, value}))) { 
+        data.allocations[index].allocation = value
+      }
+    } catch (error) {
+      console.error("Erro ao calcular valores de Current Allocation:", error);
+    }
+  };
+
   const salvarProdutoHRM = async () => {
     try {
       data.hr_json = JSON.stringify(hrJson);
@@ -122,6 +144,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
     setSelectedMonth(null);
     setSelectedMonthIndex(null);
     setSpecificMonth(false)
+    fetchCurrentAllocationData()
   };
 
   useEffect(() => {
@@ -167,10 +190,20 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth })
                   <TextField
                     name={labelData.label}
                     label="Current"
+                    focused
+                    color={ maxAllocation == null
+                      ? "error"
+                      : ( data.allocations[index].allocation == 0
+                        ? "error"
+                        : ( data.allocations[index].allocation == maxAllocation[index]
+                          ? "success"
+                          : "warning"
+                        )
+                      )
+                    }
                     InputProps={{
-                      readOnly: true,
+                      readOnly: true
                     }}
-                    error
                     variant="outlined"
                     fullWidth
                     sx={{ input: { cursor: 'default', textAlign: 'center' }, width: '80%' }}
