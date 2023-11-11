@@ -250,9 +250,9 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                         required
                         onChange={handleChangeTemplate}
                       >
-                        <MenuItem value="Low">Low</MenuItem>
-                        <MenuItem value="Mid">Mid</MenuItem>
-                        <MenuItem value="High">High</MenuItem>
+                        <MenuItem value="low">Low</MenuItem>
+                        <MenuItem value="mid">Mid</MenuItem>
+                        <MenuItem value="high">High</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
