@@ -203,6 +203,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
                   updateFieldHandler={updateAllocationHandler}
                   setSpecificMonth={setIsSpecificMonth}
                   isEditProduct={true}
+                  idProduct={id}
                 />
               ) : (
                 <Grid

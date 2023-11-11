@@ -8,13 +8,14 @@ import axios, { AxiosError } from "axios";
 import { ApiService } from "../../../data/services/ApiService";
 import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
 
-const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct }) => {
+const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, isEditProduct, idProduct }) => {
 
   const { adicionarAlerta } = useContext(AlertasContext);
   const colorHighlight = theme.palette.secondary.light;
 
   console.log("DATA QUE TA CHEGANDO NO MODAL");
   console.log(data)
+  console.log(idProduct)
 
   const generateMonthLabels = () => {
     const { data_sa, template_type, newData} = data;
@@ -140,9 +141,21 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
     }
   };
 
-  const editarProdutoHRM = () => {
+  const editarProdutoHRM = async () => {
+    console.log("INFOS DE EDITAR:")
+    const produtoData = {
+      nome: data.nome,
+      lider_npi: data.lider_npi,
+      data_sa: data.data_sa,
+      template_type: data.template_type,
+      hr_json: hrJson
+    };
+    console.log(idProduct)
+
+    await ApiService.patch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${idProduct}`, produtoData);
+
     adicionarAlerta({
-      textoAlerta: `Produto "${data.nome}" editado com sucesso!`,
+      textoAlerta: `Produto "${produtoData.nome}" editado com sucesso!`,
       tipoAlerta: "success",
     });
   };
