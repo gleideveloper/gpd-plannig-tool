@@ -73,7 +73,9 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
       });
 
       setMaxAllocation(maxAllocationValues);
-      setMaxAllocationLoaded(true); 
+      setMaxAllocationLoaded(true);
+
+      return
     } catch (error) {
       console.error("Erro ao buscar dados da API:", error);
     }
@@ -81,6 +83,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
 
   const fetchCurrentAllocationData = async () => {
     try {
+      console.log("hrJson", hrJson)
       const resultado = [];
       for (const month in hrJson) {
         let somaDoMes = 0;
@@ -92,10 +95,10 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
         }
         resultado.push(somaDoMes.toFixed(1));
       }
-
       for (const {index, value} of resultado.map((value, index) => ({index, value}))) { 
         data.allocations[index].allocation = value
       }
+      return
     } catch (error) {
       console.error("Erro ao calcular valores de Current Allocation:", error);
     }
@@ -154,11 +157,12 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
     setSelectedMonth(null);
     setSelectedMonthIndex(null);
     setSpecificMonth(false)
-    fetchCurrentAllocationData()
   };
-
+  
+  fetchCurrentAllocationData()
+  
   useEffect(() => {
-    fetchMaxAllocationData();
+    fetchMaxAllocationData()
   }, []);  
 
   return (
