@@ -30,7 +30,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     } catch (e: any) {
       const erro = e as AxiosError;
       adicionarAlerta({
-        textoAlerta: `Falha ao tentar buscar produtos: ${
+        textoAlerta: `Failed when trying to search for products: ${
           (erro.response.data as ErroApiDTO).mensagem
         }`,
         tipoAlerta: 'warning',

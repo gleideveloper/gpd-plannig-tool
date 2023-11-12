@@ -133,7 +133,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         console.log(e);
         const erro = e as AxiosError;
         adicionarAlerta({
-          textoAlerta: `Falha ao tentar visualizar o produto: ${
+          textoAlerta: `Failed to view the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",
@@ -155,7 +155,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         handleClose();
 
         adicionarAlerta({
-          textoAlerta: `Produto "${nome}" editado com sucesso!`,
+          textoAlerta: `Product "${nome}" edited successfully!`,
           tipoAlerta: "success",
         });
 
@@ -163,7 +163,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         console.log(e);
         const erro = e as AxiosError;
         adicionarAlerta({
-          textoAlerta: `Falha o tentar editar o produto: ${
+          textoAlerta: `Failed when trying to edit the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",
@@ -207,7 +207,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         setShowWarningModal(false);
 
         adicionarAlerta({
-          textoAlerta: `Produto "${nome}" editado com sucesso!`,
+          textoAlerta: `Product "${nome}" edited successfully!`,
           tipoAlerta: "success",
         });
 
@@ -215,7 +215,7 @@ const ModalEditProduct = forwardRef<ModalEditProductProps>(
         console.log(e);
         const erro = e as AxiosError;
         adicionarAlerta({
-          textoAlerta: `Falha o tentar editar o produto: ${
+          textoAlerta: `Failed when trying to edit the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",

@@ -114,7 +114,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
       handleClose()
       
       adicionarAlerta({
-        textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
+        textoAlerta: `Product "${data.nome}" added successfully!`,
         tipoAlerta: "success",
       });
 
@@ -123,14 +123,14 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
       const erro = e as AxiosError;
       if(erro.code != 'ERR_NETWORK') {
         adicionarAlerta({
-          textoAlerta: `Falha o tentar inserir o produto: ${
+          textoAlerta: `Failed to insert the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",
         });
       } else {
         adicionarAlerta({
-          textoAlerta: "Sem conexão com a internet!",
+          textoAlerta: "No internet connection!",
           tipoAlerta: "error",
         });
       }
@@ -152,7 +152,7 @@ const HrmPerMonthForm = ({ data, hrJson, updateFieldHandler, setSpecificMonth, i
     handleClose()
 
     adicionarAlerta({
-      textoAlerta: `Produto "${produtoData.nome}" editado com sucesso!`,
+      textoAlerta: `Product "${produtoData.nome}" edited successfully!`,
       tipoAlerta: "success",
     });
   };

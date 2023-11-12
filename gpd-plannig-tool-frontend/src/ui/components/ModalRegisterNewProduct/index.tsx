@@ -130,7 +130,7 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         );
 
         adicionarAlerta({
-          textoAlerta: `Produto "${data.nome}" adicionado com sucesso!`,
+          textoAlerta: `Product "${data.nome}" added successfully!`,
           tipoAlerta: "success",
         });
 
@@ -140,14 +140,14 @@ const ModalRegisterNewProduct = forwardRef<ModalRegisterNewProductProps>(
         const erro = e as AxiosError;
         if(erro.code != 'ERR_NETWORK') {
           adicionarAlerta({
-            textoAlerta: `Falha o tentar inserir o produto: ${
+            textoAlerta: `Failed to insert the product: ${
               (erro.response.data as ErroApiDTO).mensagem
             }`,
             tipoAlerta: "error",
           });
         } else {
           adicionarAlerta({
-            textoAlerta: "Sem conexão com a internet!",
+            textoAlerta: "No internet connection!",
             tipoAlerta: "error",
           });
         }

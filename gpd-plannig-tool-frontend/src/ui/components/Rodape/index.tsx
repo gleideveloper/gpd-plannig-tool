@@ -32,7 +32,7 @@ const Rodape: FC = (): JSX.Element => {
               component="h2"
               sx={{ fontWeight: "bold" }}
             >
-              {`Versão ${infosApi.versao}`}
+              {`Version ${infosApi.versao}`}
             </Typography>
           )}
         </Box>
