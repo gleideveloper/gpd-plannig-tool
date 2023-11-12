@@ -65,7 +65,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
         console.log(e);
         const erro = e as AxiosError;
         adicionarAlerta({
-          textoAlerta: `Falha ao tentar visualizar o produto: ${
+          textoAlerta: `Failed to view the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",
