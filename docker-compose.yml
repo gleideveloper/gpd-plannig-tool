@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  backendlivros:
+  backendGpdPlannigTool:
     image: acrgleidev.azurecr.io/backend-gpd-plannig-tool:${TAG}
     container_name: backend-gpd-plannig-tool
     build:
@@ -15,7 +15,7 @@ services:
         - ./gpd-plannig-tool-backend/log:/app/log
     restart: always
 
-  frontendlivros:
+  frontendGpdPlannigTool:
     image: acrgleidev.azurecr.io/frontend-gpd-plannig-tool:${TAG}
     container_name: frontend-gpd-plannig-tool
     build:
