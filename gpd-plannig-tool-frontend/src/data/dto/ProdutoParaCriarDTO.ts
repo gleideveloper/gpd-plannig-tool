@@ -6,6 +6,7 @@ type ProdutoParaCriarDTO = {
   data_sa: string;
   lider_npi: string;
   template: TemplateDTO;
+  hr_json:string;
 };
 
 export { ProdutoParaCriarDTO };

@@ -8,8 +8,8 @@ const theme = createTheme({
       dark: '#00305C', // azul
     },
     secondary: {
-      light: '#2985D6',
-      main: '#1C5C95',
+      light: '#0005b2', // azul vibrante
+      main: '#1C5C95', // azul icons
       dark: '#185081',
     },
     text: {

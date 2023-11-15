@@ -28,6 +28,7 @@ class TemplateDTOMapper extends ObjectMapper<Template, TemplateDTO> {
       template_type: modelo.template_type,
       sa_idx: modelo.sa_idx,
       peak_ammount: modelo.peak_ammount,
+      length: modelo.length,
     };
   }
 }

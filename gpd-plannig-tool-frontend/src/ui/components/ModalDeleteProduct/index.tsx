@@ -51,7 +51,7 @@ const ModalDeleteProduct = forwardRef<ModalDeleteProductProps>(
         await ApiService.delete(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`);
         removerProduto(produto_id);
         adicionarAlerta({
-          textoAlerta: `Produto ${nome} deletado com sucesso!`,
+          textoAlerta: `Product ${nome} successfully deleted!`,
           tipoAlerta: "success",
         });
         fecharModal();
@@ -59,7 +59,7 @@ const ModalDeleteProduct = forwardRef<ModalDeleteProductProps>(
         console.log(e);
         const erro = e as AxiosError;
         adicionarAlerta({
-          textoAlerta: `Falha o tentar deletar o livro ${nome}: ${
+          textoAlerta: `Failed when trying to delete the product: ${nome}: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
           tipoAlerta: "error",

@@ -1,0 +1,86 @@
+{
+    "template_type": "high",
+    "sa_idx": 8,
+    "length": 12,
+    "peak_ammount": {
+        "month1": {
+          "PM": "2.0",
+          "TL": "1.0",
+          "DEV": "1.5"
+        },
+        "month2": {
+          "PL": "2.0",
+          "TL": "1.2",
+          "DEV": "1.5",
+          "UT_LEAD": "2.5",
+          "DATA_ANALYST": "2.3"
+        },
+        "month3": {
+          "PL": "2.6",
+          "TL": "1.2",
+          "DEV": "1.5",
+          "UT_LEAD": "2.5",
+          "PM": "2.8"
+        },
+        "month4": {
+          "PL": "2.0",
+          "CM": "3.5",
+          "NETWORK": "4.5",
+          "DEV": "4.0"
+        },
+        "month5": {
+          "PM": "3.0",
+          "TL": "3.0",
+          "DEV": "3.5"
+        },
+        "month6": {
+          "PL": "2.8",
+          "TL": "2.2",
+          "DEV": "3.5",
+          "UT_LEAD": "3.5",
+          "DATA_ANALYST": "3.3"
+        },
+        "month7": {
+          "PL": "2.0",
+          "TL": "2.2",
+          "DEV": "3.5",
+          "UT_LEAD": "2.5",
+          "PM": "3.3"
+        },
+        "month8": {
+          "PL": "4.0",
+          "FACTORY": "3.2",
+          "CM": "3.5",
+          "NETWORK": "2.5",
+          "DEV": "2.3",
+          "TL": "3.0",
+          "DATA_ANALYST": "3.5"
+        },
+        "month9": {
+          "PM": "2.0",
+          "TL": "1.0",
+          "DEV": "1.5"
+        },
+        "month10": {
+          "PL": "2.8",
+          "TL": "3.2",
+          "DEV": "2.5",
+          "UT_LEAD": "2.5",
+          "DATA_ANALYST": "3.3"
+        },
+        "month11": {
+          "PL": "4.0",
+          "TL": "3.2",
+          "DEV": "2.5",
+          "UT_LEAD": "1.5",
+          "PM": "2.3"
+        },
+        "month12": {
+          "PL": "2.0",
+          "FACTORY": "1.2",
+          "CM": "1.5",
+          "NETWORK": "1.5",
+          "DEV": "2.3"
+        }
+      }
+}
