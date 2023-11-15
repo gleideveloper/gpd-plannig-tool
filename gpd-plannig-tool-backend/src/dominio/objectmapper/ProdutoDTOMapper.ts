@@ -27,6 +27,7 @@ class ProdutoDTOMapper extends ObjectMapper<Produto, ProdutoDTO> {
       data_sa: modelo.data_sa,
       lider_npi: modelo.lider_npi,
       template_type: modelo.template_type,
+      hr_json: modelo.hr_json,
     };
   }
 }

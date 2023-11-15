@@ -1,0 +1,58 @@
+{
+    "template_type": "mid",
+    "sa_idx": 6,
+    "length": 10,
+    "peak_ammount": {
+        "month1": {
+          "PM": "0.5"
+        },
+        "month2": {
+          "PL": "0.5",
+          "TL": "0.6",
+          "DEV": "1",
+          "UT_LEAD": "1.0",
+          "DATA_ANALYST": "1.0"
+        },
+        "month3": {
+          "PL": "1.0",
+          "TL": "0.5",
+          "UT_LEAD": "1.0"
+        },
+        "month4": {
+          "PL": "0.5",
+          "CM": "1.0",
+          "NETWORK": "1.0",
+          "DEV": "0.5"
+        },
+        "month5": {
+          "PM": "1.0",
+          "TL": "1.0",
+          "DEV": "1.0"
+        },
+        "month6": {
+          "PL": "0.8",
+          "TL": "0.8",
+          "DEV": "1.0",
+          "UT_LEAD": "0.5"
+        },
+        "month7": {
+          "PM": "1.0",
+          "TL": "1.0",
+          "DEV": "1.0"
+        },
+        "month8": {
+          "PL": "1.0",
+          "TL": "1.2",
+          "UT_LEAD": "1.5",
+          "DATA_ANALYST": "1.6"
+        },
+        "month9": {
+          "TL": "1.0",
+          "DEV": "1.5"
+        },
+        "month10": {
+          "TL": "1.0",
+          "DEV": "1.5"
+        }
+      }      
+}

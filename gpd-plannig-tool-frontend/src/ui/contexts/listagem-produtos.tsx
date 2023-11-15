@@ -85,11 +85,10 @@ const ListagemProdutosProvider: FC = (): JSX.Element => {
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
-      console.log(produtosBuscados);
     } catch (e: any) {
       const erro = e as AxiosError;
       adicionarAlerta({
-        textoAlerta: `Falha ao tentar buscar produtos: ${
+        textoAlerta: `Failed when trying to search for products: ${
           (erro.response.data as ErroApiDTO).mensagem
         }`,
         tipoAlerta: 'warning',

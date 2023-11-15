@@ -69,62 +69,6 @@ class TemplatesService {
     return await this.objectMapper.mapearOrigemParaDestino(template);
   }
 
-  /**
-   *
-   * Método que cadastra um novo template.
-   *
-   * @param novoTemplate Dados do novo template.
-   * @returns Registro do novo template criado.
-   */
-  public async cadastrarNovoTemplate(
-    novoTemplate: TemplateParaCriarDTO
-  ): Promise<TemplateDTO> {
-    const template = new Template({
-      template_type: novoTemplate.template_type,
-      sa_idx: novoTemplate.sa_idx,
-      peak_amount: novoTemplate.peak_amount
-    });
-    const registro = await this.repository.salvar(template);
-
-    return await this.objectMapper.mapearOrigemParaDestino(registro);
-  }
-
-  /**
-   *
-   * Método que atualiza os dados de um template.
-   *
-   * @param tipo Tipo do template a ser atualizado.
-   * @param dadosParaAtualizar Dados do template para atualizar.
-   * @returns Registro do template atualizado.
-   */
-  public async atualizarTemplate(
-    tipo: string,
-    dadosParaAtualizar: TemplateParaAtualizarDTO
-  ): Promise<TemplateDTO> {
-    const template = await this.repository.buscarPorTipo(tipo);
-
-    template.set({
-      template_type: dadosParaAtualizar.template_type,
-      sa_idx: dadosParaAtualizar.sa_idx,
-    });
-    await this.repository.salvar(template);
-
-    return await this.objectMapper.mapearOrigemParaDestino(template);
-  }
-
-  /**
-   *
-   * Método que apaga um template a partir do tipo.
-   *
-   * @param tipo Tipo do template a ser apagado.
-   * @returns Sucesso ou falha na operação.
-   */
-  public async deletarTemplate(tipo: string): Promise<boolean> {
-    const template = await this.repository.buscarPorTipo(tipo);
-    const resultado = await this.repository.remover(template.id as string);
-
-    return resultado === 1;
-  }
 }
 
 export { TemplatesService };

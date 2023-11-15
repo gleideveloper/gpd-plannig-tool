@@ -88,6 +88,7 @@ class ProdutosService {
         data_sa: novoProduto.data_sa,
         lider_npi: novoProduto.lider_npi,
         template_type: novoProduto.template_type,
+        hr_json: novoProduto.hr_json,
     });
     console.log(`Service cadastrarNovoProduto: ${produto}`)
     const registro = await this.repository.salvar(produto);
@@ -114,11 +115,13 @@ class ProdutosService {
             data_sa: dadosParaAtualizar.data_sa,
             lider_npi: dadosParaAtualizar.lider_npi,
             template_type: dadosParaAtualizar.template_type,
+            hr_json: dadosParaAtualizar.hr_json,
         });
         console.log(`Service atualizarProduto nome: ${produto.nome}`)
         console.log(`Service atualizarProduto data_sa: ${produto.data_sa}`)
         console.log(`Service atualizarProduto lider_npi: ${produto.lider_npi}`)
         console.log(`Service atualizarProduto template_type: ${produto.template_type}`)
+        console.log(`Service atualizarProduto hr_json: ${produto.hr_json}`)
 
         await this.repository.salvar(produto);
 

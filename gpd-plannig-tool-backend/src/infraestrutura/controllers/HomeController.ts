@@ -20,15 +20,31 @@ class HomeController {
   public async home(req: Request, res: Response): Promise<void> {
     res.json({
       nome: "gpd-plannig-tool-backend",
-      versao: "1.0.0",
-      dataVersao: "2023-07-19",
+      versao: "1.0",
+      dataVersao: "2023-11-16",
       responsaveis: [
         {
-          nome: "Gleides Vinente",
-          email: "gleidevelop@gmail.com",
-          github: "https://github.com/gleideveloper",
+            nome: "Gleides Vinente",
+            email: "gleidevelop@gmail.com",
+            github: "https://github.com/gleideveloper",
         },
-      ],
+        {
+            nome: "Nathália Santos",
+            email: "nathalia.santos@icomp.ufam.edu.br",
+            github: "https://github.com/NathSantos",
+        },
+        {
+            nome: "Laura Lima",
+            email: "llg@icomp.ufam.edu.br",
+            github: "https://github.com/ladyllg",
+        },
+        {
+            nome: "Solano Oliveira",
+            email: "solano.oliveira@icomp.ufam.edu.br",
+            github: "https://github.com/SolanoOliveira",
+        }
+    ],
+    
     });
   }
 }

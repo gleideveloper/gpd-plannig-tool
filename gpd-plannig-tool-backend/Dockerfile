@@ -1,5 +1,5 @@
 # Estágio de construção da aplicação
-FROM node:18.16 AS build
+FROM node:20 AS build
 
 WORKDIR /appbuild
 
@@ -12,7 +12,7 @@ RUN npm install --save-dev
 RUN npm run build
 
 # Estágio de execução da aplicação
-FROM node:18.16
+FROM node:20
 
 WORKDIR /app
 

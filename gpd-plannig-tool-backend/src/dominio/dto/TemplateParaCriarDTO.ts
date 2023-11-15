@@ -7,7 +7,8 @@
 type TemplateParaCriarDTO = {
     template_type: string;
     sa_idx: number;
-    peak_amount: string;
+    peak_ammount: string;
+    length: number;
   };
   
   export { TemplateParaCriarDTO };

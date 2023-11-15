@@ -23,15 +23,14 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
   const buscarProdutos = async () => {
     try {
       const resposta = await ApiService.get<ProdutoDTO[]>(
-        import.meta.env.VITE_ROTA_PRODUTOS // busca os produtos cadastrados na rota /produtos
+        import.meta.env.VITE_ROTA_PRODUTOS
       );
       const produtosBuscados = resposta.data as ProdutoDTO[];
       setProdutos(produtosBuscados);
-      console.log(produtosBuscados);
     } catch (e: any) {
       const erro = e as AxiosError;
       adicionarAlerta({
-        textoAlerta: `Falha ao tentar buscar produtos: ${
+        textoAlerta: `Failed when trying to search for products: ${
           (erro.response.data as ErroApiDTO).mensagem
         }`,
         tipoAlerta: 'warning',
@@ -43,7 +42,6 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     buscarProdutos();
   }, []);
 
-  const VECTOR_SIZE = 9; // Tamanho pré-definido do vetor de datas para cada produto individualmente
   const columnNames: string[] = []; // Inicializando as colunas de datas com os cabeçalhos padrão
 
   // Convertendo as datas SA para objetos Date
@@ -55,6 +53,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
 
   // Verificando se já existe uma coluna com a data SA e atualizando as colunas conforme necessário
   produtos.forEach((produto, index) => {
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const saIndex = produto.template.sa_idx;
 
     // Formatando a data SA como "Mmm yyyy" (por exemplo, "Feb 2023")
@@ -177,32 +176,63 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     }
   });
 
-  // Populando as colunas de Peak Amount (Recursos)
-  const renderPeakAmountColumns = (
+  // Populando as colunas de Current Allocation (Recursos)
+  const renderCurrentAllocationColumns = (
     produto: ProdutoDTO,
     columnIndex: number
   ) => {
     // columnIndex -> indica a posição do dateSA do produto na tabela
     // Obtém o valor do índice 'sa_idx' do produto
-    const lowestPosition = columnIndex - produto.template.sa_idx; // posição do primeiro elemento do vetor peak_amount na tabela
-    const peakAmountVector = produto.template.peak_ammount
-      .split(',')
-      .map(parseFloat);
-    const peakAmountCells: JSX.Element[] = []; // Array para armazenar as células
+    const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
+    const sa_idx = produto.template.sa_idx; // Índice do dateSA do produto
+    const lowestPosition = columnIndex - sa_idx; // posição do primeiro elemento do vetor de current allocation na tabela
+    const peakAmmountJSONformat = JSON.parse(produto.template.peak_ammount); // o peak ammount do template guarda o maximum allocation
+    const hrJsonString = JSON.stringify(produto.hr_json); // o hr_json do produto guarda a current allocation
+    const hrJson = JSON.parse(hrJsonString);
+    const currentAllocationCells: JSX.Element[] = []; // Array para armazenar as células
     let cont = 0;
 
+    const resultado = [];
+
+    for (const month in hrJson) {
+      let somaDoMes = 0;
+      for (const role in hrJson[month]) {
+        const colaborador = hrJson[month][role];
+        if (colaborador != '') {
+          somaDoMes += parseFloat(peakAmmountJSONformat[month][role]);
+        }
+      }
+      resultado.push(somaDoMes.toFixed(1));
+    }
+
     for (let i = 0; i < columnNames.length; i++) {
-      if (i >= lowestPosition && i < lowestPosition + VECTOR_SIZE) {
-        // Mapeia os valores de 'peak_amount' e realoca-os nas colunas correspondentes, criando e adicionando as células ao array
-        peakAmountCells.push(
-          <TableCell align='center' key={`peak_amount_${cont}`}>
-            {peakAmountVector[cont]}
+      const condicaoParaEstarDentroDoVetor =
+        i >= lowestPosition && i < lowestPosition + VECTOR_SIZE;
+      const condicaoParaSerACelulaDoDateSA = lowestPosition + sa_idx == i;
+
+      if (condicaoParaEstarDentroDoVetor && condicaoParaSerACelulaDoDateSA) {
+        // Se for a célula do dateSA do produto, adiciona uma célula com background diferente
+        currentAllocationCells.push(
+          <TableCell
+            align='center'
+            key={`current_allocation_${cont}`}
+            style={{ backgroundColor: '#ffd9d3' }}
+          >
+            {resultado[cont]}
+          </TableCell>
+        );
+        cont++;
+      } else if (condicaoParaEstarDentroDoVetor) {
+        // Mapeia os valores de 'current_allocation' e realoca-os nas colunas correspondentes, criando e adicionando as células ao array
+        currentAllocationCells.push(
+          <TableCell align='center' key={`current_allocation_${cont}`}>
+            {resultado[cont]}
           </TableCell>
         );
         cont++;
       } else {
-        // Se não estiver na posição correta, adicione uma célula vazia
-        peakAmountCells.push(
+        // Se não estiver na posição correta, adiciona uma célula vazia
+        currentAllocationCells.push(
           <TableCell align='center' key={`empty_cell_${i}`}>
             {''}
           </TableCell>
@@ -210,7 +240,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
       }
     }
 
-    return peakAmountCells; // Retorna o array de células
+    return currentAllocationCells; // Retorna o array de células
   };
 
   return (
@@ -262,7 +292,7 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
                     <TableCell align='center'>
                       {produto.template.template_type}
                     </TableCell>
-                    {renderPeakAmountColumns(
+                    {renderCurrentAllocationColumns(
                       produto,
                       columnNames.indexOf(formattedSaDate)
                     )}
