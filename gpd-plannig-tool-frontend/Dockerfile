@@ -1,5 +1,5 @@
 # Estágio de construção da aplicação
-FROM node:18.16 AS build
+FROM node:20 AS build
 
 WORKDIR /appbuild
 
