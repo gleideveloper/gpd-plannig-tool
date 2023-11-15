@@ -24,10 +24,10 @@ const iniciarAplicacao = async (): Promise<void> => {
     const conexao = await gerarConexaoBDSequelize();
     await conexao.sync();
 
-    //Povoar DB
-    insertRoles();
-    // insertColaboradores();
-    templateInsertions();
+    // //Povoar DB
+    // insertRoles();
+    // // insertColaboradores();
+    // templateInsertions();
 
     servidor.listen(porta, () =>
       logger.info(`SERVIDOR RODANDO VIOLENTAMENTE NA PORTA ${porta}.`)
