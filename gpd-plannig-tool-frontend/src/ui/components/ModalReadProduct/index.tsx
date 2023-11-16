@@ -1,37 +1,31 @@
-import { ErroApiDTO } from "../../../data/dto/ErroApiDTO";
-import { ApiService } from "../../../data/services/ApiService";
-import { AlertasContext } from "../../contexts/alertas";
+import { ErroApiDTO } from '../../../data/dto/ErroApiDTO';
+import { ApiService } from '../../../data/services/ApiService';
+import { AlertasContext } from '../../contexts/alertas';
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import {
-  Backdrop,
-  Fade,
-  TextField,
-  Typography,
-  Grid,
-} from "@mui/material";
-import { AxiosError } from "axios";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import { Backdrop, Fade, TextField, Typography, Grid } from '@mui/material';
+import { AxiosError } from 'axios';
 import {
   forwardRef,
   Ref,
   useContext,
   useImperativeHandle,
   useState,
-} from "react";
+} from 'react';
 
 type ModalReadProductProps = {
   abrirModal: (produto_id: string) => void;
 };
 
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 500,
-  bgcolor: "background.paper",
+  bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 5,
   p: 4,
@@ -57,7 +51,9 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
     const abrirModal = async (produto_id: string) => {
       try {
         const response = await ApiService.get(
-          `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_PRODUTOS}/${produto_id}`
+          `${import.meta.env.VITE_API_BASE_URL}${
+            import.meta.env.VITE_ROTA_PRODUTOS
+          }/${produto_id}`
         );
         setProduto(response.data);
         setOpen(true);
@@ -68,7 +64,7 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
           textoAlerta: `Failed to view the product: ${
             (erro.response.data as ErroApiDTO).mensagem
           }`,
-          tipoAlerta: "error",
+          tipoAlerta: 'error',
         });
       }
     };
@@ -84,8 +80,8 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
     return (
       <div>
         <Modal
-          aria-labelledby="spring-modal-title"
-          aria-describedby="spring-modal-description"
+          aria-labelledby='spring-modal-title'
+          aria-describedby='spring-modal-description'
           open={open}
           onClose={fecharModal}
           closeAfterTransition
@@ -104,14 +100,14 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
                 <Grid item xs={12}>
-                  <Typography variant="h5" component="h2">
+                  <Typography variant='h5' component='h2'>
                     Product Details
                   </Typography>
                 </Grid>
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                   <TextField
-                    label="Product Name"
-                    variant="standard"
+                    label='Product Name'
+                    variant='standard'
                     fullWidth
                     value={produto.nome}
                     InputProps={{
@@ -121,8 +117,8 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="GPD Leader"
-                    variant="standard"
+                    label='GPD Leader'
+                    variant='standard'
                     fullWidth
                     value={produto.lider_npi}
                     InputProps={{
@@ -132,8 +128,8 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Date SA"
-                    variant="standard"
+                    label='Date SA'
+                    variant='standard'
                     fullWidth
                     value={formatDataSa(produto.data_sa)}
                     InputProps={{
@@ -143,8 +139,8 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Template"
-                    variant="standard"
+                    label='Template'
+                    variant='standard'
                     fullWidth
                     value={produto.template_type}
                     InputProps={{
@@ -152,16 +148,16 @@ const ModalReadProduct = forwardRef<ModalReadProductProps>(
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} sx={{ marginLeft: "auto" }}>
+                <Grid item xs={12} sx={{ marginLeft: 'auto' }}>
                   <Box
                     m={1}
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
+                    display='flex'
+                    justifyContent='flex-end'
+                    alignItems='flex-end'
                   >
                     <Button
-                      variant="contained"
-                      color="primary"
+                      variant='contained'
+                      color='primary'
                       onClick={fecharModal}
                       sx={{ height: 40, marginRight: 1 }}
                     >

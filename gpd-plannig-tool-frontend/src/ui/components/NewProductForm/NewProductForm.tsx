@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Grid,
   TextField,
@@ -7,9 +7,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
-} from "@mui/material";
-import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+} from '@mui/material';
+import { DateField, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const NewProductForm = ({
   data,
@@ -20,13 +20,17 @@ const NewProductForm = ({
   const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_ROTA_TEMPLATES}`)
+    fetch(
+      `${import.meta.env.VITE_API_BASE_URL}${
+        import.meta.env.VITE_ROTA_TEMPLATES
+      }`
+    )
       .then((response) => response.json())
       .then((newData) => {
         setTemplates(newData);
         setData({ ...data, newData });
       })
-      .catch((error) => console.error("Erro ao obter os templates:", error));
+      .catch((error) => console.error('Erro ao obter os templates:', error));
   }, []);
 
   const options = templates.map((template) => ({
@@ -36,7 +40,7 @@ const NewProductForm = ({
   }));
 
   const handleChangeTemplate = (templateType) => {
-    updateFieldHandler("template_type", templateType);
+    updateFieldHandler('template_type', templateType);
 
     const selectedTemplate = templates.find(
       (template) => template.template_type === templateType
@@ -54,11 +58,11 @@ const NewProductForm = ({
         allocations,
       }));
 
-      if (typeof setTemplateInfo === "function") {
+      if (typeof setTemplateInfo === 'function') {
         setTemplateInfo(selectedTemplate);
       } else {
         console.error(
-          "setTemplateInfo is not a function. Please check if it is passed as a prop."
+          'setTemplateInfo is not a function. Please check if it is passed as a prop.'
         );
       }
     }
@@ -72,41 +76,41 @@ const NewProductForm = ({
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={12}>
-          <Typography variant="h5" component="h2">
+          <Typography variant='h5' component='h2'>
             New Product
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="nome"
-            label="Product Name"
-            variant="outlined"
+            id='nome'
+            label='Product Name'
+            variant='outlined'
             required
             fullWidth
             value={data.nome}
-            onChange={(e) => updateFieldHandler("nome", e.target.value)}
+            onChange={(e) => updateFieldHandler('nome', e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="leader"
-            label="GPD Leader"
-            variant="outlined"
+            id='leader'
+            label='GPD Leader'
+            variant='outlined'
             required
             fullWidth
             value={data.lider_npi}
-            onChange={(e) => updateFieldHandler("lider_npi", e.target.value)}
+            onChange={(e) => updateFieldHandler('lider_npi', e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth sx={{ minWidth: 100 }}>
-            <InputLabel id="template-label">Template</InputLabel>
+            <InputLabel id='template-label'>Template</InputLabel>
             <Select
-              labelId="template-label"
-              id="template-select"
+              labelId='template-label'
+              id='template-select'
               value={data.template_type}
-              label="Template"
-              defaultValue="Low"
+              label='Template'
+              defaultValue='Low'
               required
               onChange={(e) => handleChangeTemplate(e.target.value)}
             >
@@ -120,16 +124,20 @@ const NewProductForm = ({
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl required fullWidth sx={{ minWidth: 100 }}>
-            <InputLabel htmlFor="date-sa-field" shrink style={{ visibility: 'hidden' }}>
+            <InputLabel
+              htmlFor='date-sa-field'
+              shrink
+              style={{ visibility: 'hidden' }}
+            >
               Date SA
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateField
-                id="date-sa-field"
-                label="Date SA"
+                id='date-sa-field'
+                label='Date SA'
                 value={data.data_sa}
-                onChange={(e) => updateFieldHandler("data_sa", e)}
-                format="MM/YYYY"
+                onChange={(e) => updateFieldHandler('data_sa', e)}
+                format='MM/YYYY'
                 required
               />
             </LocalizationProvider>

@@ -186,8 +186,9 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
     const VECTOR_SIZE = produto.template.length; // Tamanho pré-definido do vetor de datas para cada produto individualmente
     const sa_idx = produto.template.sa_idx; // Índice do dateSA do produto
     const lowestPosition = columnIndex - sa_idx; // posição do primeiro elemento do vetor de current allocation na tabela
-    const peakAmmountJSONformat = JSON.parse(produto.template.peak_ammount);  // o peak ammount do template guarda o maximum allocation
-    const hrJson = produto.hr_json; // o hr_json do produto guarda a current allocation
+    const peakAmmountJSONformat = JSON.parse(produto.template.peak_ammount); // o peak ammount do template guarda o maximum allocation
+    const hrJsonString = JSON.stringify(produto.hr_json); // o hr_json do produto guarda a current allocation
+    const hrJson = JSON.parse(hrJsonString);
     const currentAllocationCells: JSX.Element[] = []; // Array para armazenar as células
     let cont = 0;
 
@@ -197,21 +198,26 @@ const ListagemDatasRecursosProvider: FC = (): JSX.Element => {
       let somaDoMes = 0;
       for (const role in hrJson[month]) {
         const colaborador = hrJson[month][role];
-        if(colaborador != "") {
-          somaDoMes += parseFloat(peakAmmountJSONformat[month][role])
+        if (colaborador != '') {
+          somaDoMes += parseFloat(peakAmmountJSONformat[month][role]);
         }
       }
       resultado.push(somaDoMes.toFixed(1));
     }
 
     for (let i = 0; i < columnNames.length; i++) {
-      const condicaoParaEstarDentroDoVetor = i >= lowestPosition && i < lowestPosition + VECTOR_SIZE;
-      const condicaoParaSerACelulaDoDateSA = lowestPosition + sa_idx == i  ;
+      const condicaoParaEstarDentroDoVetor =
+        i >= lowestPosition && i < lowestPosition + VECTOR_SIZE;
+      const condicaoParaSerACelulaDoDateSA = lowestPosition + sa_idx == i;
 
-      if (condicaoParaEstarDentroDoVetor && condicaoParaSerACelulaDoDateSA) { 
+      if (condicaoParaEstarDentroDoVetor && condicaoParaSerACelulaDoDateSA) {
         // Se for a célula do dateSA do produto, adiciona uma célula com background diferente
         currentAllocationCells.push(
-          <TableCell align='center' key={`current_allocation_${cont}`} style={{backgroundColor: '#ffd9d3',}}>
+          <TableCell
+            align='center'
+            key={`current_allocation_${cont}`}
+            style={{ backgroundColor: '#ffd9d3' }}
+          >
             {resultado[cont]}
           </TableCell>
         );
