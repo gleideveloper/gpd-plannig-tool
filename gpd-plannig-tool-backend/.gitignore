@@ -1,5 +1,5 @@
 dist/
 log/
 node_modules/
-!/package-lock.json
-!/tsconfig.tsbuildinfo
+/package-lock.json
+/tsconfig.tsbuildinfo

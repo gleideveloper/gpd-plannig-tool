@@ -23,4 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 !/.gitignore
-!/package-lock.json
+/package-lock.json
