@@ -2,8 +2,8 @@ version: "3"
 
 services:
   backendGpdPlannigTool:
-    image: acrgleidev.azurecr.io/backend-gpd-plannig-tool:${TAG}
-#    image: backend-gpd-plannig-tool
+#    image: acrgleidev.azurecr.io/backend-gpd-plannig-tool:${TAG}
+    image: backend-gpd-plannig-tool
     container_name: backend-gpd-plannig-tool
     build:
       context: gpd-plannig-tool-backend
@@ -17,8 +17,8 @@ services:
     restart: always
 
   frontendGpdPlannigTool:
-    image: acrgleidev.azurecr.io/frontend-gpd-plannig-tool:${TAG}
-#    image: frontend-gpd-plannig-tool
+#    image: acrgleidev.azurecr.io/frontend-gpd-plannig-tool:${TAG}
+    image: frontend-gpd-plannig-tool
     container_name: frontend-gpd-plannig-tool
     build:
       context: gpd-plannig-tool-frontend
